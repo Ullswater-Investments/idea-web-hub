@@ -1,5 +1,19 @@
 # PROCUREDATA - Sistema de Gobernanza de Datos
 
+## 🎭 MODO DEMOSTRACIÓN DISPONIBLE
+
+**¡Prueba PROCUREDATA sin configuración!**
+
+1. Ve a la página de login (`/auth`)
+2. Haz clic en **🎭 Acceder a Versión Demo**
+3. Explora el sistema con 6 organizaciones en los 3 roles (Consumer, Holder, Provider)
+
+**Credenciales**: `demo@procuredata.app` / `demo123456`
+
+📖 **Documentación completa**: [DEMO_MODE.md](./DEMO_MODE.md)
+
+---
+
 ## 🎯 FASE 5: INTEGRACIONES EXTERNAS ✅ COMPLETADA
 
 Sistema de gobernanza de datos para la gestión de transacciones de datos entre organizaciones (Consumer, Provider, Data Holder) con control de acceso basado en roles y políticas de seguridad multi-tenant.

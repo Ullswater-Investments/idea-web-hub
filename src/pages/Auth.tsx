@@ -27,6 +27,27 @@ const Auth = () => {
     setLoading(false);
   };
 
+  const handleDemoAccess = async () => {
+    setLoading(true);
+    const demoEmail = "demo@procuredata.app";
+    const demoPassword = "demo123456";
+    
+    // Intentar login primero
+    const { error: loginError } = await signIn(demoEmail, demoPassword);
+    
+    // Si falla el login, intentar registrar
+    if (loginError) {
+      const { error: signupError } = await signUp(demoEmail, demoPassword);
+      
+      if (!signupError) {
+        // Registro exitoso, ahora hacer login
+        await signIn(demoEmail, demoPassword);
+      }
+    }
+    
+    setLoading(false);
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -76,9 +97,19 @@ const Auth = () => {
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? "Cargando..." : "Iniciar Sesión"}
-                </Button>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Cargando..." : "Iniciar Sesión"}
+              </Button>
+              
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full mt-2 border-amber-500 text-amber-700 hover:bg-amber-50"
+                onClick={handleDemoAccess}
+                disabled={loading}
+              >
+                🎭 Acceder a Versión Demo
+              </Button>
               </form>
             </TabsContent>
 
