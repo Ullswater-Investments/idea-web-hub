@@ -10,6 +10,8 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
+import Requests from "./pages/Requests";
+import RequestWizard from "./pages/RequestWizard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +47,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <ProductDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/requests"
+              element={
+                <ProtectedRoute>
+                  <Requests />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/requests/new"
+              element={
+                <ProtectedRoute>
+                  <RequestWizard />
                 </ProtectedRoute>
               }
             />

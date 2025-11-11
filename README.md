@@ -1,12 +1,13 @@
 # PROCUREDATA - Sistema de Gobernanza de Datos
 
-## 🎯 FASE 2: CATÁLOGO DE DATOS ✅ COMPLETADA
+## 🎯 FASE 3: MOTOR DE GOBERNANZA ✅ COMPLETADA
 
 Sistema de gobernanza de datos para la gestión de transacciones de datos entre organizaciones (Consumer, Provider, Data Holder) con control de acceso basado en roles y políticas de seguridad multi-tenant.
 
 ### ✅ Fases Completadas
 - **Fase 1 - Fundación**: Base de datos, autenticación, roles y routing
 - **Fase 2 - Catálogo**: Exploración de productos de datos con búsqueda avanzada
+- **Fase 3 - Gobernanza**: Wizard de solicitud, aprobaciones multi-actor y políticas ODRL
 
 **Ver documentación completa**: [ARCHITECTURE.md](./ARCHITECTURE.md)
 

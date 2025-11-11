@@ -75,18 +75,19 @@
 - [x] Datos de prueba cargados
 - [x] Integración completa con RLS
 
-### FASE 3: Motor de Gobernanza (4-5 semanas) - PRÓXIMO
-- [ ] Tabla `data_transactions` (máquina de estados)
-- [ ] Tabla `approval_history`
-- [ ] Tabla `data_policies` (ODRL JSON)
-- [ ] Wizard de solicitud (4 pasos)
-- [ ] Dashboards contextuales por rol
-- [ ] Edge Functions:
-  - `transaction-state-manager`
-  - `odrl-policy-generator`
-  - `notification-handler`
+### FASE 3: Motor de Gobernanza ✅ COMPLETADA
+- [x] Tabla `data_transactions` con máquina de estados (8 estados)
+- [x] Tabla `approval_history` con acciones pre_approve/approve/deny
+- [x] Tabla `data_policies` con políticas ODRL 2.0 en JSON
+- [x] Wizard de solicitud (5 pasos) con validación Zod
+- [x] Dashboard contextual `/requests` con tabs por rol
+- [x] Sistema de aprobaciones multi-actor (Subject → Holder)
+- [x] Generación automática de políticas ODRL
+- [x] Función DB `get_pending_transactions()` para consultas eficientes
+- [x] RLS policies completas para multi-tenancy
+- [x] Integración completa con catálogo (botón "Solicitar Datos" funcional)
 
-### FASE 4: Visualización y Exportación (2 semanas)
+### FASE 4: Visualización y Exportación (2 semanas) - PRÓXIMO
 - [ ] Página `/data/view/:transaction_id`
 - [ ] Página `/data/export/:transaction_id`
 - [ ] Integración básica con ERP
@@ -154,6 +155,10 @@ src/
 │   ├── Index.tsx        # Redirect a dashboard
 │   ├── Auth.tsx         # Login/Registro
 │   ├── Dashboard.tsx    # Dashboard principal
+│   ├── Catalog.tsx      # Catálogo de datos
+│   ├── ProductDetail.tsx # Detalle de producto
+│   ├── Requests.tsx     # Gestión de solicitudes
+│   ├── RequestWizard.tsx # Wizard de solicitud (5 pasos)
 │   └── NotFound.tsx
 ├── App.tsx
 ├── index.css            # Design system
@@ -179,4 +184,14 @@ supabase/
 - Datos de prueba cargados (4 productos, 5 activos)
 - RLS policies implementadas
 
-**Próximo Objetivo**: Iniciar Fase 3 (Motor de Gobernanza)
+**Fase 3 (Motor de Gobernanza): ✅ 100% COMPLETA**
+- Tablas de transacciones, historial y políticas creadas
+- Wizard de solicitud de 5 pasos con validación
+- Dashboard de solicitudes contextual por rol
+- Sistema de aprobaciones Subject → Holder
+- Generación automática de políticas ODRL 2.0
+- Máquina de estados con 8 estados
+- Función DB para consultas eficientes
+- Integración completa con catálogo
+
+**Próximo Objetivo**: Iniciar Fase 4 (Visualización y Exportación)

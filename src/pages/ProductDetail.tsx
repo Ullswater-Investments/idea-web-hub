@@ -53,8 +53,7 @@ const ProductDetail = () => {
   });
 
   const handleRequestAccess = (assetId: string) => {
-    toast.info("Funcionalidad de solicitud disponible en Fase 3 (Motor de Gobernanza)");
-    // En Fase 3: navigate(`/requests/new?asset=${assetId}`);
+    navigate(`/requests/new?asset=${assetId}`);
   };
 
   if (isLoading) {

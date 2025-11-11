@@ -23,7 +23,7 @@ const Dashboard = () => {
         <div className="mb-6">
           <h2 className="mb-2 text-3xl font-bold">Dashboard Principal</h2>
           <p className="text-muted-foreground">
-            Sistema de Gobernanza de Datos - Fase 2 (Catálogo de Datos) ✅
+            Sistema de Gobernanza de Datos - Fase 3 (Motor de Gobernanza) ✅
           </p>
         </div>
 
@@ -46,8 +46,8 @@ const Dashboard = () => {
               <CardDescription>Gestionar solicitudes de datos</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" disabled>
-                Próximamente
+              <Button className="w-full" onClick={() => window.location.href = '/requests'}>
+                Ir a Solicitudes
               </Button>
             </CardContent>
           </Card>
@@ -117,7 +117,29 @@ const Dashboard = () => {
               </div>
 
               <div>
-                <h3 className="mb-2 font-semibold">Fase 3 - Motor de Gobernanza</h3>
+                <h3 className="mb-2 font-semibold">Fase 3 - Motor de Gobernanza ✅</h3>
+                <div className="space-y-2 pl-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Transacciones</span>
+                    <span className="text-sm text-green-600">✓ Funcional</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Wizard de Solicitud</span>
+                    <span className="text-sm text-green-600">✓ 5 pasos</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Aprobaciones Multi-Actor</span>
+                    <span className="text-sm text-green-600">✓ Implementado</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Políticas ODRL</span>
+                    <span className="text-sm text-green-600">✓ Generadas</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="mb-2 font-semibold">Fase 4 - Visualización y Exportación</h3>
                 <p className="text-sm text-muted-foreground pl-4">Próximamente...</p>
               </div>
             </CardContent>

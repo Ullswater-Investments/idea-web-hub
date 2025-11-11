@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      approval_history: {
+        Row: {
+          action: Database["public"]["Enums"]["approval_action"]
+          actor_org_id: string
+          actor_user_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          transaction_id: string
+        }
+        Insert: {
+          action: Database["public"]["Enums"]["approval_action"]
+          actor_org_id: string
+          actor_user_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          transaction_id: string
+        }
+        Update: {
+          action?: Database["public"]["Enums"]["approval_action"]
+          actor_org_id?: string
+          actor_user_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          transaction_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "approval_history_actor_org_id_fkey"
+            columns: ["actor_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "approval_history_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "data_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       catalog_metadata: {
         Row: {
           asset_id: string
@@ -107,6 +152,35 @@ export type Database = {
           },
         ]
       }
+      data_policies: {
+        Row: {
+          generated_at: string
+          id: string
+          odrl_policy_json: Json
+          transaction_id: string
+        }
+        Insert: {
+          generated_at?: string
+          id?: string
+          odrl_policy_json: Json
+          transaction_id: string
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          odrl_policy_json?: Json
+          transaction_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_policies_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: true
+            referencedRelation: "data_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       data_products: {
         Row: {
           category: string | null
@@ -139,6 +213,80 @@ export type Database = {
           version?: string
         }
         Relationships: []
+      }
+      data_transactions: {
+        Row: {
+          access_duration_days: number
+          asset_id: string
+          consumer_org_id: string
+          created_at: string
+          holder_org_id: string
+          id: string
+          justification: string
+          purpose: string
+          requested_by: string
+          status: Database["public"]["Enums"]["transaction_status"]
+          subject_org_id: string
+          updated_at: string
+        }
+        Insert: {
+          access_duration_days?: number
+          asset_id: string
+          consumer_org_id: string
+          created_at?: string
+          holder_org_id: string
+          id?: string
+          justification: string
+          purpose: string
+          requested_by: string
+          status?: Database["public"]["Enums"]["transaction_status"]
+          subject_org_id: string
+          updated_at?: string
+        }
+        Update: {
+          access_duration_days?: number
+          asset_id?: string
+          consumer_org_id?: string
+          created_at?: string
+          holder_org_id?: string
+          id?: string
+          justification?: string
+          purpose?: string
+          requested_by?: string
+          status?: Database["public"]["Enums"]["transaction_status"]
+          subject_org_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_transactions_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "data_assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_transactions_consumer_org_id_fkey"
+            columns: ["consumer_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_transactions_holder_org_id_fkey"
+            columns: ["holder_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_transactions_subject_org_id_fkey"
+            columns: ["subject_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       organizations: {
         Row: {
@@ -242,6 +390,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_pending_transactions: {
+        Args: { _user_id: string }
+        Returns: {
+          asset_name: string
+          consumer_name: string
+          created_at: string
+          holder_name: string
+          purpose: string
+          role_in_transaction: string
+          status: Database["public"]["Enums"]["transaction_status"]
+          subject_name: string
+          transaction_id: string
+        }[]
+      }
       get_user_organization: { Args: { _user_id: string }; Returns: string }
       has_role: {
         Args: {
@@ -254,7 +416,17 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "approver" | "viewer" | "api_configurator"
+      approval_action: "pre_approve" | "approve" | "deny" | "cancel"
       organization_type: "consumer" | "provider" | "data_holder"
+      transaction_status:
+        | "initiated"
+        | "pending_subject"
+        | "pending_holder"
+        | "approved"
+        | "denied_subject"
+        | "denied_holder"
+        | "completed"
+        | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -383,7 +555,18 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "approver", "viewer", "api_configurator"],
+      approval_action: ["pre_approve", "approve", "deny", "cancel"],
       organization_type: ["consumer", "provider", "data_holder"],
+      transaction_status: [
+        "initiated",
+        "pending_subject",
+        "pending_holder",
+        "approved",
+        "denied_subject",
+        "denied_holder",
+        "completed",
+        "cancelled",
+      ],
     },
   },
 } as const
