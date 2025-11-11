@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   Shield, 
   GitBranch, 
@@ -26,6 +27,21 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  // Parallax scroll effects
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Different transform values for parallax layers
+  const yBadge = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const yTitle = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const ySubtitle = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const yButtons = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
 
   useEffect(() => {
     if (user) {
@@ -73,31 +89,58 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/5">
-        <div className="container mx-auto px-4 py-20 lg:py-32">
+      {/* Hero Section with Parallax */}
+      <section ref={heroRef} className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+        {/* Decorative background elements with parallax */}
+        <motion.div 
+          style={{ y: useTransform(scrollYProgress, [0, 1], [0, -300]), opacity: 0.1 }}
+          className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"
+        />
+        <motion.div 
+          style={{ y: useTransform(scrollYProgress, [0, 1], [0, -200]), opacity: 0.1 }}
+          className="absolute bottom-20 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl"
+        />
+        
+        <motion.div 
+          style={{ opacity, scale }}
+          className="container mx-auto px-4 py-20 lg:py-32 relative z-10"
+        >
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <FadeIn delay={0.1}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary">
-                <Sparkles className="w-4 h-4" />
-                Sistema de Gobernanza Multi-Tenant
-              </div>
+              <motion.div 
+                style={{ y: yBadge }}
+                className="inline-block"
+              >
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary backdrop-blur-sm">
+                  <Sparkles className="w-4 h-4" />
+                  Sistema de Gobernanza Multi-Tenant
+                </div>
+              </motion.div>
             </FadeIn>
             
             <SlideUp delay={0.2}>
-              <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight">
+              <motion.h1 
+                style={{ y: yTitle }}
+                className="text-4xl md:text-6xl font-bold text-foreground leading-tight"
+              >
                 PROCUREDATA
-              </h1>
+              </motion.h1>
             </SlideUp>
             
             <FadeIn delay={0.3}>
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
+              <motion.p 
+                style={{ y: ySubtitle }}
+                className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto"
+              >
                 Plataforma integral para la gestión y gobernanza de transacciones de datos entre organizaciones con flujos de aprobación multi-actor
-              </p>
+              </motion.p>
             </FadeIn>
             
             <FadeIn delay={0.4}>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.div 
+                style={{ y: yButtons }}
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+              >
                 <Button size="lg" onClick={scrollToAuth} className="text-lg">
                   Comenzar Ahora
                   <ArrowRight className="ml-2 w-5 h-5" />
@@ -105,10 +148,10 @@ const Index = () => {
                 <Button size="lg" variant="outline" onClick={handleDemoAccess} disabled={loading}>
                   🎭 Ver Demo
                 </Button>
-              </div>
+              </motion.div>
             </FadeIn>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Features Section */}
