@@ -141,11 +141,11 @@ const Index = () => {
                 style={{ y: yButtons }}
                 className="flex flex-col sm:flex-row gap-4 justify-center"
               >
-                <Button size="lg" onClick={scrollToAuth} className="text-lg">
+                <Button size="lg" variant="hero" onClick={scrollToAuth} className="text-lg">
                   Comenzar Ahora
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
-                <Button size="lg" variant="outline" onClick={handleDemoAccess} disabled={loading}>
+                <Button size="lg" variant="premium" onClick={handleDemoAccess} disabled={loading}>
                   🎭 Ver Demo
                 </Button>
               </motion.div>
