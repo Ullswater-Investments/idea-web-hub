@@ -1,4 +1,10 @@
-# Welcome to your Lovable project
+# PROCUREDATA - Sistema de Gobernanza de Datos
+
+## 🎯 FASE 1: FUNDACIÓN ✅ COMPLETADA
+
+Sistema de gobernanza de datos para la gestión de transacciones de datos entre organizaciones (Consumer, Provider, Data Holder) con control de acceso basado en roles y políticas de seguridad multi-tenant.
+
+**Ver documentación completa**: [ARCHITECTURE.md](./ARCHITECTURE.md)
 
 ## Project info
 
