@@ -1,3 +1,4 @@
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,12 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Database, Download, Eye, FileText, Info } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Database, Download, Eye, FileText, Info, Activity, DollarSign, Zap, Leaf, ShoppingCart, Building } from "lucide-react";
 import { FadeIn } from "@/components/AnimatedSection";
 
 const Data = () => {
   const navigate = useNavigate();
   const { activeOrg, isDemo } = useOrganizationContext();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sectorFilter, setSectorFilter] = useState<string>("all");
 
   const { data: transactions, isLoading } = useQuery({
     queryKey: ["completed-transactions", activeOrg?.id, isDemo],
@@ -33,13 +38,17 @@ const Data = () => {
             name
           ),
           subject_org:organizations!data_transactions_subject_org_id_fkey (
-            name
+            name,
+            sector
           ),
           supplier_data (
             company_name,
             tax_id,
             contact_person_name,
             contact_person_email
+          ),
+          data_payloads (
+            schema_type
           )
         `)
         .eq("status", "completed")
@@ -64,6 +73,49 @@ const Data = () => {
     },
     enabled: !!activeOrg,
   });
+
+  // Get unique sectors for filter
+  const sectors = useMemo(() => {
+    if (!transactions) return [];
+    const sectorSet = new Set(transactions.map(t => t.subject_org.sector).filter(Boolean));
+    return Array.from(sectorSet);
+  }, [transactions]);
+
+  // Filter transactions
+  const filteredTransactions = useMemo(() => {
+    if (!transactions) return [];
+    
+    return transactions.filter(t => {
+      const matchesSearch = !searchQuery || 
+        t.asset.product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.subject_org.name.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesSector = sectorFilter === "all" || t.subject_org.sector === sectorFilter;
+      
+      return matchesSearch && matchesSector;
+    });
+  }, [transactions, searchQuery, sectorFilter]);
+
+  // Get badge info based on schema type
+  const getDataTypeBadge = (transaction: any) => {
+    const schemaType = transaction.data_payloads?.[0]?.schema_type;
+    
+    if (!schemaType) return { label: "Administrativo", icon: FileText, color: "default" as const };
+    
+    switch (schemaType) {
+      case "iot_telemetry":
+        return { label: "IoT", icon: Activity, color: "default" as const };
+      case "financial_records":
+        return { label: "Financiero", icon: DollarSign, color: "default" as const };
+      case "energy_metering":
+        return { label: "Energía", icon: Zap, color: "default" as const };
+      case "esg_report":
+      case "supply_chain_trace":
+        return { label: "ESG", icon: Leaf, color: "default" as const };
+      default:
+        return { label: "Datos", icon: Database, color: "default" as const };
+    }
+  };
 
   return (
     <div className="container mx-auto p-6 space-y-8">
@@ -95,7 +147,7 @@ const Data = () => {
               <Database className="h-5 w-5 text-purple-600 dark:text-purple-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{transactions?.length || 0}</div>
+              <div className="text-3xl font-bold">{filteredTransactions?.length || 0}</div>
             </CardContent>
           </Card>
 
@@ -108,7 +160,7 @@ const Data = () => {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">
-                {new Set(transactions?.map(t => t.subject_org_id)).size || 0}
+                {new Set(filteredTransactions?.map(t => t.subject_org_id)).size || 0}
               </div>
             </CardContent>
           </Card>
@@ -121,7 +173,7 @@ const Data = () => {
               <Download className="h-5 w-5 text-purple-600 dark:text-purple-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{transactions?.length || 0}</div>
+              <div className="text-3xl font-bold">{filteredTransactions?.length || 0}</div>
             </CardContent>
           </Card>
         </div>
@@ -134,6 +186,31 @@ const Data = () => {
             <CardDescription data-tour="data-view-link">
               Haz clic en cualquier transacción para visualizar y exportar los datos
             </CardDescription>
+            
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
+              <div className="flex-1">
+                <Input
+                  placeholder="Buscar por producto o proveedor..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+              <Select value={sectorFilter} onValueChange={setSectorFilter}>
+                <SelectTrigger className="w-full sm:w-[200px]">
+                  <SelectValue placeholder="Filtrar por sector" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos los sectores</SelectItem>
+                  {sectors.map(sector => (
+                    <SelectItem key={sector} value={sector}>
+                      {sector}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -151,22 +228,46 @@ const Data = () => {
                   Explorar Catálogo
                 </Button>
               </div>
+            ) : filteredTransactions.length === 0 ? (
+              <div className="text-center py-12">
+                <Database className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No se encontraron resultados</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Prueba ajustando los filtros de búsqueda
+                </p>
+                <Button variant="outline" onClick={() => { setSearchQuery(""); setSectorFilter("all"); }}>
+                  Limpiar Filtros
+                </Button>
+              </div>
             ) : (
               <div className="space-y-4">
-                {transactions.map((transaction) => (
-                  <div
-                    key={transaction.id}
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-                  >
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h4 className="font-semibold">
-                          {transaction.asset.product.name}
-                        </h4>
-                        <Badge variant="secondary">
-                          {transaction.asset.product.category}
-                        </Badge>
-                        {isDemo && (
+                {filteredTransactions.map((transaction) => {
+                  const dataTypeBadge = getDataTypeBadge(transaction);
+                  const BadgeIcon = dataTypeBadge.icon;
+                  
+                  return (
+                    <div
+                      key={transaction.id}
+                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h4 className="font-semibold">
+                            {transaction.asset.product.name}
+                          </h4>
+                          <Badge variant="secondary">
+                            {transaction.asset.product.category}
+                          </Badge>
+                          <Badge variant={dataTypeBadge.color} className="flex items-center gap-1">
+                            <BadgeIcon className="h-3 w-3" />
+                            {dataTypeBadge.label}
+                          </Badge>
+                          {transaction.subject_org.sector && (
+                            <Badge variant="outline">
+                              {transaction.subject_org.sector}
+                            </Badge>
+                          )}
+                          {isDemo && (
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger>
@@ -181,28 +282,29 @@ const Data = () => {
                                 </p>
                               </TooltipContent>
                             </Tooltip>
-                          </TooltipProvider>
-                        )}
+                            </TooltipProvider>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Proveedor: {transaction.subject_org.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Completada: {new Date(transaction.created_at).toLocaleDateString("es-ES")}
+                        </p>
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        Proveedor: {transaction.subject_org.name}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Completada: {new Date(transaction.created_at).toLocaleDateString("es-ES")}
-                      </p>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => navigate(`/data/view/${transaction.id}`)}
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          Visualizar
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => navigate(`/data/view/${transaction.id}`)}
-                      >
-                        <Eye className="mr-2 h-4 w-4" />
-                        Visualizar
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </CardContent>

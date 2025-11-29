@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { ESGDataView } from "@/components/ESGDataView";
 import { IoTDataView } from "@/components/IoTDataView";
 import { GenericJSONView } from "@/components/GenericJSONView";
+import { ArrayDataView } from "@/components/ArrayDataView";
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const DataView = () => {
@@ -105,47 +106,70 @@ const DataView = () => {
   });
 
   const exportToCSV = () => {
-    if (!supplierData || supplierData.length === 0) {
+    let csvContent = "";
+    let fileName = `data_${id}.csv`;
+
+    // Check if we have array payload data
+    if (payloadData && Array.isArray(payloadData.data_content)) {
+      const arrayData = payloadData.data_content;
+      const headers = Object.keys(arrayData[0]);
+      
+      csvContent = [
+        headers.join(","),
+        ...arrayData.map(row => 
+          headers.map(h => {
+            const val = row[h];
+            if (typeof val === 'object') return `"${JSON.stringify(val)}"`;
+            return `"${val}"`;
+          }).join(",")
+        )
+      ].join("\n");
+      
+      fileName = `${payloadData.schema_type}_${id}.csv`;
+    } 
+    // Fallback to supplier data
+    else if (supplierData && supplierData.length > 0) {
+      const headers = [
+        "Razón Social",
+        "CIF/NIF",
+        "Nombre Legal",
+        "Dirección Fiscal",
+        "Dirección Legal",
+        "Admin Legal",
+        "Persona de Contacto",
+        "Teléfono",
+        "Email"
+      ];
+
+      const rows = supplierData.map(item => [
+        item.company_name,
+        item.tax_id,
+        item.legal_name,
+        JSON.stringify(item.fiscal_address),
+        JSON.stringify(item.legal_address || {}),
+        item.legal_admin_name || "",
+        item.contact_person_name || "",
+        item.contact_person_phone || "",
+        item.contact_person_email || ""
+      ]);
+
+      csvContent = [
+        headers.join(","),
+        ...rows.map(row => row.map(cell => `"${cell}"`).join(","))
+      ].join("\n");
+      
+      fileName = `supplier_data_${id}.csv`;
+    } else {
       toast.error("No hay datos para exportar");
       return;
     }
-
-    // Convertir datos a CSV
-    const headers = [
-      "Razón Social",
-      "CIF/NIF",
-      "Nombre Legal",
-      "Dirección Fiscal",
-      "Dirección Legal",
-      "Admin Legal",
-      "Persona de Contacto",
-      "Teléfono",
-      "Email"
-    ];
-
-    const rows = supplierData.map(item => [
-      item.company_name,
-      item.tax_id,
-      item.legal_name,
-      JSON.stringify(item.fiscal_address),
-      JSON.stringify(item.legal_address || {}),
-      item.legal_admin_name || "",
-      item.contact_person_name || "",
-      item.contact_person_phone || "",
-      item.contact_person_email || ""
-    ]);
-
-    const csvContent = [
-      headers.join(","),
-      ...rows.map(row => row.map(cell => `"${cell}"`).join(","))
-    ].join("\n");
 
     // Crear y descargar archivo
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
-    link.setAttribute("download", `supplier_data_${id}.csv`);
+    link.setAttribute("download", fileName);
     link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
@@ -385,6 +409,10 @@ const DataView = () => {
                         <CardTitle>
                           {payloadData.schema_type === "esg_report" ? "Reporte de Sostenibilidad (ESG)" :
                            payloadData.schema_type === "iot_telemetry" ? "Telemetría IoT" :
+                           payloadData.schema_type === "financial_records" ? "Registros Financieros" :
+                           payloadData.schema_type === "energy_metering" ? "Medición Energética" :
+                           payloadData.schema_type === "supply_chain_trace" ? "Trazabilidad de Cadena de Suministro" :
+                           payloadData.schema_type === "administrative_list" ? "Listado Administrativo" :
                            payloadData.schema_type === "generic_timeseries" ? "Datos Históricos" :
                            "Datos del Payload"}
                         </CardTitle>
@@ -393,13 +421,14 @@ const DataView = () => {
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
-                        {payloadData.schema_type === "esg_report" && (
+                        {/* Handle array-based payloads (new schema types) */}
+                        {Array.isArray(payloadData.data_content) ? (
+                          <ArrayDataView data={payloadData.data_content} schemaType={payloadData.schema_type} />
+                        ) : payloadData.schema_type === "esg_report" ? (
                           <ESGDataView data={payloadData.data_content as any} />
-                        )}
-                        {payloadData.schema_type === "iot_telemetry" && (
+                        ) : payloadData.schema_type === "iot_telemetry" ? (
                           <IoTDataView data={payloadData.data_content as any} />
-                        )}
-                        {payloadData.schema_type === "generic_timeseries" && (
+                        ) : payloadData.schema_type === "generic_timeseries" ? (
                           <div className="space-y-6">
                             {/* KPIs */}
                             {(payloadData.data_content as any).current_value !== undefined && (
@@ -480,8 +509,7 @@ const DataView = () => {
                               </div>
                             )}
                           </div>
-                        )}
-                        {!["esg_report", "iot_telemetry", "generic_timeseries"].includes(payloadData.schema_type) && (
+                        ) : (
                           <GenericJSONView 
                             data={payloadData.data_content} 
                             schemaType={payloadData.schema_type}
