@@ -85,16 +85,20 @@ const ERPConfig = () => {
   });
 
   const { data: configs, isLoading } = useQuery({
-    queryKey: ["erp-configs"],
+    queryKey: ["erp-configs", activeOrg?.id],
     queryFn: async () => {
+      if (!activeOrg) return [];
+      
       const { data, error } = await supabase
         .from("erp_configurations")
         .select("*")
+        .eq("organization_id", activeOrg.id)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
       return data;
     },
+    enabled: !!activeOrg,
   });
 
   const createConfigMutation = useMutation({
@@ -333,7 +337,11 @@ const ERPConfig = () => {
               ) : uploadConfigs.length === 0 ? (
                 <Card>
                   <CardContent className="py-6 text-center text-muted-foreground">
-                    No hay configuraciones de carga
+                    <Settings className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">No hay configuraciones de carga</h3>
+                    <p className="text-sm">
+                      Crea tu primera configuración ERP usando el formulario arriba
+                    </p>
                   </CardContent>
                 </Card>
               ) : (
@@ -348,9 +356,11 @@ const ERPConfig = () => {
                             {config.is_active ? "Activa" : "Inactiva"}
                           </Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground">{config.endpoint_url}</p>
+                        <p className="text-sm text-muted-foreground font-mono truncate max-w-md">
+                          {config.endpoint_url}
+                        </p>
                         <p className="text-xs text-muted-foreground">
-                          Método: {config.auth_method}
+                          Método: <Badge variant="outline" className="ml-1">{config.auth_method}</Badge>
                         </p>
                         {config.last_test_date && (
                           <p className="text-xs text-muted-foreground">

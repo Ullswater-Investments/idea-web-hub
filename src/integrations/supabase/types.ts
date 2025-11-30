@@ -741,6 +741,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_org_kpis: { Args: { target_org_id: string }; Returns: Json }
       get_pending_transactions: {
         Args: { _user_id: string }
         Returns: {

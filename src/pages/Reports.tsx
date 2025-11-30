@@ -20,8 +20,29 @@ import {
 
 const COLORS = ["#10b981", "#f59e0b", "#3b82f6", "#8b5cf6", "#ef4444"];
 
+interface OrgKPIs {
+  approval_rate: number;
+  avg_time_hours: number;
+  compliance_percent: number;
+  total_volume: number;
+}
+
 const Reports = () => {
   const { activeOrg, isDemo } = useOrganizationContext();
+
+  // Fetch dynamic KPIs using RPC function
+  const { data: kpis } = useQuery<OrgKPIs | null>({
+    queryKey: ["org-kpis", activeOrg?.id],
+    queryFn: async () => {
+      if (!activeOrg) return null;
+      const { data, error } = await supabase.rpc('get_org_kpis', { 
+        target_org_id: activeOrg.id 
+      });
+      if (error) throw error;
+      return data as unknown as OrgKPIs;
+    },
+    enabled: !!activeOrg,
+  });
 
   // Fetch transactions grouped by status for activeOrg
   const { data: transactionsByStatus } = useQuery({
@@ -186,9 +207,11 @@ const Reports = () => {
                   <p className="text-sm font-medium text-muted-foreground">
                     Tasa de Aprobación
                   </p>
-                  <p className="text-2xl font-bold">87%</p>
+                  <p className="text-2xl font-bold">
+                    {kpis?.approval_rate ?? 0}%
+                  </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    +5% vs mes anterior
+                    {kpis?.total_volume ?? 0} transacciones totales
                   </p>
                 </div>
               </div>
@@ -199,7 +222,13 @@ const Reports = () => {
                   <p className="text-sm font-medium text-muted-foreground">
                     Tiempo Promedio
                   </p>
-                  <p className="text-2xl font-bold">2.4 días</p>
+                  <p className="text-2xl font-bold">
+                    {kpis?.avg_time_hours ? 
+                      kpis.avg_time_hours >= 24 ? 
+                        `${(kpis.avg_time_hours / 24).toFixed(1)} días` : 
+                        `${kpis.avg_time_hours.toFixed(1)} horas`
+                      : '-'}
+                  </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     De solicitud a aprobación
                   </p>
@@ -212,7 +241,9 @@ const Reports = () => {
                   <p className="text-sm font-medium text-muted-foreground">
                     Cumplimiento
                   </p>
-                  <p className="text-2xl font-bold">99.2%</p>
+                  <p className="text-2xl font-bold">
+                    {kpis?.compliance_percent ?? 0}%
+                  </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     Políticas ODRL aplicadas
                   </p>
