@@ -337,7 +337,10 @@ export type Database = {
           is_active: boolean
           last_test_date: string | null
           last_test_status: string | null
+          management_url: string | null
           organization_id: string
+          protocol_url: string | null
+          public_key: string | null
           updated_at: string
         }
         Insert: {
@@ -353,7 +356,10 @@ export type Database = {
           is_active?: boolean
           last_test_date?: string | null
           last_test_status?: string | null
+          management_url?: string | null
           organization_id: string
+          protocol_url?: string | null
+          public_key?: string | null
           updated_at?: string
         }
         Update: {
@@ -369,7 +375,10 @@ export type Database = {
           is_active?: boolean
           last_test_date?: string | null
           last_test_status?: string | null
+          management_url?: string | null
           organization_id?: string
+          protocol_url?: string | null
+          public_key?: string | null
           updated_at?: string
         }
         Relationships: [

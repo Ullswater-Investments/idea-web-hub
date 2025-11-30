@@ -3,8 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { ChevronLeft, ChevronRight, Database, TrendingUp, TrendingDown, Activity } from "lucide-react";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { ChevronLeft, ChevronRight, Database, TrendingUp, TrendingDown, Activity, Calendar } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ArrayDataViewProps {
   data: any[];
@@ -13,6 +14,7 @@ interface ArrayDataViewProps {
 
 export const ArrayDataView = ({ data, schemaType }: ArrayDataViewProps) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const isMobile = useIsMobile();
   const itemsPerPage = 10;
 
   if (!Array.isArray(data) || data.length === 0) {
@@ -86,15 +88,9 @@ export const ArrayDataView = ({ data, schemaType }: ArrayDataViewProps) => {
                     <span className="text-xs text-muted-foreground">Promedio:</span>
                     <span className="text-lg font-bold">{stat.avg}</span>
                   </div>
-                  <div className="flex items-baseline gap-2">
-                    <TrendingUp className="h-4 w-4 text-green-600" />
-                    <span className="text-xs text-muted-foreground">Máximo:</span>
-                    <span className="text-sm font-semibold text-green-600">{stat.max}</span>
-                  </div>
-                  <div className="flex items-baseline gap-2">
-                    <TrendingDown className="h-4 w-4 text-red-600" />
-                    <span className="text-xs text-muted-foreground">Mínimo:</span>
-                    <span className="text-sm font-semibold text-red-600">{stat.min}</span>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-green-600 flex items-center"><TrendingUp className="h-3 w-3 mr-1"/> Max: {stat.max}</span>
+                    <span className="text-red-600 flex items-center"><TrendingDown className="h-3 w-3 mr-1"/> Min: {stat.min}</span>
                   </div>
                 </div>
               </CardContent>
@@ -111,41 +107,32 @@ export const ArrayDataView = ({ data, schemaType }: ArrayDataViewProps) => {
             <CardDescription>Evolución de {numericField.replace(/_/g, ' ')}</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={data}>
-                <defs>
-                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                  dataKey={timeField} 
-                  tick={{ fontSize: 12 }}
-                  tickFormatter={(value) => {
-                    if (typeof value === 'string' && value.includes('T')) {
-                      return new Date(value).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
-                    }
-                    return value;
-                  }}
-                />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'hsl(var(--card))', 
-                    border: '1px solid hsl(var(--border))' 
-                  }}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey={numericField} 
-                  stroke="hsl(var(--primary))" 
-                  fillOpacity={1} 
-                  fill="url(#colorValue)" 
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            <div className="h-[200px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={data}>
+                  <defs>
+                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey={timeField} hide={isMobile} />
+                  <YAxis hide={isMobile} />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))' }}
+                    itemStyle={{ color: 'hsl(var(--foreground))' }}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey={numericField} 
+                    stroke="hsl(var(--primary))" 
+                    fillOpacity={1} 
+                    fill="url(#colorValue)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
       )}
@@ -166,59 +153,71 @@ export const ArrayDataView = ({ data, schemaType }: ArrayDataViewProps) => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  {headers.map((header) => (
-                    <TableHead key={header} className="font-semibold">
-                      {header.replace(/_/g, ' ').toUpperCase()}
-                    </TableHead>
+          {isMobile ? (
+            // --- VISTA MÓVIL (Cards) ---
+            <div className="space-y-4">
+              {paginatedData.map((row, idx) => (
+                <div key={idx} className="border rounded-lg p-4 bg-card shadow-sm space-y-2">
+                  <div className="flex justify-between items-center border-b pb-2 mb-2">
+                    <span className="font-bold text-sm text-primary">#{idx + 1 + (currentPage * itemsPerPage)}</span>
+                    {timeField && <span className="text-xs text-muted-foreground flex items-center"><Calendar className="h-3 w-3 mr-1"/> {new Date(row[timeField]).toLocaleDateString()}</span>}
+                  </div>
+                  {headers.filter(h => h !== timeField).slice(0, 5).map((header) => (
+                    <div key={header} className="flex justify-between text-sm">
+                      <span className="text-muted-foreground capitalize">{header.replace(/_/g, ' ')}:</span>
+                      <span className="font-medium truncate max-w-[150px]">{String(row[header])}</span>
+                    </div>
                   ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {paginatedData.map((row, idx) => (
-                  <TableRow key={idx}>
+                </div>
+              ))}
+            </div>
+          ) : (
+            // --- VISTA DESKTOP (Tabla) ---
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
                     {headers.map((header) => (
-                      <TableCell key={header}>
-                        {typeof row[header] === 'object' 
-                          ? JSON.stringify(row[header]) 
-                          : typeof row[header] === 'number'
-                          ? row[header].toLocaleString('es-ES', { maximumFractionDigits: 2 })
-                          : row[header]?.toString().includes('T')
-                          ? new Date(row[header]).toLocaleString('es-ES')
-                          : row[header]?.toString() || '-'}
-                      </TableCell>
+                      <TableHead key={header} className="font-semibold">
+                        {header.replace(/_/g, ' ').toUpperCase()}
+                      </TableHead>
                     ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                </TableHeader>
+                <TableBody>
+                  {paginatedData.map((row, idx) => (
+                    <TableRow key={idx}>
+                      {headers.map((header) => (
+                        <TableCell key={header}>
+                          {typeof row[header] === 'object' 
+                            ? JSON.stringify(row[header]) 
+                            : typeof row[header] === 'number'
+                            ? row[header].toLocaleString('es-ES', { maximumFractionDigits: 2 })
+                            : row[header]?.toString().includes('T')
+                            ? new Date(row[header]).toLocaleString('es-ES')
+                            : row[header]?.toString() || '-'}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
 
-          {/* Pagination */}
+          {/* Paginación Común */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between mt-4">
-              <p className="text-sm text-muted-foreground">
-                Página {currentPage + 1} de {totalPages} · Mostrando {paginatedData.length} de {data.length} registros
+              <p className="text-xs text-muted-foreground hidden sm:block">
+                Página {currentPage + 1} de {totalPages}
               </p>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
-                  disabled={currentPage === 0}
-                >
-                  <ChevronLeft className="h-4 w-4" />
+              <div className="flex gap-2 w-full sm:w-auto justify-center">
+                <Button variant="outline" size="sm" onClick={() => setCurrentPage(p => Math.max(0, p - 1))} disabled={currentPage === 0}>
+                  <ChevronLeft className="h-4 w-4" /> <span className="sr-only sm:not-sr-only sm:ml-2">Anterior</span>
                 </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
-                  disabled={currentPage === totalPages - 1}
-                >
-                  <ChevronRight className="h-4 w-4" />
+                <span className="sm:hidden flex items-center text-sm">{currentPage + 1} / {totalPages}</span>
+                <Button variant="outline" size="sm" onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))} disabled={currentPage === totalPages - 1}>
+                  <span className="sr-only sm:not-sr-only sm:mr-2">Siguiente</span> <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
             </div>
