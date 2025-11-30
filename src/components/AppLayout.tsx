@@ -7,6 +7,7 @@ import { DemoTour } from "@/components/DemoTour";
 import { DemoHelpButton } from "@/components/DemoHelpButton";
 import { WalletButton } from "@/components/WalletButton";
 import { AppSidebar } from "@/components/AppSidebar";
+import { AIConcierge } from "@/components/AIConcierge";
 import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
@@ -49,6 +50,9 @@ export const AppLayout = () => {
             <Outlet />
           </main>
         </div>
+
+        {/* AI Concierge - Asistente Virtual Flotante */}
+        <AIConcierge />
       </div>
     </SidebarProvider>
   );
