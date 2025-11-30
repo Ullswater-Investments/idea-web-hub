@@ -1,307 +1,176 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { useOrganizationContext } from "@/hooks/useOrganizationContext";
-import { useOrgSector } from "@/hooks/useOrgSector";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ActivityFeed } from "@/components/ActivityFeed";
 import { DashboardStats } from "@/components/DashboardStats";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { HelpCircle, Plus, Rocket, Database, FileText, TrendingUp, Clock } from "lucide-react";
-import { FadeIn } from "@/components/AnimatedSection";
-import { useNavigate } from "react-router-dom";
-import { SectorIcon, getSectorColor } from "@/components/SectorIcon";
-import { formatDistanceToNow } from "date-fns";
-import { es } from "date-fns/locale";
+import { DynamicBreadcrumbs } from "@/components/DynamicBreadcrumbs";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts";
+import { DollarSign, ShoppingCart, Users, TrendingUp, Package } from "lucide-react";
 
-const Dashboard = () => {
-  const navigate = useNavigate();
-  const { availableOrgs, activeOrg } = useOrganizationContext();
-  const orgSector = useOrgSector();
+// --- DATOS SINTÉTICOS PARA GRÁFICOS ---
+const REVENUE_DATA = [
+  { name: 'Ene', revenue: 4000, orders: 24 },
+  { name: 'Feb', revenue: 3000, orders: 18 },
+  { name: 'Mar', revenue: 2000, orders: 12 },
+  { name: 'Abr', revenue: 2780, orders: 20 },
+  { name: 'May', revenue: 1890, orders: 15 },
+  { name: 'Jun', revenue: 2390, orders: 22 },
+  { name: 'Jul', revenue: 3490, orders: 30 },
+];
 
-  // Obtener actividad reciente del sector
-  const { data: recentActivity } = useQuery({
-    queryKey: ["recent-activity", activeOrg?.id],
-    queryFn: async () => {
-      if (!activeOrg) return [];
+const SPENDING_DATA = [
+  { name: 'Ene', spent: 1200, savings: 200 },
+  { name: 'Feb', spent: 1900, savings: 150 },
+  { name: 'Mar', spent: 1500, savings: 300 },
+  { name: 'Abr', spent: 2200, savings: 100 },
+  { name: 'May', spent: 1800, savings: 400 },
+  { name: 'Jun', spent: 2500, savings: 200 },
+];
 
-      const { data, error } = await supabase
-        .from("data_transactions")
-        .select(`
-          id,
-          purpose,
-          status,
-          created_at,
-          asset:data_assets (
-            product:data_products (name, category)
-          ),
-          consumer_org:organizations!data_transactions_consumer_org_id_fkey (name),
-          subject_org:organizations!data_transactions_subject_org_id_fkey (name)
-        `)
-        .or(`consumer_org_id.eq.${activeOrg.id},subject_org_id.eq.${activeOrg.id},holder_org_id.eq.${activeOrg.id}`)
-        .order("created_at", { ascending: false })
-        .limit(5);
-
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!activeOrg,
-  });
+export default function Dashboard() {
+  const { activeOrg } = useOrganizationContext();
+  const isProvider = activeOrg?.type === 'provider' || activeOrg?.type === 'data_holder';
 
   return (
-    <div className="container mx-auto p-6 space-y-8">
-      <FadeIn>
-        <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-blue-500/10 via-background to-background border border-blue-500/20 p-8">
-          <div className="relative z-10">
-            <Badge variant="secondary" className="mb-4">
-              Dashboard
-            </Badge>
-            <h1 className="text-4xl font-bold mb-3">
-              Bienvenido a tu Centro de Control
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mb-4">
-              Sistema de Gobernanza de Datos - Fase 5 (Integraciones Externas) ✅
-            </p>
-            {availableOrgs.some(org => org.is_demo) && (
-              <div className="mt-3 p-4 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 animate-fade-in">
-                <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
-                  🎭 <strong>Modo Demo Activo</strong> - Tienes acceso a {availableOrgs.length} organizaciones multisectoriales
-                </p>
-                <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
-                  Datos contextuales generados automáticamente por sector. Cambia de organización para ver datos diferentes.
-                </p>
-                <p className="text-xs text-amber-600 dark:text-amber-400 mt-2 flex items-center gap-1">
-                  <HelpCircle className="h-3 w-3" />
-                  Usa el botón de ayuda (?) para reiniciar el tour guiado
-                </p>
-              </div>
-            )}
-          </div>
+    <div className="container py-8 space-y-8 fade-in bg-muted/10 min-h-screen">
+      <DynamicBreadcrumbs />
+      
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Hola, {activeOrg?.name}</h2>
+          <p className="text-muted-foreground">
+            {isProvider 
+              ? "Aquí tienes el resumen de tu rendimiento de ventas y activos." 
+              : "Resumen de tus adquisiciones de datos y consumo."}
+          </p>
         </div>
-      </FadeIn>
-
-      <FadeIn delay={0.1}>
-        <div data-tour="dashboard-stats">
-          <DashboardStats />
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground bg-background px-3 py-1 rounded-full border">
+            {new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          </span>
         </div>
-      </FadeIn>
+      </div>
 
-      {/* Quick Actions & Sector Activity */}
-      <FadeIn delay={0.2}>
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Left Column: Quick Actions */}
+      {/* Stats Cards Genéricas (Componente Existente) */}
+      <DashboardStats />
+
+      {/* --- SECCIÓN FINANCIERA ESPECÍFICA POR ROL --- */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Gráfico Principal (2 Columnas) */}
+        <Card className="lg:col-span-2 shadow-sm">
+          <CardHeader>
+            <CardTitle>
+              {isProvider ? "Ingresos Recurrentes (MRR)" : "Gasto en Datos"}
+            </CardTitle>
+            <CardDescription>
+              {isProvider 
+                ? "Evolución de ventas de activos en los últimos 7 meses." 
+                : "Análisis de costes por suscripciones activas."}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="h-[350px]">
+            <ResponsiveContainer width="100%" height="100%">
+              {isProvider ? (
+                <AreaChart data={REVENUE_DATA}>
+                  <defs>
+                    <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#2563eb" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+                  <Area type="monotone" dataKey="revenue" stroke="#2563eb" fillOpacity={1} fill="url(#colorRev)" name="Ingresos (€)" />
+                </AreaChart>
+              ) : (
+                <BarChart data={SPENDING_DATA}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip cursor={{fill: 'transparent'}} contentStyle={{ borderRadius: '8px' }} />
+                  <Bar dataKey="spent" fill="#0f172a" radius={[4, 4, 0, 0]} name="Gasto Real (€)" />
+                  <Bar dataKey="savings" fill="#22c55e" radius={[4, 4, 0, 0]} name="Ahorro (€)" />
+                </BarChart>
+              )}
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Widgets Laterales (1 Columna) */}
+        <div className="space-y-6">
+          {/* Widget 1 */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Rocket className="h-5 w-5" />
-                Acciones Rápidas
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                {isProvider ? "Tasa de Conversión" : "Suscripciones Activas"}
               </CardTitle>
-              <CardDescription>Operaciones frecuentes del sistema</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/requests/new")}>
-                <Plus className="mr-2 h-4 w-4" />
-                Nueva Solicitud de Datos
-              </Button>
-              <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/catalog")}>
-                <Database className="mr-2 h-4 w-4" />
-                Explorar Catálogo
-              </Button>
-              <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/requests")}>
-                <FileText className="mr-2 h-4 w-4" />
-                Ver Mis Solicitudes
-              </Button>
-              <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/reports")}>
-                <TrendingUp className="mr-2 h-4 w-4" />
-                Generar Reportes
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Right Column: Sector Activity */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <SectorIcon sector={orgSector} className="h-5 w-5" />
-                    Actividad Reciente {orgSector !== "General" && `- ${orgSector}`}
-                  </CardTitle>
-                  <CardDescription>Transacciones de tu organización</CardDescription>
-                </div>
-                <Badge variant="outline" className={getSectorColor(orgSector)}>
-                  {orgSector}
-                </Badge>
-              </div>
             </CardHeader>
             <CardContent>
-              {recentActivity && recentActivity.length > 0 ? (
-                <div className="space-y-3">
-                  {recentActivity.map((activity) => (
-                    <div
-                      key={activity.id}
-                      className="flex items-start gap-3 p-3 rounded-lg border hover:bg-accent/50 transition-colors cursor-pointer"
-                      onClick={() => navigate(`/data/view/${activity.id}`)}
-                    >
-                      <div className={`mt-1 ${getSectorColor(orgSector)}`}>
-                        <SectorIcon sector={orgSector} className="h-4 w-4" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">
-                          {activity.asset?.product?.name || "Producto"}
-                        </p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {activity.purpose}
-                        </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outline" className="text-xs">
-                            {activity.status}
-                          </Badge>
-                          <span className="text-xs text-muted-foreground flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            {formatDistanceToNow(new Date(activity.created_at), { addSuffix: true, locale: es })}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Database className="mx-auto h-8 w-8 mb-2 opacity-50" />
-                  <p className="text-sm">No hay actividad reciente</p>
-                </div>
-              )}
+              <div className="text-2xl font-bold flex items-center gap-2">
+                {isProvider ? "4.5%" : "12"}
+                <span className="text-xs text-green-600 flex items-center bg-green-100 px-1.5 py-0.5 rounded-full">
+                  <TrendingUp className="h-3 w-3 mr-1" /> +12%
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Comparado con el mes anterior</p>
+            </CardContent>
+          </Card>
+
+          {/* Widget 2 */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                {isProvider ? "Ventas Totales" : "Proveedores Conectados"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold flex items-center gap-2">
+                {isProvider ? "1,240 €" : "8"}
+              </div>
+              <div className="h-2 w-full bg-muted mt-3 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-600 w-[70%]" />
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">70% del objetivo anual</p>
+            </CardContent>
+          </Card>
+
+          {/* Accesos Rápidos */}
+          <Card className="bg-primary text-primary-foreground">
+            <CardContent className="p-6">
+              <h3 className="font-semibold mb-2">Acciones Rápidas</h3>
+              <div className="space-y-2">
+                {isProvider ? (
+                  <>
+                    <button className="w-full text-left text-sm p-2 hover:bg-white/10 rounded flex items-center gap-2 transition-colors">
+                      <Package className="h-4 w-4" /> Publicar nuevo activo
+                    </button>
+                    <button className="w-full text-left text-sm p-2 hover:bg-white/10 rounded flex items-center gap-2 transition-colors">
+                      <DollarSign className="h-4 w-4" /> Configurar Payouts
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="w-full text-left text-sm p-2 hover:bg-white/10 rounded flex items-center gap-2 transition-colors">
+                      <ShoppingCart className="h-4 w-4" /> Explorar Marketplace
+                    </button>
+                    <button className="w-full text-left text-sm p-2 hover:bg-white/10 rounded flex items-center gap-2 transition-colors">
+                      <Users className="h-4 w-4" /> Publicar Oportunidad
+                    </button>
+                  </>
+                )}
+              </div>
             </CardContent>
           </Card>
         </div>
-      </FadeIn>
+      </div>
 
-      <FadeIn delay={0.3}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Estado del Sistema</CardTitle>
-              <CardDescription>Fases del proyecto <span className="procuredata-gradient">PROCUREDATA</span></CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h3 className="mb-2 font-semibold">Fase 1 - Fundación ✅</h3>
-                <div className="space-y-2 pl-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Base de Datos</span>
-                    <span className="text-sm text-green-600">✓ Configurada</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Autenticación</span>
-                    <span className="text-sm text-green-600">✓ Activa</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Sistema de Roles</span>
-                    <span className="text-sm text-green-600">✓ Implementado</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Routing</span>
-                    <span className="text-sm text-green-600">✓ Configurado</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h3 className="mb-2 font-semibold">Fase 2 - Catálogo de Datos ✅</h3>
-                <div className="space-y-2 pl-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Productos de Datos</span>
-                    <span className="text-sm text-green-600">✓ 4 productos</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Activos Disponibles</span>
-                    <span className="text-sm text-green-600">✓ 5 activos</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Búsqueda y Filtros</span>
-                    <span className="text-sm text-green-600">✓ Funcional</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Metadatos</span>
-                    <span className="text-sm text-green-600">✓ Configurado</span>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="mb-2 font-semibold">Fase 3 - Motor de Gobernanza ✅</h3>
-                <div className="space-y-2 pl-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Transacciones</span>
-                    <span className="text-sm text-green-600">✓ Funcional</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Wizard de Solicitud</span>
-                    <span className="text-sm text-green-600">✓ 5 pasos</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Aprobaciones Multi-Actor</span>
-                    <span className="text-sm text-green-600">✓ Implementado</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Políticas ODRL</span>
-                    <span className="text-sm text-green-600">✓ Generadas</span>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="mb-2 font-semibold">Fase 4 - Visualización y Exportación ✅</h3>
-                <div className="space-y-2 pl-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Visualización de Datos</span>
-                    <span className="text-sm text-green-600">✓ Tabla interactiva</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Exportación CSV</span>
-                    <span className="text-sm text-green-600">✓ Funcional</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Configuración ERP</span>
-                    <span className="text-sm text-green-600">✓ Implementada</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Datos de Proveedores</span>
-                    <span className="text-sm text-green-600">✓ Estructura</span>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="mb-2 font-semibold">Fase 5 - Integraciones Externas ✅</h3>
-                <div className="space-y-2 pl-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Edge Functions ERP</span>
-                    <span className="text-sm text-green-600">✓ 3 funciones</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Notificaciones Email</span>
-                    <span className="text-sm text-green-600">✓ Funcional</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Test Conexión ERP</span>
-                    <span className="text-sm text-green-600">✓ Implementado</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Envío Real a ERP</span>
-                    <span className="text-sm text-green-600">✓ Operativo</span>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="mb-2 font-semibold">Fase 6 - Refinamiento</h3>
-                <p className="text-sm text-muted-foreground pl-4">Próximamente...</p>
-              </div>
-            </CardContent>
-          </Card>
-      </FadeIn>
+      {/* --- FEED DE ACTIVIDAD (Componente Existente) --- */}
+      <div className="grid gap-4">
+        <h3 className="text-lg font-semibold">Última Actividad</h3>
+        <ActivityFeed />
+      </div>
     </div>
   );
-};
-
-export default Dashboard;
+}
