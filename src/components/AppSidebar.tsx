@@ -13,7 +13,9 @@ import {
   Sparkles,
   Lightbulb,
   Megaphone,
+  TrendingUp,
 } from "lucide-react";
+import { useOrganizationContext } from "@/hooks/useOrganizationContext";
 import {
   Sidebar,
   SidebarContent,
@@ -41,9 +43,16 @@ const menuItems = [
   { title: "Configuración", url: "/settings", icon: Settings },
 ];
 
+const providerMenuItems = [
+  { title: "Analytics", url: "/analytics", icon: TrendingUp },
+];
+
 export function AppSidebar() {
   const { open } = useSidebar();
   const location = useLocation();
+  const { activeOrg } = useOrganizationContext();
+  
+  const isProvider = activeOrg?.type === 'provider' || activeOrg?.type === 'data_holder';
 
   const isActive = (path: string) => location.pathname === path;
   const hasActiveChild = menuItems.some((i) => isActive(i.url));
@@ -69,6 +78,21 @@ export function AppSidebar() {
                     undefined
                   }
                 >
+                  <SidebarMenuButton asChild>
+                    <NavLink
+                      to={item.url}
+                      end
+                      className="flex items-center gap-3 hover:bg-muted/50 transition-colors"
+                      activeClassName="bg-muted text-primary font-medium"
+                    >
+                      <item.icon className="h-5 w-5 shrink-0" />
+                      {open && <span>{item.title}</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+              {isProvider && providerMenuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink
                       to={item.url}

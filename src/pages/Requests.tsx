@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { NegotiationChat } from "@/components/NegotiationChat";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -505,7 +506,64 @@ const Requests = () => {
                                 Detalle completo de la solicitud de datos
                               </SheetDescription>
                             </SheetHeader>
-                            <TransactionDetailView transaction={transaction} role={role} />
+                            
+                            <Tabs defaultValue="details" className="mt-6">
+                              <TabsList className="grid w-full grid-cols-3">
+                                <TabsTrigger value="details">Detalles</TabsTrigger>
+                                <TabsTrigger value="timeline">Timeline</TabsTrigger>
+                                <TabsTrigger value="messages">Mensajes</TabsTrigger>
+                              </TabsList>
+                              
+                              <TabsContent value="details" className="mt-4">
+                                <div className="space-y-4">
+                                  <div className="flex items-center gap-4">
+                                    <div className="flex-1 text-center">
+                                      <div className="text-sm font-medium">{transaction.consumer_org.name}</div>
+                                      <div className="text-xs text-muted-foreground">Solicitante</div>
+                                    </div>
+                                    <ArrowRight className="h-6 w-6 text-muted-foreground" />
+                                    <div className="flex-1 text-center">
+                                      <div className="text-sm font-medium">{transaction.subject_org.name}</div>
+                                      <div className="text-xs text-muted-foreground">Proveedor</div>
+                                    </div>
+                                  </div>
+
+                                  <div>
+                                    <h4 className="text-sm font-semibold mb-2">Propósito</h4>
+                                    <p className="text-sm text-muted-foreground">{transaction.purpose}</p>
+                                  </div>
+
+                                  <div>
+                                    <h4 className="text-sm font-semibold mb-2">Justificación</h4>
+                                    <p className="text-sm text-muted-foreground">{transaction.justification}</p>
+                                  </div>
+
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                      <h4 className="text-sm font-semibold mb-1">Duración</h4>
+                                      <p className="text-sm text-muted-foreground">{transaction.access_duration_days} días</p>
+                                    </div>
+                                    <div>
+                                      <h4 className="text-sm font-semibold mb-1">Estado</h4>
+                                      <Badge className={STATUS_CONFIG[transaction.status].color}>
+                                        {React.createElement(STATUS_CONFIG[transaction.status].icon, {
+                                          className: "mr-1 h-3 w-3"
+                                        })}
+                                        {STATUS_CONFIG[transaction.status].label}
+                                      </Badge>
+                                    </div>
+                                  </div>
+                                </div>
+                              </TabsContent>
+                              
+                              <TabsContent value="timeline" className="mt-4">
+                                <TransactionDetailView transaction={transaction} role={role} />
+                              </TabsContent>
+                              
+                              <TabsContent value="messages" className="mt-4">
+                                <NegotiationChat transactionId={transaction.id} />
+                              </TabsContent>
+                            </Tabs>
                           </SheetContent>
                         </Sheet>
                       </div>
