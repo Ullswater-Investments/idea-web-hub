@@ -11,7 +11,8 @@ import {
   FileText, 
   Activity, 
   Lock,
-  Globe
+  Globe,
+  Eye
 } from "lucide-react";
 
 // UI Components
@@ -23,6 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ArrayDataView } from "@/components/ArrayDataView";
 
 interface MarketplaceListing {
   asset_id: string;
@@ -109,6 +111,17 @@ export default function ProductDetail() {
 
   const isPaid = product.price > 0;
 
+  // Datos mock para la vista previa (sandbox)
+  const MOCK_SAMPLE = [
+    { id: 1, timestamp: "2024-03-10T10:00:00Z", sensor_id: "S-01", value: 45.2, status: "OK" },
+    { id: 2, timestamp: "2024-03-10T10:05:00Z", sensor_id: "S-01", value: 46.1, status: "OK" },
+    { id: 3, timestamp: "2024-03-10T10:10:00Z", sensor_id: "S-01", value: 48.5, status: "WARNING" },
+    { id: 4, timestamp: "2024-03-10T10:15:00Z", sensor_id: "S-01", value: 44.9, status: "OK" },
+    { id: 5, timestamp: "2024-03-10T10:20:00Z", sensor_id: "S-01", value: 45.5, status: "OK" }
+  ];
+
+  const sampleData = (product as any).sample_data || MOCK_SAMPLE;
+
   const handleAction = () => {
     // Redirigir al wizard con el asset preseleccionado
     navigate("/requests/new", { state: { preselectedAssetId: product.asset_id } });
@@ -175,9 +188,13 @@ export default function ProductDetail() {
 
           {/* Tabs de Información */}
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="overview">Descripción</TabsTrigger>
               <TabsTrigger value="specs">Especificaciones</TabsTrigger>
+              <TabsTrigger value="preview" className="gap-1">
+                <Eye className="h-3 w-3" />
+                Vista Previa
+              </TabsTrigger>
               <TabsTrigger value="reviews">Reseñas</TabsTrigger>
             </TabsList>
             
@@ -223,6 +240,31 @@ export default function ProductDetail() {
                       <p className="font-medium">Global (Multi-región)</p>
                     </div>
                   </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="preview" className="mt-6">
+              <Alert className="mb-4 border-yellow-200 bg-yellow-50 dark:bg-yellow-950/20 dark:border-yellow-900">
+                <Activity className="h-4 w-4 text-yellow-600" />
+                <AlertTitle className="text-yellow-800 dark:text-yellow-200">⚠️ MUESTRA DE DATOS</AlertTitle>
+                <AlertDescription className="text-yellow-700 dark:text-yellow-300">
+                  Estos registros están anonimizados y contienen ruido estadístico añadido por seguridad. Los datos reales pueden variar en formato y contenido.
+                </AlertDescription>
+              </Alert>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Eye className="h-5 w-5" />
+                    Data Sandbox - Vista Previa
+                  </CardTitle>
+                  <CardDescription>
+                    Explora una muestra de {sampleData.length} registros para evaluar la estructura y calidad del dataset antes de comprarlo.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ArrayDataView data={sampleData} schemaType="sample_data" />
                 </CardContent>
               </Card>
             </TabsContent>
