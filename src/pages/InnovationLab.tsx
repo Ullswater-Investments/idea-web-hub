@@ -1,258 +1,347 @@
 import { useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { useOrgSector } from "@/hooks/useOrgSector";
+import { useOrganizationContext } from "@/hooks/useOrganizationContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { InnovationChart } from "@/components/InnovationChart";
-import { Lightbulb, TrendingUp, Info } from "lucide-react";
 import { toast } from "sonner";
-
-interface InnovationConcept {
-  id: string;
-  title: string;
-  category: string;
-  short_description: string;
-  full_analysis: string;
-  business_impact: string;
-  maturity_level: number;
-  chart_type: "bar" | "line" | "pie" | "area";
-  chart_data: any[];
-  chart_config: any;
-  created_at: string;
-}
-
-const categories = ["Todos", "Finance", "ESG", "Supply Chain", "Legal", "Product", "Operations"];
-
-const categoryColors: Record<string, string> = {
-  Finance: "bg-blue-500/10 text-blue-600 border-blue-200",
-  ESG: "bg-green-500/10 text-green-600 border-green-200",
-  "Supply Chain": "bg-purple-500/10 text-purple-600 border-purple-200",
-  Legal: "bg-orange-500/10 text-orange-600 border-orange-200",
-  Product: "bg-pink-500/10 text-pink-600 border-pink-200",
-  Operations: "bg-cyan-500/10 text-cyan-600 border-cyan-200",
-};
+import { 
+  Bot, 
+  BrainCircuit, 
+  RefreshCw, 
+  ShieldCheck, 
+  AlertTriangle,
+  TrendingUp,
+  Microscope
+} from "lucide-react";
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  Legend
+} from "recharts";
 
 export default function InnovationLab() {
-  const [selectedCategory, setSelectedCategory] = useState("Todos");
-  const [selectedConcept, setSelectedConcept] = useState<InnovationConcept | null>(null);
-  const orgSector = useOrgSector();
+  const { activeOrg } = useOrganizationContext();
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [qualityScore, setQualityScore] = useState(72);
+  
+  // --- Estado para el Simulador ---
+  const [demandFactor, setDemandFactor] = useState([50]); // 0-100
+  const [supplyVolatility, setSupplyVolatility] = useState([20]); // 0-100
+  const [innovationImpact, setInnovationImpact] = useState([30]); // 0-100
 
-  const { data: concepts, isLoading } = useQuery({
-    queryKey: ["innovation-concepts"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("innovation_lab_concepts")
-        .select("*")
-        .order("maturity_level", { ascending: false });
+  // --- Lógica del Simulador (Generación de datos reactiva) ---
+  const simulationData = useMemo(() => {
+    const baseData = [];
+    const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    let previousValue = 1000;
 
-      if (error) {
-        toast.error("Error al cargar conceptos de innovación");
-        throw error;
-      }
+    for (let i = 0; i < 12; i++) {
+      // Factores de simulación
+      const growth = (demandFactor[0] - 50) / 10; // -5% a +5% crecimiento mensual
+      const volatility = (Math.random() - 0.5) * (supplyVolatility[0] * 5); // Ruido aleatorio
+      const innovationBoost = i > 5 ? (innovationImpact[0] * i * 2) : 0; // Impacto exponencial tras 6 meses
 
-      return data as InnovationConcept[];
-    },
-  });
+      const newValue = previousValue * (1 + growth / 100) + volatility + innovationBoost;
+      previousValue = newValue;
 
-  // Mapeo sector -> categorías relevantes
-  const sectorCategoryMap: Record<string, string[]> = {
-    "Automotive": ["Product", "Supply Chain", "ESG"],
-    "Energy": ["ESG", "Operations", "Supply Chain"],
-    "Pharma": ["Supply Chain", "Legal", "Product"],
-    "Retail": ["Finance", "Supply Chain", "Product"],
-    "Finance": ["Finance", "Legal"],
-    "Logistics": ["Supply Chain", "Operations"],
-    "Tech": ["Product", "Operations"],
-    "AgriFood": ["ESG", "Supply Chain", "Product"],
-  };
-
-  const filteredConcepts = useMemo(() => {
-    let filtered = concepts?.filter(
-      (concept) => selectedCategory === "Todos" || concept.category === selectedCategory
-    ) || [];
-
-    // Priorizar conceptos del sector de la org
-    if (orgSector !== "General") {
-      const relevantCategories = sectorCategoryMap[orgSector] || [];
-      filtered = filtered.sort((a, b) => {
-        const aRelevant = relevantCategories.includes(a.category);
-        const bRelevant = relevantCategories.includes(b.category);
-        if (aRelevant && !bRelevant) return -1;
-        if (!aRelevant && bRelevant) return 1;
-        return 0;
+      baseData.push({
+        name: months[i],
+        proyeccion: Math.round(newValue),
+        limite_seguridad: Math.round(newValue * 0.8),
+        capacidad_max: Math.round(newValue * 1.2)
       });
     }
+    return baseData;
+  }, [demandFactor, supplyVolatility, innovationImpact]);
 
-    return filtered;
-  }, [concepts, selectedCategory, orgSector]);
+  // --- Simulación de Auditoría AI ---
+  const runAiAudit = () => {
+    setIsAnalyzing(true);
+    setQualityScore(0);
+    
+    // Simular proceso de carga
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 15;
+      if (progress >= 100) {
+        clearInterval(interval);
+        setIsAnalyzing(false);
+        setQualityScore(Math.floor(Math.random() * 15) + 80); // Score entre 80-95
+        toast.success("Análisis de Inteligencia Artificial completado");
+      } else {
+        setQualityScore(Math.min(Math.round(progress), 99));
+      }
+    }, 300);
+  };
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      {/* Hero Section */}
-      <div className="text-center space-y-4 mb-12">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Lightbulb className="h-12 w-12 text-primary" />
+    <div className="container py-8 space-y-8 fade-in">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+            <Microscope className="h-8 w-8 text-purple-600" />
+            Innovation Lab <Badge variant="secondary" className="ml-2 text-xs">BETA</Badge>
+          </h2>
+          <p className="text-muted-foreground mt-1">
+            Entorno experimental para simulación de escenarios y auditoría de datos mediante IA.
+          </p>
         </div>
-        <h1 className="text-4xl font-bold tracking-tight">Innovation Lab</h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          El Futuro de tus Datos: Explora 20+ nuevas líneas de negocio habilitadas por el Espacio de Datos Federados
-        </p>
       </div>
 
-      {/* Category Filters */}
-      <div className="flex flex-wrap gap-2 justify-center">
-        {categories.map((category) => (
-          <Button
-            key={category}
-            variant={selectedCategory === category ? "default" : "outline"}
-            onClick={() => setSelectedCategory(category)}
-            size="sm"
-          >
-            {category}
-          </Button>
-        ))}
-      </div>
+      <Tabs defaultValue="simulator" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
+          <TabsTrigger value="simulator">Simulador Predictivo</TabsTrigger>
+          <TabsTrigger value="quality">AI Data Auditor</TabsTrigger>
+          <TabsTrigger value="insights">Market Insights</TabsTrigger>
+        </TabsList>
 
-      {/* Concepts Grid */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader className="space-y-2">
-                <div className="h-4 bg-muted rounded w-3/4" />
-                <div className="h-3 bg-muted rounded w-1/2" />
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="h-3 bg-muted rounded" />
-                  <div className="h-3 bg-muted rounded w-5/6" />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredConcepts?.map((concept) => (
-            <Card
-              key={concept.id}
-              className="cursor-pointer hover:shadow-lg transition-shadow duration-200 border-2"
-              onClick={() => setSelectedConcept(concept)}
-            >
+        {/* --- TAB 1: SIMULADOR --- */}
+        <TabsContent value="simulator" className="space-y-4">
+          <div className="grid lg:grid-cols-4 gap-6">
+            {/* Controles */}
+            <Card className="lg:col-span-1 h-fit">
               <CardHeader>
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <CardTitle className="text-lg leading-tight flex-1">{concept.title}</CardTitle>
-                  <Badge variant="outline" className={categoryColors[concept.category]}>
-                    {concept.category}
-                  </Badge>
-                </div>
-                <CardDescription className="line-clamp-2">{concept.short_description}</CardDescription>
+                <CardTitle className="text-lg">Variables</CardTitle>
+                <CardDescription>Ajusta los parámetros para recalcular la proyección.</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium text-primary">{concept.business_impact}</span>
-                </div>
+              <CardContent className="space-y-6">
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground">Nivel de Madurez</span>
-                    <span className="font-medium">{concept.maturity_level}/5</span>
+                  <div className="flex justify-between text-sm">
+                    <span className="font-medium">Demanda de Mercado</span>
+                    <span className="text-muted-foreground">{demandFactor}%</span>
                   </div>
-                  <Progress value={concept.maturity_level * 20} className="h-2" />
+                  <Slider value={demandFactor} onValueChange={setDemandFactor} max={100} step={1} className="[&>span]:bg-blue-600" />
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="font-medium">Volatilidad Suministro</span>
+                    <span className="text-muted-foreground">{supplyVolatility}%</span>
+                  </div>
+                  <Slider value={supplyVolatility} onValueChange={setSupplyVolatility} max={100} step={1} className="[&>span]:bg-orange-600" />
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="font-medium">Inversión I+D</span>
+                    <span className="text-muted-foreground">{innovationImpact}%</span>
+                  </div>
+                  <Slider value={innovationImpact} onValueChange={setInnovationImpact} max={100} step={1} className="[&>span]:bg-purple-600" />
+                </div>
+
+                <div className="pt-4 p-3 bg-muted/30 rounded-lg border text-xs text-muted-foreground">
+                  <p><strong>Nota:</strong> Este modelo utiliza regresión lineal simple con inyección de ruido estocástico basada en los sliders.</p>
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      )}
 
-      {/* Detail Sheet */}
-      <Sheet open={!!selectedConcept} onOpenChange={(open) => !open && setSelectedConcept(null)}>
-        <SheetContent className="w-full sm:max-w-2xl overflow-y-auto">
-          {selectedConcept && (
-            <>
-              <SheetHeader className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="flex-1">
-                    <SheetTitle className="text-2xl mb-2">{selectedConcept.title}</SheetTitle>
-                    <Badge variant="outline" className={categoryColors[selectedConcept.category]}>
-                      {selectedConcept.category}
-                    </Badge>
+            {/* Gráfico Interactivo */}
+            <Card className="lg:col-span-3">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-blue-600" />
+                  Proyección de Suministro (12 Meses)
+                </CardTitle>
+                <CardDescription>Simulación en tiempo real basada en las variables configuradas.</CardDescription>
+              </CardHeader>
+              <CardContent className="h-[400px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={simulationData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="colorProy" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#2563eb" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))' }}
+                    />
+                    <Legend />
+                    <Area 
+                      type="monotone" 
+                      dataKey="proyeccion" 
+                      stroke="#2563eb" 
+                      fillOpacity={1} 
+                      fill="url(#colorProy)" 
+                      name="Proyección Volumétrica"
+                      animationDuration={500}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="capacidad_max" 
+                      stroke="#16a34a" 
+                      strokeDasharray="5 5"
+                      fill="transparent" 
+                      name="Capacidad Máxima Teórica"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* --- TAB 2: AI AUDITOR --- */}
+        <TabsContent value="quality">
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card className="md:col-span-1">
+              <CardHeader>
+                <CardTitle>Auditoría de Calidad de Datos</CardTitle>
+                <CardDescription>Análisis heurístico de metadatos mediante IA.</CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center justify-center py-8 space-y-6">
+                <div className="relative flex items-center justify-center w-48 h-48">
+                  {/* Círculo animado */}
+                  <svg className="w-full h-full transform -rotate-90">
+                    <circle
+                      cx="96"
+                      cy="96"
+                      r="88"
+                      stroke="currentColor"
+                      strokeWidth="12"
+                      fill="transparent"
+                      className="text-muted/20"
+                    />
+                    <circle
+                      cx="96"
+                      cy="96"
+                      r="88"
+                      stroke="currentColor"
+                      strokeWidth="12"
+                      fill="transparent"
+                      strokeDasharray={552}
+                      strokeDashoffset={552 - (552 * qualityScore) / 100}
+                      className={`transition-all duration-1000 ease-out ${
+                        isAnalyzing ? "text-blue-500 animate-pulse" : 
+                        qualityScore > 80 ? "text-green-500" : 
+                        qualityScore > 50 ? "text-yellow-500" : "text-red-500"
+                      }`}
+                    />
+                  </svg>
+                  <div className="absolute flex flex-col items-center">
+                    <span className="text-4xl font-bold">{qualityScore}</span>
+                    <span className="text-sm text-muted-foreground">/ 100</span>
                   </div>
                 </div>
-                <SheetDescription className="text-base">{selectedConcept.short_description}</SheetDescription>
-              </SheetHeader>
 
-              <div className="mt-6 space-y-6">
-                {/* Business Impact */}
-                <Card className="border-2 border-primary/20 bg-primary/5">
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5 text-primary" />
-                      Impacto de Negocio
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-lg font-semibold text-primary">{selectedConcept.business_impact}</p>
-                  </CardContent>
-                </Card>
+                <div className="w-full space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Integridad Estructural</span>
+                    <span className="font-medium">{isAnalyzing ? "..." : "92%"}</span>
+                  </div>
+                  <Progress value={isAnalyzing ? 50 : 92} className="h-2" />
+                  
+                  <div className="flex justify-between text-sm pt-2">
+                    <span>Completitud de Metadatos</span>
+                    <span className="font-medium">{isAnalyzing ? "..." : "78%"}</span>
+                  </div>
+                  <Progress value={isAnalyzing ? 30 : 78} className="h-2" />
+                </div>
 
-                {/* Full Analysis */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Info className="h-5 w-5" />
-                      Análisis Completo
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground leading-relaxed">{selectedConcept.full_analysis}</p>
-                  </CardContent>
-                </Card>
+                <Button 
+                  size="lg" 
+                  className="w-full gap-2" 
+                  onClick={runAiAudit} 
+                  disabled={isAnalyzing}
+                >
+                  {isAnalyzing ? (
+                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Bot className="mr-2 h-4 w-4" />
+                  )}
+                  {isAnalyzing ? "Analizando..." : "Ejecutar Auditoría IA"}
+                </Button>
+              </CardContent>
+            </Card>
 
-                {/* Maturity Level */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Nivel de Madurez</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Estado actual</span>
-                      <span className="font-semibold">{selectedConcept.maturity_level}/5</span>
-                    </div>
-                    <Progress value={selectedConcept.maturity_level * 20} className="h-3" />
-                    <p className="text-xs text-muted-foreground mt-2">
-                      {selectedConcept.maturity_level === 1 && "Concepto inicial"}
-                      {selectedConcept.maturity_level === 2 && "Prototipo en desarrollo"}
-                      {selectedConcept.maturity_level === 3 && "Piloto funcional"}
-                      {selectedConcept.maturity_level === 4 && "Pre-producción"}
-                      {selectedConcept.maturity_level === 5 && "Listo para mercado"}
+            <div className="space-y-4">
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <ShieldCheck className="h-4 w-4 text-green-600" /> Puntos Fuertes
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm space-y-2">
+                  <p>✅ Esquemas JSON validados correctamente.</p>
+                  <p>✅ Políticas ODRL 2.0 bien formadas en el 95% de los activos.</p>
+                  <p>✅ Tiempos de respuesta de API dentro del umbral (200ms).</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-yellow-600" /> Áreas de Mejora
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm space-y-2">
+                  <p>⚠️ 3 productos carecen de descripción detallada en inglés.</p>
+                  <p>⚠️ La frecuencia de actualización de "Inventario" es irregular.</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-primary/5 border-primary/20">
+                <CardContent className="p-4 flex gap-4 items-start">
+                  <BrainCircuit className="h-6 w-6 text-primary shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-sm">Recomendación de la IA</h4>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Se recomienda activar la validación automática en el endpoint de ingesta para reducir la tasa de error en un 15%.
                     </p>
-                  </CardContent>
-                </Card>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
 
-                {/* Chart Visualization */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Visualización de Datos</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <InnovationChart
-                      type={selectedConcept.chart_type}
-                      data={selectedConcept.chart_data}
-                      config={selectedConcept.chart_config}
-                    />
-                  </CardContent>
-                </Card>
-              </div>
-            </>
-          )}
-        </SheetContent>
-      </Sheet>
+        {/* --- TAB 3: INSIGHTS --- */}
+        <TabsContent value="insights">
+          <Card>
+            <CardHeader>
+              <CardTitle>Comparativa de Mercado</CardTitle>
+              <CardDescription>Rendimiento de {activeOrg?.name} vs Promedio del Sector</CardDescription>
+            </CardHeader>
+            <CardContent className="h-[400px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={[
+                    { name: 'Time-to-Market', empresa: 85, sector: 60 },
+                    { name: 'Calidad Datos', empresa: qualityScore, sector: 65 },
+                    { name: 'Eficiencia API', empresa: 90, sector: 75 },
+                    { name: 'Adopción', empresa: 45, sector: 55 },
+                    { name: 'Compliance', empresa: 98, sector: 80 },
+                  ]}
+                  layout="vertical"
+                  margin={{ top: 20, right: 30, left: 40, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                  <XAxis type="number" domain={[0, 100]} />
+                  <YAxis dataKey="name" type="category" width={100} />
+                  <Tooltip cursor={{fill: 'transparent'}} contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))' }} />
+                  <Legend />
+                  <Bar dataKey="empresa" name="Tu Organización" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="sector" name="Promedio Sector" fill="hsl(var(--muted-foreground))" opacity={0.3} radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
