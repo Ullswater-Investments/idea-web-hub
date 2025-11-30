@@ -573,6 +573,53 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_opportunities: {
+        Row: {
+          budget_range: string
+          category: string
+          consumer_org_id: string
+          created_at: string
+          description: string
+          expires_at: string
+          id: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          budget_range: string
+          category: string
+          consumer_org_id: string
+          created_at?: string
+          description: string
+          expires_at?: string
+          id?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          budget_range?: string
+          category?: string
+          consumer_org_id?: string
+          created_at?: string
+          description?: string
+          expires_at?: string
+          id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_opportunities_consumer_org_id_fkey"
+            columns: ["consumer_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organization_reviews: {
         Row: {
           comment: string | null

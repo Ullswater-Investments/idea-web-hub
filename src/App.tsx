@@ -26,6 +26,7 @@ import SettingsPreferences from "./pages/SettingsPreferences";
 import Services from "./pages/Services";
 import Sustainability from "./pages/Sustainability";
 import InnovationLab from "./pages/InnovationLab";
+import Opportunities from "./pages/Opportunities";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -60,6 +61,7 @@ const App = () => (
                 <Route path="/sustainability" element={<Sustainability />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/innovation" element={<InnovationLab />} />
+                <Route path="/opportunities" element={<Opportunities />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/settings" element={<Settings />} />

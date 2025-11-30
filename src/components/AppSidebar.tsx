@@ -12,6 +12,7 @@ import {
   Leaf,
   Sparkles,
   Lightbulb,
+  Megaphone,
 } from "lucide-react";
 import {
   Sidebar,
@@ -34,6 +35,7 @@ const menuItems = [
   { title: "Sostenibilidad", url: "/sustainability", icon: Leaf },
   { title: "Servicios", url: "/services", icon: Sparkles },
   { title: "Innovation Lab", url: "/innovation", icon: Lightbulb },
+  { title: "Oportunidades", url: "/opportunities", icon: Megaphone },
   { title: "Reportes", url: "/reports", icon: BarChart3 },
   { title: "Notificaciones", url: "/notifications", icon: Bell },
   { title: "Configuración", url: "/settings", icon: Settings },
