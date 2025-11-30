@@ -98,6 +98,27 @@ export interface Notification {
   created_at: string;
 }
 
+// ============= WEBHOOKS =============
+
+export interface WebhookConfig {
+  id: string;
+  organization_id: string;
+  url: string;
+  secret: string | null;
+  events: string[] | null;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface WebhookLog {
+  id: string;
+  webhook_id: string;
+  status_code: number | null;
+  response_body: string | null;
+  payload_sent: any;
+  created_at: string;
+}
+
 // ============= ESG & SUSTAINABILITY =============
 
 export interface ESGReport {

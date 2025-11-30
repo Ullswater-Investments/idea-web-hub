@@ -25,6 +25,7 @@ import Settings from "./pages/Settings";
 import ERPConfig from "./pages/ERPConfig";
 import SettingsOrganization from "./pages/SettingsOrganization";
 import SettingsPreferences from "./pages/SettingsPreferences";
+import WebhookSettings from "./pages/WebhookSettings";
 import Services from "./pages/Services";
 import Sustainability from "./pages/Sustainability";
 import InnovationLab from "./pages/InnovationLab";
@@ -72,6 +73,7 @@ const App = () => (
                 <Route path="/settings/erp-config" element={<ERPConfig />} />
                 <Route path="/settings/organization" element={<SettingsOrganization />} />
                 <Route path="/settings/preferences" element={<SettingsPreferences />} />
+                <Route path="/settings/webhooks" element={<WebhookSettings />} />
               </Route>
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

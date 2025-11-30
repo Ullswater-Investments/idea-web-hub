@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Settings as SettingsIcon, Server, Building2, User, Shield } from "lucide-react";
+import { Settings as SettingsIcon, Server, Building2, User, Webhook } from "lucide-react";
 import { FadeIn } from "@/components/AnimatedSection";
 
 const Settings = () => {
@@ -14,6 +14,13 @@ const Settings = () => {
       icon: Server,
       path: "/settings/erp-config",
       color: "text-blue-600 dark:text-blue-400",
+    },
+    {
+      title: "Webhooks",
+      description: "Configura notificaciones automáticas a tus sistemas",
+      icon: Webhook,
+      path: "/settings/webhooks",
+      color: "text-orange-600 dark:text-orange-400",
     },
     {
       title: "Perfil de Organización",
