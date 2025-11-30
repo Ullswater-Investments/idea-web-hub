@@ -95,34 +95,56 @@ export type Database = {
             referencedRelation: "data_assets"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "catalog_metadata_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: true
+            referencedRelation: "marketplace_listings"
+            referencedColumns: ["asset_id"]
+          },
         ]
       }
       data_assets: {
         Row: {
+          billing_period: string | null
           created_at: string
+          currency: string | null
           custom_metadata: Json | null
           holder_org_id: string
           id: string
+          is_public_marketplace: boolean | null
+          price: number | null
+          pricing_model: string | null
           product_id: string
           status: string
           subject_org_id: string
           updated_at: string
         }
         Insert: {
+          billing_period?: string | null
           created_at?: string
+          currency?: string | null
           custom_metadata?: Json | null
           holder_org_id: string
           id?: string
+          is_public_marketplace?: boolean | null
+          price?: number | null
+          pricing_model?: string | null
           product_id: string
           status?: string
           subject_org_id: string
           updated_at?: string
         }
         Update: {
+          billing_period?: string | null
           created_at?: string
+          currency?: string | null
           custom_metadata?: Json | null
           holder_org_id?: string
           id?: string
+          is_public_marketplace?: boolean | null
+          price?: number | null
+          pricing_model?: string | null
           product_id?: string
           status?: string
           subject_org_id?: string
@@ -254,12 +276,16 @@ export type Database = {
           created_at: string
           holder_org_id: string
           id: string
+          invoice_url: string | null
           justification: string
           metadata: Json | null
+          payment_provider_id: string | null
+          payment_status: string | null
           purpose: string
           requested_by: string
           status: Database["public"]["Enums"]["transaction_status"]
           subject_org_id: string
+          subscription_expires_at: string | null
           updated_at: string
         }
         Insert: {
@@ -269,12 +295,16 @@ export type Database = {
           created_at?: string
           holder_org_id: string
           id?: string
+          invoice_url?: string | null
           justification: string
           metadata?: Json | null
+          payment_provider_id?: string | null
+          payment_status?: string | null
           purpose: string
           requested_by: string
           status?: Database["public"]["Enums"]["transaction_status"]
           subject_org_id: string
+          subscription_expires_at?: string | null
           updated_at?: string
         }
         Update: {
@@ -284,12 +314,16 @@ export type Database = {
           created_at?: string
           holder_org_id?: string
           id?: string
+          invoice_url?: string | null
           justification?: string
           metadata?: Json | null
+          payment_provider_id?: string | null
+          payment_status?: string | null
           purpose?: string
           requested_by?: string
           status?: Database["public"]["Enums"]["transaction_status"]
           subject_org_id?: string
+          subscription_expires_at?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -299,6 +333,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "data_assets"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_transactions_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_listings"
+            referencedColumns: ["asset_id"]
           },
           {
             foreignKeyName: "data_transactions_consumer_org_id_fkey"
@@ -532,13 +573,72 @@ export type Database = {
         }
         Relationships: []
       }
+      organization_reviews: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          id: string
+          metrics: Json | null
+          rating: number
+          reviewer_org_id: string
+          target_org_id: string
+          transaction_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string | null
+          id?: string
+          metrics?: Json | null
+          rating: number
+          reviewer_org_id: string
+          target_org_id: string
+          transaction_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string | null
+          id?: string
+          metrics?: Json | null
+          rating?: number
+          reviewer_org_id?: string
+          target_org_id?: string
+          transaction_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_reviews_reviewer_org_id_fkey"
+            columns: ["reviewer_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_reviews_target_org_id_fkey"
+            columns: ["target_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_reviews_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "data_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organizations: {
         Row: {
           created_at: string
           id: string
           is_demo: boolean | null
+          kyb_verified: boolean | null
+          marketplace_description: string | null
           name: string
           sector: string | null
+          seller_category: string | null
+          stripe_connect_id: string | null
           tax_id: string
           type: Database["public"]["Enums"]["organization_type"]
           updated_at: string
@@ -547,8 +647,12 @@ export type Database = {
           created_at?: string
           id?: string
           is_demo?: boolean | null
+          kyb_verified?: boolean | null
+          marketplace_description?: string | null
           name: string
           sector?: string | null
+          seller_category?: string | null
+          stripe_connect_id?: string | null
           tax_id: string
           type: Database["public"]["Enums"]["organization_type"]
           updated_at?: string
@@ -557,8 +661,12 @@ export type Database = {
           created_at?: string
           id?: string
           is_demo?: boolean | null
+          kyb_verified?: boolean | null
+          marketplace_description?: string | null
           name?: string
           sector?: string | null
+          seller_category?: string | null
+          stripe_connect_id?: string | null
           tax_id?: string
           type?: Database["public"]["Enums"]["organization_type"]
           updated_at?: string
@@ -788,7 +896,45 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      marketplace_listings: {
+        Row: {
+          asset_id: string | null
+          billing_period: string | null
+          category: string | null
+          created_at: string | null
+          currency: string | null
+          energy_renewable_percent: number | null
+          has_green_badge: boolean | null
+          kyb_verified: boolean | null
+          price: number | null
+          pricing_model: string | null
+          product_description: string | null
+          product_id: string | null
+          product_name: string | null
+          provider_id: string | null
+          provider_name: string | null
+          reputation_score: number | null
+          review_count: number | null
+          seller_category: string | null
+          version: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_assets_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "data_products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_assets_subject_org_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       get_org_kpis: { Args: { target_org_id: string }; Returns: Json }
