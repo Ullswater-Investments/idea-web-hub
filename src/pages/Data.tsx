@@ -9,7 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Database, Download, Eye, FileText, Info, Activity, DollarSign, Zap, Leaf, ShoppingCart, Building } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { CodeIntegrationModal } from "@/components/CodeIntegrationModal";
+import { Database, Download, Eye, FileText, Info, Activity, DollarSign, Zap, Leaf, Code2, CheckCircle2 } from "lucide-react";
 import { FadeIn } from "@/components/AnimatedSection";
 import { EmptyState } from "@/components/EmptyState";
 
@@ -18,6 +20,8 @@ const Data = () => {
   const { activeOrg, isDemo } = useOrganizationContext();
   const [searchQuery, setSearchQuery] = useState("");
   const [sectorFilter, setSectorFilter] = useState<string>("all");
+  const [selectedAsset, setSelectedAsset] = useState<any>(null);
+  const [showAPIDialog, setShowAPIDialog] = useState(false);
 
   const { data: transactions, isLoading } = useQuery({
     queryKey: ["completed-transactions", activeOrg?.id, isDemo],
@@ -125,14 +129,14 @@ const Data = () => {
           <div className="relative z-10">
             <Badge variant="secondary" className="mb-4">
               <Database className="mr-1 h-3 w-3" />
-              Datos
+              Biblioteca de Datos
             </Badge>
             <h1 className="text-4xl font-bold mb-3">
-              Visualiza y Exporta tus Datos
+              Tu Centro de Desarrollo
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
-              Accede a todos los datos que has recibido de transacciones completadas.
-              Visualiza, descarga o integra con tu ERP.
+              Accede, visualiza e integra todos los datasets que has adquirido. 
+              Obtén snippets de código listos para usar.
             </p>
           </div>
         </div>
@@ -143,7 +147,7 @@ const Data = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Transacciones Completadas
+                Datasets Activos
               </CardTitle>
               <Database className="h-5 w-5 text-purple-600 dark:text-purple-400" />
             </CardHeader>
@@ -169,9 +173,9 @@ const Data = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Exportaciones Disponibles
+                APIs Disponibles
               </CardTitle>
-              <Download className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+              <Code2 className="h-5 w-5 text-purple-600 dark:text-purple-400" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">{filteredTransactions?.length || 0}</div>
@@ -181,15 +185,10 @@ const Data = () => {
       </FadeIn>
 
       <FadeIn delay={0.2}>
+        {/* Filters */}
         <Card>
           <CardHeader>
-            <CardTitle>Transacciones Completadas</CardTitle>
-            <CardDescription data-tour="data-view-link">
-              Haz clic en cualquier transacción para visualizar y exportar los datos
-            </CardDescription>
-            
-            {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-3 mt-4">
+            <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <Input
                   placeholder="Buscar por producto o proveedor..."
@@ -213,104 +212,139 @@ const Data = () => {
               </Select>
             </div>
           </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">Cargando datos...</p>
-              </div>
-            ) : !transactions || transactions.length === 0 ? (
-              <EmptyState
-                icon={Database}
-                title="Tu biblioteca está vacía"
-                description="Cuando completes una transacción, los datos aparecerán aquí. Explora el catálogo para encontrar datasets que necesites."
-                action={
-                  <Button onClick={() => navigate("/catalog")}>
-                    Explorar Marketplace
-                  </Button>
-                }
-              />
-            ) : filteredTransactions.length === 0 ? (
-              <div className="text-center py-12">
-                <Database className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No se encontraron resultados</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Prueba ajustando los filtros de búsqueda
-                </p>
-                <Button variant="outline" onClick={() => { setSearchQuery(""); setSectorFilter("all"); }}>
-                  Limpiar Filtros
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {filteredTransactions.map((transaction) => {
-                  const dataTypeBadge = getDataTypeBadge(transaction);
-                  const BadgeIcon = dataTypeBadge.icon;
-                  
-                  return (
-                    <div
-                      key={transaction.id}
-                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-                    >
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h4 className="font-semibold">
-                            {transaction.asset.product.name}
-                          </h4>
-                          <Badge variant="secondary">
-                            {transaction.asset.product.category}
-                          </Badge>
-                          <Badge variant={dataTypeBadge.color} className="flex items-center gap-1">
-                            <BadgeIcon className="h-3 w-3" />
-                            {dataTypeBadge.label}
-                          </Badge>
-                          {transaction.subject_org.sector && (
-                            <Badge variant="outline">
-                              {transaction.subject_org.sector}
-                            </Badge>
-                          )}
-                          {isDemo && (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <Badge variant="outline" className="bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-700">
-                                  <Info className="h-3 w-3 mr-1" />
-                                  DEMO
-                                </Badge>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p className="text-xs max-w-xs">
-                                  Datos sintéticos de demostración. En producción, verás datos reales de tus transacciones completadas.
-                                </p>
-                              </TooltipContent>
-                            </Tooltip>
-                            </TooltipProvider>
-                          )}
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          Proveedor: {transaction.subject_org.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Completada: {new Date(transaction.created_at).toLocaleDateString("es-ES")}
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => navigate(`/data/view/${transaction.id}`)}
-                        >
-                          <Eye className="mr-2 h-4 w-4" />
-                          Visualizar
-                        </Button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </CardContent>
         </Card>
       </FadeIn>
+
+      <FadeIn delay={0.3}>
+        {isLoading ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">Cargando datos...</p>
+          </div>
+        ) : !transactions || transactions.length === 0 ? (
+          <EmptyState
+            icon={Database}
+            title="Tu biblioteca está vacía"
+            description="Cuando completes una transacción, los datos aparecerán aquí. Explora el catálogo para encontrar datasets que necesites."
+            action={
+              <Button onClick={() => navigate("/catalog")}>
+                Explorar Marketplace
+              </Button>
+            }
+          />
+        ) : filteredTransactions.length === 0 ? (
+          <div className="text-center py-12">
+            <Database className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-semibold mb-2">No se encontraron resultados</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Prueba ajustando los filtros de búsqueda
+            </p>
+            <Button variant="outline" onClick={() => { setSearchQuery(""); setSectorFilter("all"); }}>
+              Limpiar Filtros
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredTransactions.map((transaction) => {
+              const dataTypeBadge = getDataTypeBadge(transaction);
+              const BadgeIcon = dataTypeBadge.icon;
+              // Simulate API usage percentage
+              const apiUsage = Math.floor(Math.random() * 40) + 30;
+              
+              return (
+                <Card key={transaction.id} className="group hover:shadow-lg transition-all duration-300 hover:border-purple-400">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <CardTitle className="text-lg mb-1 group-hover:text-purple-600 transition-colors">
+                          {transaction.asset.product.name}
+                        </CardTitle>
+                        <CardDescription className="text-sm">
+                          {transaction.subject_org.name}
+                        </CardDescription>
+                      </div>
+                      <Badge variant="default" className="bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 flex items-center gap-1">
+                        <CheckCircle2 className="h-3 w-3" />
+                        Activa
+                      </Badge>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="secondary">
+                        {transaction.asset.product.category}
+                      </Badge>
+                      <Badge variant={dataTypeBadge.color} className="flex items-center gap-1">
+                        <BadgeIcon className="h-3 w-3" />
+                        {dataTypeBadge.label}
+                      </Badge>
+                      {isDemo && (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Badge variant="outline" className="bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-700">
+                                <Info className="h-3 w-3 mr-1" />
+                                DEMO
+                              </Badge>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-xs max-w-xs">
+                                Datos sintéticos de demostración
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <div className="flex justify-between text-xs mb-1.5">
+                        <span className="text-muted-foreground">Uso de API este mes</span>
+                        <span className="font-medium">{apiUsage}%</span>
+                      </div>
+                      <Progress value={apiUsage} className="h-2" />
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => navigate(`/data/view/${transaction.id}`)}
+                      >
+                        <Eye className="mr-2 h-4 w-4" />
+                        Ver Datos
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedAsset(transaction);
+                          setShowAPIDialog(true);
+                        }}
+                      >
+                        <Code2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    
+                    <div className="text-xs text-muted-foreground pt-2 border-t">
+                      Adquirida: {new Date(transaction.created_at).toLocaleDateString("es-ES")}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        )}
+      </FadeIn>
+
+      {/* API Integration Dialog */}
+      {selectedAsset && (
+        <CodeIntegrationModal
+          open={showAPIDialog}
+          onOpenChange={setShowAPIDialog}
+          assetId={selectedAsset.asset_id}
+          productName={selectedAsset.asset.product.name}
+        />
+      )}
     </div>
   );
 };

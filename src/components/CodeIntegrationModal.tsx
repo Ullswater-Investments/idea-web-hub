@@ -4,7 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Copy, Code2 } from "lucide-react";
 import { toast } from "sonner";
 
-export function CodeIntegrationModal({ assetId, apiKey = "sk_live_..." }: { assetId: string, apiKey?: string }) {
+interface CodeIntegrationModalProps {
+  assetId: string;
+  apiKey?: string;
+  productName?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  trigger?: React.ReactNode;
+}
+
+export function CodeIntegrationModal({ 
+  assetId, 
+  apiKey = "sk_live_...", 
+  productName, 
+  open, 
+  onOpenChange,
+  trigger 
+}: CodeIntegrationModalProps) {
   const snippets = {
     curl: `curl -X GET "https://api.procuredata.app/v1/assets/${assetId}/stream" \\
   -H "Authorization: Bearer ${apiKey}"`,
@@ -35,15 +51,22 @@ fetchData();`
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="gap-2">
-          <Code2 className="h-4 w-4" /> Integrar API
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      {trigger && (
+        <DialogTrigger asChild>
+          {trigger}
+        </DialogTrigger>
+      )}
+      {!trigger && !open && (
+        <DialogTrigger asChild>
+          <Button variant="outline" className="gap-2">
+            <Code2 className="h-4 w-4" /> Integrar API
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Integración para Desarrolladores</DialogTitle>
+          <DialogTitle>Integración API {productName ? `- ${productName}` : ""}</DialogTitle>
           <DialogDescription>
             Utiliza estos snippets para consumir los datos directamente en tus aplicaciones.
           </DialogDescription>

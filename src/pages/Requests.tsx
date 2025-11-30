@@ -465,15 +465,43 @@ const Requests = () => {
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="grid gap-4 sm:grid-cols-3">
                         <div>
-                          <p className="text-sm font-medium text-muted-foreground">Propósito</p>
-                          <p className="text-sm">{transaction.purpose}</p>
+                          <p className="text-sm font-medium text-muted-foreground">Precio</p>
+                          <p className="text-sm font-bold">
+                            {transaction.metadata?.price ? `${transaction.metadata.price} €` : "Gratis"}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Estado de Pago</p>
+                          <div className="mt-1">
+                            {transaction.payment_status === 'paid' && (
+                              <Badge className="bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400">
+                                <CheckCircle className="h-3 w-3 mr-1" />
+                                Pagado
+                              </Badge>
+                            )}
+                            {transaction.payment_status === 'pending' && (
+                              <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400">
+                                <Clock className="h-3 w-3 mr-1" />
+                                Pendiente
+                              </Badge>
+                            )}
+                            {(!transaction.payment_status || transaction.payment_status === 'na') && (
+                              <Badge variant="secondary" className="bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+                                N/A
+                              </Badge>
+                            )}
+                          </div>
                         </div>
                         <div>
                           <p className="text-sm font-medium text-muted-foreground">Duración</p>
                           <p className="text-sm">{transaction.access_duration_days} días</p>
                         </div>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Propósito</p>
+                        <p className="text-sm">{transaction.purpose}</p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">Justificación</p>
