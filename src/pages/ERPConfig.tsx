@@ -1,422 +1,233 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
 import { useOrganizationContext } from "@/hooks/useOrganizationContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Plus, Trash2, CheckCircle, XCircle, Settings } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { z } from "zod";
+import { Server, Shield, Database, Save, CheckCircle2, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-const erpConfigSchema = z.object({
-  config_name: z.string().min(1, "El nombre es requerido").max(100),
-  endpoint_url: z.string().url("Debe ser una URL válida"),
-  auth_method: z.enum(["bearer", "api_key", "oauth", "basic"]),
-  api_key_encrypted: z.string().optional(),
-  auth_token_encrypted: z.string().optional(),
-});
-
-const ERPConfig = () => {
-  const { user, signOut } = useAuth();
-  const { activeOrg, isDemo } = useOrganizationContext();
-  const navigate = useNavigate();
+export default function ERPConfig() {
+  const { activeOrg } = useOrganizationContext();
   const queryClient = useQueryClient();
+  const [activeTab, setActiveTab] = useState("erp");
 
-  const [formData, setFormData] = useState<{
-    config_name: string;
-    endpoint_url: string;
-    auth_method: "bearer" | "api_key" | "oauth" | "basic";
-    api_key_encrypted: string;
-    auth_token_encrypted: string;
-  }>({
-    config_name: "",
-    endpoint_url: "",
-    auth_method: "api_key",
-    api_key_encrypted: "",
-    auth_token_encrypted: "",
+  // Estado del formulario (simplificado para el ejemplo)
+  const [formData, setFormData] = useState({
+    name: "",
+    api_endpoint: "",
+    auth_token: "",
+    auth_method: "bearer",
+    // Campos nuevos
+    protocol_url: "",
+    management_url: "",
+    public_key: "" // DID
   });
 
-  const [activeTab, setActiveTab] = useState<"upload" | "download">("upload");
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  // Pre-fill demo data based on active organization
-  useEffect(() => {
-    if (isDemo && activeOrg) {
-      const orgName = activeOrg.name.toLowerCase();
-      let demoEndpoint = "https://api.example.com/v1/webhook";
-      
-      if (orgName.includes("rapid")) {
-        demoEndpoint = "https://api.rapid-auto.com/v1/suppliers";
-      } else if (orgName.includes("solid")) {
-        demoEndpoint = "https://api.solid-energy.com/v1/data";
-      } else if (orgName.includes("future")) {
-        demoEndpoint = "https://api.future-pharma.com/v1/clinical";
-      } else if (orgName.includes("smart")) {
-        demoEndpoint = "https://api.smart-retail.com/v1/inventory";
-      }
-
-      setFormData(prev => ({
-        ...prev,
-        config_name: `ERP ${activeOrg.name}`,
-        endpoint_url: demoEndpoint,
-      }));
-    }
-  }, [isDemo, activeOrg]);
-
-  const { data: userProfile } = useQuery({
-    queryKey: ["user-profile"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("user_profiles")
-        .select("organization_id")
-        .eq("user_id", user?.id)
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  const { data: configs, isLoading } = useQuery({
+  // Fetch de configuraciones existentes
+  const { data: configs } = useQuery({
     queryKey: ["erp-configs", activeOrg?.id],
     queryFn: async () => {
       if (!activeOrg) return [];
-      
       const { data, error } = await supabase
         .from("erp_configurations")
         .select("*")
-        .eq("organization_id", activeOrg.id)
-        .order("created_at", { ascending: false });
-
+        .eq("organization_id", activeOrg.id);
       if (error) throw error;
       return data;
     },
     enabled: !!activeOrg,
   });
 
-  const createConfigMutation = useMutation({
-    mutationFn: async () => {
-      if (!userProfile) throw new Error("No user profile");
-
-      // Validar datos
-      const validation = erpConfigSchema.safeParse(formData);
-      if (!validation.success) {
-        const newErrors: Record<string, string> = {};
-        validation.error.errors.forEach((err) => {
-          if (err.path[0]) {
-            newErrors[err.path[0] as string] = err.message;
-          }
-        });
-        setErrors(newErrors);
-        throw new Error("Validación fallida");
-      }
-
-      setErrors({});
-
-      const { error } = await supabase.from("erp_configurations").insert({
-        organization_id: userProfile.organization_id,
-        config_type: activeTab,
-        config_name: formData.config_name,
-        endpoint_url: formData.endpoint_url,
-        auth_method: formData.auth_method,
-        api_key_encrypted: formData.api_key_encrypted || null,
-        auth_token_encrypted: formData.auth_token_encrypted || null,
-        is_active: true,
-      });
-
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      toast.success("Configuración creada exitosamente");
-      queryClient.invalidateQueries({ queryKey: ["erp-configs"] });
-      setFormData({
-        config_name: "",
-        endpoint_url: "",
-        auth_method: "api_key",
-        api_key_encrypted: "",
-        auth_token_encrypted: "",
-      });
-    },
-    onError: (error: any) => {
-      if (error.message !== "Validación fallida") {
-        toast.error(error.message || "Error al crear configuración");
-      }
-    },
-  });
-
-  const deleteConfigMutation = useMutation({
-    mutationFn: async (configId: string) => {
-      const { error } = await supabase
-        .from("erp_configurations")
-        .delete()
-        .eq("id", configId);
-
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      toast.success("Configuración eliminada");
-      queryClient.invalidateQueries({ queryKey: ["erp-configs"] });
-    },
-    onError: (error: any) => {
-      toast.error(error.message || "Error al eliminar configuración");
-    },
-  });
-
-  const testConnectionMutation = useMutation({
-    mutationFn: async (configId: string) => {
-      const { data, error } = await supabase.functions.invoke("erp-api-tester", {
-        body: { configId },
-      });
-
-      if (error) throw error;
-      if (!data.success) throw new Error(data.message);
+  // Mutación para guardar
+  const saveMutation = useMutation({
+    mutationFn: async (type: string) => {
+      if (!activeOrg) throw new Error("No org");
       
-      return data;
+      const payload: any = {
+        organization_id: activeOrg.id,
+        config_name: formData.name,
+        config_type: type,
+        is_active: true,
+        endpoint_url: formData.api_endpoint,
+        auth_method: formData.auth_method as any
+      };
+
+      // Mapeo de campos según tipo
+      if (type === 'erp') {
+        payload.auth_token_encrypted = formData.auth_token;
+      } else if (type === 'edc') {
+        payload.protocol_url = formData.protocol_url;
+        payload.management_url = formData.management_url;
+        payload.auth_token_encrypted = formData.auth_token; // EDC API Key
+      } else if (type === 'wallet') {
+        payload.public_key = formData.public_key; // DID
+        payload.endpoint_url = formData.api_endpoint; // Verifiable Credential Service
+      }
+
+      const { error } = await supabase.from("erp_configurations").insert(payload);
+      if (error) throw error;
     },
     onSuccess: () => {
-      toast.success("Conexión probada exitosamente");
+      toast.success("Configuración guardada correctamente");
       queryClient.invalidateQueries({ queryKey: ["erp-configs"] });
+      setFormData({ name: "", api_endpoint: "", auth_token: "", auth_method: "bearer", protocol_url: "", management_url: "", public_key: "" });
     },
-    onError: (error: any) => {
-      toast.error(error.message || "Error al probar la conexión");
-    },
+    onError: (err: any) => toast.error("Error al guardar: " + err.message)
   });
 
-  const uploadConfigs = configs?.filter((c) => c.config_type === "upload") || [];
-  const downloadConfigs = configs?.filter((c) => c.config_type === "download") || [];
+  const handleSave = () => saveMutation.mutate(activeTab);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <h1 className="text-2xl font-bold cursor-pointer" onClick={() => navigate("/dashboard")}>
-            <span className="procuredata-gradient">PROCUREDATA</span>
-          </h1>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={() => navigate("/dashboard")}>
-              Dashboard
-            </Button>
-            <span className="text-sm text-muted-foreground">{user?.email}</span>
-            <Button variant="outline" onClick={signOut}>
-              Cerrar Sesión
-            </Button>
-          </div>
-        </div>
-      </header>
+    <div className="container py-8 space-y-8 fade-in">
+      <div>
+        <h2 className="text-3xl font-bold tracking-tight">Integraciones Externas</h2>
+        <p className="text-muted-foreground">Gestiona la conectividad con ERPs, Dataspaces y Wallets.</p>
+      </div>
 
-      <main className="container mx-auto max-w-5xl p-6">
-        <Button variant="ghost" onClick={() => navigate("/dashboard")} className="mb-6">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Volver al dashboard
-        </Button>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
+          <TabsTrigger value="erp">ERP (Legacy)</TabsTrigger>
+          <TabsTrigger value="edc">EDC Connector</TabsTrigger>
+          <TabsTrigger value="wallet">SSI Wallet</TabsTrigger>
+        </TabsList>
 
-        <div className="mb-8">
-          <h2 className="mb-2 text-3xl font-bold">Configuración de ERP</h2>
-          <p className="text-muted-foreground">
-            Configura las integraciones con tus sistemas ERP externos
-          </p>
-        </div>
-
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "upload" | "download")}>
-          <TabsList className="mb-6">
-            <TabsTrigger value="upload">API de Carga (Upload)</TabsTrigger>
-            <TabsTrigger value="download">API de Descarga (Download)</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="upload" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Nueva Configuración de Carga</CardTitle>
-                <CardDescription>
-                  Configura un endpoint para enviar datos a tu ERP
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="config_name">Nombre de la Configuración *</Label>
-                  <Input
-                    id="config_name"
-                    placeholder="Mi ERP Producción"
-                    value={formData.config_name}
-                    onChange={(e) => setFormData({ ...formData, config_name: e.target.value })}
-                  />
-                  {errors.config_name && (
-                    <p className="text-sm text-destructive">{errors.config_name}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="endpoint_url">URL del Endpoint *</Label>
-                  <Input
-                    id="endpoint_url"
-                    placeholder="https://api.mierp.com/v1/suppliers"
-                    value={formData.endpoint_url}
-                    onChange={(e) => setFormData({ ...formData, endpoint_url: e.target.value })}
-                  />
-                  {errors.endpoint_url && (
-                    <p className="text-sm text-destructive">{errors.endpoint_url}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="auth_method">Método de Autenticación *</Label>
-                  <Select
-                    value={formData.auth_method}
-                    onValueChange={(value: any) => setFormData({ ...formData, auth_method: value })}
-                  >
-                    <SelectTrigger id="auth_method">
-                      <SelectValue />
-                    </SelectTrigger>
+        {/* --- TAB 1: ERP CONFIG --- */}
+        <TabsContent value="erp">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><Server className="h-5 w-5" /> Configuración ERP</CardTitle>
+              <CardDescription>Conexión API REST estándar para sistemas legacy (SAP, Oracle, Microsoft).</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-2">
+                <Label>Nombre de la Conexión</Label>
+                <Input placeholder="Ej: SAP Producción" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+              </div>
+              <div className="grid gap-2">
+                <Label>API Endpoint (Webhook)</Label>
+                <Input placeholder="https://api.empresa.com/v1/ingest" value={formData.api_endpoint} onChange={e => setFormData({...formData, api_endpoint: e.target.value})} />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label>Método de Autenticación</Label>
+                  <Select value={formData.auth_method} onValueChange={v => setFormData({...formData, auth_method: v})}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="api_key">API Key</SelectItem>
                       <SelectItem value="bearer">Bearer Token</SelectItem>
                       <SelectItem value="basic">Basic Auth</SelectItem>
-                      <SelectItem value="oauth">OAuth 2.0</SelectItem>
+                      <SelectItem value="api_key">API Key</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-
-                {formData.auth_method === "api_key" && (
-                  <div className="space-y-2">
-                    <Label htmlFor="api_key">API Key</Label>
-                    <Input
-                      id="api_key"
-                      type="password"
-                      placeholder="sk_live_..."
-                      value={formData.api_key_encrypted}
-                      onChange={(e) => setFormData({ ...formData, api_key_encrypted: e.target.value })}
-                    />
-                  </div>
-                )}
-
-                {formData.auth_method === "bearer" && (
-                  <div className="space-y-2">
-                    <Label htmlFor="token">Bearer Token</Label>
-                    <Input
-                      id="token"
-                      type="password"
-                      placeholder="eyJ..."
-                      value={formData.auth_token_encrypted}
-                      onChange={(e) => setFormData({ ...formData, auth_token_encrypted: e.target.value })}
-                    />
-                  </div>
-                )}
-
-                <Button
-                  onClick={() => createConfigMutation.mutate()}
-                  disabled={createConfigMutation.isPending}
-                  className="w-full"
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Crear Configuración
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Lista de configuraciones existentes */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Configuraciones de Carga</h3>
-                {isDemo && (
-                  <Badge variant="secondary">DEMO MODE - Datos Simulados</Badge>
-                )}
+                <div className="grid gap-2">
+                  <Label>Token / Key</Label>
+                  <Input type="password" value={formData.auth_token} onChange={e => setFormData({...formData, auth_token: e.target.value})} />
+                </div>
               </div>
-              {isLoading ? (
-                <Card>
-                  <CardContent className="py-6 text-center text-muted-foreground">
-                    Cargando configuraciones...
-                  </CardContent>
-                </Card>
-              ) : uploadConfigs.length === 0 ? (
-                <Card>
-                  <CardContent className="py-6 text-center text-muted-foreground">
-                    <Settings className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">No hay configuraciones de carga</h3>
-                    <p className="text-sm">
-                      Crea tu primera configuración ERP usando el formulario arriba
-                    </p>
-                  </CardContent>
-                </Card>
-              ) : (
-                uploadConfigs.map((config) => (
-                  <Card key={config.id}>
-                    <CardContent className="flex items-center justify-between pt-6">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <Settings className="h-4 w-4 text-muted-foreground" />
-                          <h4 className="font-semibold">{config.config_name}</h4>
-                          <Badge variant={config.is_active ? "default" : "secondary"}>
-                            {config.is_active ? "Activa" : "Inactiva"}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground font-mono truncate max-w-md">
-                          {config.endpoint_url}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Método: <Badge variant="outline" className="ml-1">{config.auth_method}</Badge>
-                        </p>
-                        {config.last_test_date && (
-                          <p className="text-xs text-muted-foreground">
-                            Último test: {new Date(config.last_test_date).toLocaleString("es-ES")}
-                            {config.last_test_status === "success" ? (
-                              <CheckCircle className="ml-1 inline h-3 w-3 text-green-600" />
-                            ) : (
-                              <XCircle className="ml-1 inline h-3 w-3 text-destructive" />
-                            )}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => testConnectionMutation.mutate(config.id)}
-                          disabled={testConnectionMutation.isPending}
-                        >
-                          Probar
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => deleteConfigMutation.mutate(config.id)}
-                          disabled={deleteConfigMutation.isPending}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              )}
-            </div>
-          </TabsContent>
+              <Button onClick={handleSave} disabled={saveMutation.isPending} className="w-full">
+                <Save className="mr-2 h-4 w-4" /> Guardar Configuración ERP
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-          <TabsContent value="download" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Configuración de Descarga</CardTitle>
-                <CardDescription>
-                  Próximamente: Configura endpoints para descargar datos desde tu ERP
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Esta funcionalidad estará disponible en una próxima fase
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </main>
+        {/* --- TAB 2: EDC CONNECTOR --- */}
+        <TabsContent value="edc">
+          <Card className="border-blue-200 dark:border-blue-900">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
+                <Database className="h-5 w-5" /> Eclipse Dataspace Connector
+              </CardTitle>
+              <CardDescription>Configura tu nodo para participar en espacios de datos soberanos (Gaia-X / IDSA).</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-2">
+                <Label>Nombre del Nodo</Label>
+                <Input placeholder="Ej: Nodo IDSA Madrid" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+              </div>
+              <div className="grid gap-2">
+                <Label>Management API URL</Label>
+                <Input placeholder="http://edc-control-plane:8181/management" value={formData.management_url} onChange={e => setFormData({...formData, management_url: e.target.value})} />
+              </div>
+              <div className="grid gap-2">
+                <Label>DSP Protocol URL</Label>
+                <Input placeholder="http://edc-control-plane:8282/protocol" value={formData.protocol_url} onChange={e => setFormData({...formData, protocol_url: e.target.value})} />
+              </div>
+              <div className="grid gap-2">
+                <Label>API Key (X-Api-Key)</Label>
+                <Input type="password" value={formData.auth_token} onChange={e => setFormData({...formData, auth_token: e.target.value})} />
+              </div>
+              <Button onClick={handleSave} disabled={saveMutation.isPending} className="w-full bg-blue-600 hover:bg-blue-700">
+                <Save className="mr-2 h-4 w-4" /> Conectar Nodo EDC
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* --- TAB 3: SSI WALLET --- */}
+        <TabsContent value="wallet">
+          <Card className="border-purple-200 dark:border-purple-900">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-400">
+                <Shield className="h-5 w-5" /> Identidad Soberana (SSI)
+              </CardTitle>
+              <CardDescription>Gestión de DIDs y Credenciales Verificables.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Alert variant="default" className="bg-purple-50 border-purple-200 dark:bg-purple-950/20 dark:border-purple-900">
+                <AlertCircle className="h-4 w-4 text-purple-600" />
+                <AlertTitle className="text-purple-800 dark:text-purple-400">Seguridad de Claves Privadas</AlertTitle>
+                <AlertDescription className="text-purple-700 dark:text-purple-300 text-xs">
+                  Las claves privadas nunca se almacenan en la base de datos estándar. Se gestionan a través de Supabase Vault o HSM externo. Aquí solo registras el DID público.
+                </AlertDescription>
+              </Alert>
+              
+              <div className="grid gap-2">
+                <Label>DID (Decentralized Identifier)</Label>
+                <Input placeholder="did:web:procuredata.app:company-xyz" value={formData.public_key} onChange={e => setFormData({...formData, public_key: e.target.value})} />
+              </div>
+              <div className="grid gap-2">
+                <Label>VC Service Endpoint</Label>
+                <Input placeholder="https://wallet.procuredata.app/api/vc" value={formData.api_endpoint} onChange={e => setFormData({...formData, api_endpoint: e.target.value})} />
+              </div>
+              
+              <Button onClick={handleSave} disabled={saveMutation.isPending} className="w-full bg-purple-600 hover:bg-purple-700">
+                <Save className="mr-2 h-4 w-4" /> Registrar Wallet
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      {/* Lista de configuraciones activas */}
+      {configs && configs.length > 0 && (
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold mb-4">Integraciones Activas</h3>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {configs.map((config: any) => (
+              <Card key={config.id} className="overflow-hidden">
+                <div className={`h-2 w-full ${config.config_type === 'edc' ? 'bg-blue-500' : config.config_type === 'wallet' ? 'bg-purple-500' : 'bg-primary'}`} />
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-start">
+                    <CardTitle className="text-base">{config.config_name}</CardTitle>
+                    {config.is_active && <CheckCircle2 className="h-4 w-4 text-green-500" />}
+                  </div>
+                  <CardDescription className="uppercase text-xs font-bold">{config.config_type || 'erp'}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground truncate">{config.endpoint_url || config.management_url || config.public_key}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
-};
-
-export default ERPConfig;
+}
