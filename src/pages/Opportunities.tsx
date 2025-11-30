@@ -6,6 +6,7 @@ import { Megaphone, Plus, Calendar, DollarSign, Tag } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import type { MarketplaceOpportunity } from "@/types/database.extensions";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -52,7 +53,7 @@ export default function Opportunities() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data || [];
+      return data as any[] || [];
     },
   });
 
@@ -268,7 +269,7 @@ export default function Opportunities() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {opportunities.map((opp: any) => (
+          {opportunities.map((opp) => (
             <Card key={opp.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-start justify-between mb-2">

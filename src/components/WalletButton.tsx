@@ -6,11 +6,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Wallet, ArrowUpRight, ArrowDownLeft, Copy, Coins } from "lucide-react";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import type { Wallet as WalletType, WalletTransaction } from "@/types/database.extensions";
 
 export const WalletButton = () => {
   const { activeOrg } = useOrganizationContext();
 
-  const { data: wallet } = useQuery({
+  const { data: wallet } = useQuery<WalletType | null>({
     queryKey: ["org-wallet", activeOrg?.id],
     queryFn: async () => {
       if (!activeOrg) return null;
@@ -28,15 +29,18 @@ export const WalletButton = () => {
           address: '0x71C7...9A21', 
           balance: 15420.50, 
           currency: 'EUR',
-          organization_id: activeOrg.id
-        };
+          organization_id: activeOrg.id,
+          is_frozen: false,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        } as WalletType;
       }
-      return data;
+      return data as WalletType;
     },
     enabled: !!activeOrg
   });
 
-  const { data: transactions } = useQuery({
+  const { data: transactions } = useQuery<WalletTransaction[]>({
     queryKey: ["wallet-txs", wallet?.id],
     queryFn: async () => {
       if (!wallet || wallet.id === 'mock') {
@@ -47,18 +51,26 @@ export const WalletButton = () => {
             amount: 2500,
             currency: 'EUR',
             created_at: new Date().toISOString(),
-            to_wallet_id: wallet?.id,
-            transaction_type: 'payment'
+            to_wallet_id: wallet?.id || null,
+            from_wallet_id: null,
+            transaction_type: 'payment',
+            status: 'completed',
+            reference_id: null,
+            metadata: null
           },
           {
             id: '2',
             amount: 1200,
             currency: 'EUR',
             created_at: new Date(Date.now() - 86400000).toISOString(),
-            from_wallet_id: wallet?.id,
-            transaction_type: 'payment'
+            from_wallet_id: wallet?.id || null,
+            to_wallet_id: null,
+            transaction_type: 'payment',
+            status: 'completed',
+            reference_id: null,
+            metadata: null
           }
-        ];
+        ] as WalletTransaction[];
       }
       
       const { data, error } = await supabase
@@ -72,7 +84,7 @@ export const WalletButton = () => {
         console.warn("Error fetching transactions, returning empty array");
         return [];
       }
-      return data || [];
+      return (data || []) as WalletTransaction[];
     },
     enabled: !!wallet
   });
@@ -132,7 +144,7 @@ export const WalletButton = () => {
           <ScrollArea className="h-[200px]">
             <div className="space-y-3">
               {transactions && transactions.length > 0 ? (
-                transactions.map((tx: any) => {
+                transactions.map((tx) => {
                   const isIncoming = tx.to_wallet_id === wallet.id;
                   return (
                     <div key={tx.id} className="flex justify-between items-center text-sm">
