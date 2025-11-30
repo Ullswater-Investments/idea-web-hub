@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { 
   Search, 
   Filter, 
@@ -10,7 +11,9 @@ import {
   ShieldCheck, 
   Star, 
   Database,
-  ArrowRight
+  ArrowRight,
+  Heart,
+  BarChart3
 } from "lucide-react";
 
 // UI Components
@@ -23,6 +26,9 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { toast } from "sonner";
 
 // --- Tipos alineados con la vista SQL 'marketplace_listings' ---
 interface MarketplaceListing {
@@ -61,6 +67,8 @@ const StarRating = ({ rating, count }: { rating: number, count: number }) => {
 
 export default function Catalog() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [filters, setFilters] = useState({
@@ -68,6 +76,11 @@ export default function Catalog() {
     onlyVerified: false,
     priceType: 'all' // all, free, paid
   });
+  
+  // Estado para wishlist y comparación
+  const [wishlist, setWishlist] = useState<Set<string>>(new Set());
+  const [compareList, setCompareList] = useState<Set<string>>(new Set());
+  const [compareDialogOpen, setCompareDialogOpen] = useState(false);
 
   // --- Fetch de Datos (Conecta con la vista SQL) ---
   const { data: listings, isLoading } = useQuery({
@@ -132,6 +145,40 @@ export default function Catalog() {
   });
 
   const categories = ["all", ...new Set(listings?.map(l => l.category) || [])];
+
+  // Funciones para wishlist
+  const toggleWishlist = (assetId: string) => {
+    setWishlist(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(assetId)) {
+        newSet.delete(assetId);
+        toast("Eliminado de favoritos", { icon: "💔" });
+      } else {
+        newSet.add(assetId);
+        toast("Añadido a favoritos", { icon: "❤️" });
+      }
+      return newSet;
+    });
+  };
+
+  // Funciones para comparador
+  const toggleCompare = (assetId: string) => {
+    setCompareList(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(assetId)) {
+        newSet.delete(assetId);
+      } else {
+        if (newSet.size >= 4) {
+          toast.error("Máximo 4 productos para comparar");
+          return prev;
+        }
+        newSet.add(assetId);
+      }
+      return newSet;
+    });
+  };
+
+  const compareProducts = listings?.filter(l => compareList.has(l.asset_id)) || [];
 
   return (
     <div className="container py-8 space-y-8 fade-in bg-muted/10 min-h-screen">
@@ -263,7 +310,15 @@ export default function Catalog() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredListings?.map((item) => (
-                <ProductCard key={item.asset_id} item={item} onAction={() => navigate(`/catalog/product/${item.asset_id}`)} />
+                <ProductCard 
+                  key={item.asset_id} 
+                  item={item} 
+                  onAction={() => navigate(`/catalog/product/${item.asset_id}`)} 
+                  onWishlistToggle={() => toggleWishlist(item.asset_id)}
+                  isInWishlist={wishlist.has(item.asset_id)}
+                  onCompareToggle={() => toggleCompare(item.asset_id)}
+                  isInCompare={compareList.has(item.asset_id)}
+                />
               ))}
               
               {filteredListings?.length === 0 && (
@@ -284,17 +339,168 @@ export default function Catalog() {
           )}
         </div>
       </div>
+
+      {/* Barra Flotante de Comparación */}
+      {compareList.size >= 2 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-fade-in">
+          <Card className="shadow-2xl border-2 border-primary">
+            <CardContent className="flex items-center gap-4 p-4">
+              <BarChart3 className="h-5 w-5 text-primary" />
+              <div>
+                <p className="font-semibold">Comparando {compareList.size} productos</p>
+                <p className="text-xs text-muted-foreground">Selecciona hasta 4 para comparar</p>
+              </div>
+              <Button onClick={() => setCompareDialogOpen(true)} size="sm">
+                Ver Tabla Comparativa
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setCompareList(new Set())}>
+                Limpiar
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Dialog de Comparación */}
+      <Dialog open={compareDialogOpen} onOpenChange={setCompareDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-auto">
+          <DialogHeader>
+            <DialogTitle>Comparación de Productos</DialogTitle>
+            <DialogDescription>
+              Compara las características de los {compareProducts.length} productos seleccionados
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[150px]">Característica</TableHead>
+                  {compareProducts.map(p => (
+                    <TableHead key={p.asset_id}>{p.asset_name}</TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-medium">Proveedor</TableCell>
+                  {compareProducts.map(p => (
+                    <TableCell key={p.asset_id}>{p.provider_name}</TableCell>
+                  ))}
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Precio</TableCell>
+                  {compareProducts.map(p => (
+                    <TableCell key={p.asset_id}>
+                      {p.price === 0 ? (
+                        <Badge variant="outline" className="text-green-600">GRATIS</Badge>
+                      ) : (
+                        `${p.price} ${p.currency}`
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Modelo</TableCell>
+                  {compareProducts.map(p => (
+                    <TableCell key={p.asset_id} className="capitalize">
+                      {p.pricing_model}
+                    </TableCell>
+                  ))}
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Categoría</TableCell>
+                  {compareProducts.map(p => (
+                    <TableCell key={p.asset_id}>{p.category}</TableCell>
+                  ))}
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Reputación</TableCell>
+                  {compareProducts.map(p => (
+                    <TableCell key={p.asset_id}>
+                      <StarRating rating={p.reputation_score} count={p.review_count} />
+                    </TableCell>
+                  ))}
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Verificado</TableCell>
+                  {compareProducts.map(p => (
+                    <TableCell key={p.asset_id}>
+                      {p.kyb_verified ? (
+                        <Badge variant="outline" className="border-blue-200 bg-blue-50 text-blue-700">
+                          <ShieldCheck className="h-3 w-3 mr-1" /> Sí
+                        </Badge>
+                      ) : (
+                        "No"
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Sostenible</TableCell>
+                  {compareProducts.map(p => (
+                    <TableCell key={p.asset_id}>
+                      {p.has_green_badge ? (
+                        <Badge variant="outline" className="border-green-200 bg-green-50 text-green-700">
+                          <Leaf className="h-3 w-3 mr-1" /> Sí
+                        </Badge>
+                      ) : (
+                        "No"
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableBody>
+            </Table>
+          </div>
+
+          <div className="flex justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => setCompareDialogOpen(false)}>
+              Cerrar
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
 
 // --- Subcomponente: Tarjeta de Producto ---
-function ProductCard({ item, onAction }: { item: MarketplaceListing, onAction: () => void }) {
+function ProductCard({ 
+  item, 
+  onAction,
+  onWishlistToggle,
+  isInWishlist,
+  onCompareToggle,
+  isInCompare
+}: { 
+  item: MarketplaceListing;
+  onAction: () => void;
+  onWishlistToggle?: () => void;
+  isInWishlist?: boolean;
+  onCompareToggle?: () => void;
+  isInCompare?: boolean;
+}) {
   const isPaid = item.price > 0;
 
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 border-muted/60 overflow-hidden flex flex-col h-full">
+    <Card className="group hover:shadow-xl transition-all duration-300 border-muted/60 overflow-hidden flex flex-col h-full relative">
       <div className="h-2 bg-gradient-to-r from-blue-500 to-cyan-400 group-hover:h-3 transition-all" />
+      
+      {/* Botón de Wishlist en esquina superior derecha */}
+      {onWishlistToggle && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onWishlistToggle();
+          }}
+          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 hover:bg-white shadow-md transition-all hover:scale-110"
+        >
+          <Heart 
+            className={`h-4 w-4 ${isInWishlist ? 'fill-red-500 text-red-500' : 'text-gray-400'}`}
+          />
+        </button>
+      )}
       
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start mb-2">
@@ -354,7 +560,21 @@ function ProductCard({ item, onAction }: { item: MarketplaceListing, onAction: (
 
       <Separator />
 
-      <CardFooter className="pt-4 bg-slate-50/50">
+      <CardFooter className="pt-4 bg-slate-50/50 flex-col gap-2">
+        {/* Checkbox de Comparación */}
+        {onCompareToggle && (
+          <div className="w-full flex items-center gap-2 text-sm mb-2">
+            <Checkbox 
+              id={`compare-${item.asset_id}`}
+              checked={isInCompare}
+              onCheckedChange={onCompareToggle}
+            />
+            <label htmlFor={`compare-${item.asset_id}`} className="cursor-pointer text-muted-foreground">
+              Comparar este producto
+            </label>
+          </div>
+        )}
+        
         <Button 
           onClick={onAction} 
           className={`w-full group-hover:translate-x-1 transition-all ${isPaid ? 'bg-slate-900' : 'bg-white border border-slate-200 text-slate-900 hover:bg-slate-50'}`}
