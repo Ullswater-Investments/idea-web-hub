@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -13,6 +13,7 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight, CheckCircle, Package } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { OrderSummary } from "@/components/OrderSummary";
 
 const requestSchema = z.object({
   purpose: z.string().min(10, "El propósito debe tener al menos 10 caracteres").max(500),
@@ -32,7 +33,8 @@ const PURPOSES = [
 
 const RequestWizard = () => {
   const [searchParams] = useSearchParams();
-  const assetId = searchParams.get("asset");
+  const location = useLocation();
+  const assetId = searchParams.get("asset") || (location.state as any)?.preselectedAssetId;
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -56,6 +58,10 @@ const RequestWizard = () => {
         .from("data_assets")
         .select(`
           id,
+          price,
+          currency,
+          pricing_model,
+          billing_period,
           status,
           subject_org:organizations!data_assets_subject_org_id_fkey (
             id, name, tax_id, type
@@ -71,7 +77,14 @@ const RequestWizard = () => {
         .single();
 
       if (error) throw error;
-      return data;
+      
+      // Mapear para compatibilidad con OrderSummary
+      return {
+        ...data,
+        name: data.product?.name || "Dataset",
+        org: data.subject_org,
+        asset_name: data.product?.name
+      };
     },
     enabled: !!assetId,
   });
@@ -251,26 +264,30 @@ const RequestWizard = () => {
         </div>
       </header>
 
-      <main className="container mx-auto max-w-3xl p-6">
-        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Cancelar solicitud
-        </Button>
+      <main className="container mx-auto p-6">
+        {/* Layout de 2 Columnas: Formulario + Resumen */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Columna Izquierda: Wizard Form (2/3) */}
+          <div className="lg:col-span-2">
+            <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Cancelar solicitud
+            </Button>
 
-        <div className="mb-8">
-          <h2 className="mb-2 text-3xl font-bold">Solicitud de Datos</h2>
-          <p className="text-muted-foreground">
-            Completa el wizard para solicitar acceso a datos
-          </p>
-        </div>
+            <div className="mb-8">
+              <h2 className="mb-2 text-3xl font-bold">Solicitud de Datos</h2>
+              <p className="text-muted-foreground">
+                Completa el wizard para solicitar acceso a datos
+              </p>
+            </div>
 
-        <div className="mb-8">
-          <Progress value={progress} className="h-2" />
-          <div className="mt-2 flex justify-between text-sm text-muted-foreground">
-            <span>Paso {step} de 5</span>
-            <span>{progress.toFixed(0)}% completado</span>
-          </div>
-        </div>
+            <div className="mb-8">
+              <Progress value={progress} className="h-2" />
+              <div className="mt-2 flex justify-between text-sm text-muted-foreground">
+                <span>Paso {step} de 5</span>
+                <span>{progress.toFixed(0)}% completado</span>
+              </div>
+            </div>
 
         {/* Paso 1: Información del activo */}
         {step === 1 && (
@@ -491,6 +508,13 @@ const RequestWizard = () => {
             </CardContent>
           </Card>
         )}
+          </div>
+
+          {/* Columna Derecha: Resumen de Pedido Sticky (1/3) */}
+          <div className="lg:col-span-1">
+            <OrderSummary asset={asset} step={step} />
+          </div>
+        </div>
       </main>
     </div>
   );

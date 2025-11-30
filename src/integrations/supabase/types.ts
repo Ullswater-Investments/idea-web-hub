@@ -891,6 +891,42 @@ export type Database = {
           },
         ]
       }
+      user_wishlist: {
+        Row: {
+          asset_id: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          asset_id: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          asset_id?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_wishlist_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "data_assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_wishlist_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_listings"
+            referencedColumns: ["asset_id"]
+          },
+        ]
+      }
       value_services: {
         Row: {
           category: string | null
