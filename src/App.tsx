@@ -18,6 +18,7 @@ import RequestWizard from "./pages/RequestWizard";
 import Data from "./pages/Data";
 import DataView from "./pages/DataView";
 import Reports from "./pages/Reports";
+import SellerAnalytics from "./pages/SellerAnalytics";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
 import ERPConfig from "./pages/ERPConfig";
@@ -63,6 +64,7 @@ const App = () => (
                 <Route path="/innovation" element={<InnovationLab />} />
                 <Route path="/opportunities" element={<Opportunities />} />
                 <Route path="/reports" element={<Reports />} />
+                <Route path="/analytics" element={<SellerAnalytics />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/settings/erp-config" element={<ERPConfig />} />

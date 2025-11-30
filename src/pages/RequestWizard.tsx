@@ -14,6 +14,7 @@ import { ArrowLeft, ArrowRight, CheckCircle, Package } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { OrderSummary } from "@/components/OrderSummary";
+import { PaymentGateway } from "@/components/PaymentGateway";
 
 const requestSchema = z.object({
   purpose: z.string().min(10, "El propósito debe tener al menos 10 caracteres").max(500),
@@ -40,6 +41,7 @@ const RequestWizard = () => {
   const queryClient = useQueryClient();
 
   const [step, setStep] = useState(1);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [formData, setFormData] = useState({
     purpose: "",
     accessDuration: 90,
@@ -216,8 +218,13 @@ const RequestWizard = () => {
 
   const handleSubmit = () => {
     if (validateStep()) {
-      createTransactionMutation.mutate();
+      setIsPaymentOpen(true);
     }
+  };
+
+  const handlePaymentConfirm = () => {
+    setIsPaymentOpen(false);
+    createTransactionMutation.mutate();
   };
 
   if (isLoading) {
@@ -516,6 +523,13 @@ const RequestWizard = () => {
           </div>
         </div>
       </main>
+
+      <PaymentGateway 
+        open={isPaymentOpen}
+        onClose={() => setIsPaymentOpen(false)}
+        onConfirm={handlePaymentConfirm}
+        asset={asset}
+      />
     </div>
   );
 };
