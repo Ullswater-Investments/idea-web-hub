@@ -3,16 +3,55 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+const authSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "El email es obligatorio")
+    .email("Introduce un email válido")
+    .max(255, "Email demasiado largo"),
+  password: z
+    .string()
+    .min(6, "La contraseña debe tener al menos 6 caracteres")
+    .max(72, "Contraseña demasiado larga"),
+});
+
+type AuthFormData = z.infer<typeof authSchema>;
 
 const Auth = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
+
+  const loginForm = useForm<AuthFormData>({
+    resolver: zodResolver(authSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const registerForm = useForm<AuthFormData>({
+    resolver: zodResolver(authSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   useEffect(() => {
     if (user) {
@@ -20,10 +59,9 @@ const Auth = () => {
     }
   }, [user, navigate]);
 
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSignIn = async (data: AuthFormData) => {
     setLoading(true);
-    await signIn(email, password);
+    await signIn(data.email, data.password);
     setLoading(false);
   };
 
@@ -32,15 +70,12 @@ const Auth = () => {
     const demoEmail = "demo@procuredata.app";
     const demoPassword = "demo123456";
     
-    // Intentar login primero
     const { error: loginError } = await signIn(demoEmail, demoPassword);
     
-    // Si falla el login, intentar registrar
     if (loginError) {
       const { error: signupError } = await signUp(demoEmail, demoPassword);
       
       if (!signupError) {
-        // Registro exitoso, ahora hacer login
         await signIn(demoEmail, demoPassword);
       }
     }
@@ -48,13 +83,11 @@ const Auth = () => {
     setLoading(false);
   };
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSignUp = async (data: AuthFormData) => {
     setLoading(true);
-    await signUp(email, password);
+    await signUp(data.email, data.password);
     setLoading(false);
-    setEmail("");
-    setPassword("");
+    registerForm.reset();
   };
 
   return (
@@ -76,74 +109,101 @@ const Auth = () => {
             </TabsList>
             
             <TabsContent value="login">
-              <form onSubmit={handleSignIn} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="login-email">Email</Label>
-                  <Input
-                    id="login-email"
-                    type="email"
-                    placeholder="tu@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+              <Form {...loginForm}>
+                <form onSubmit={loginForm.handleSubmit(handleSignIn)} className="space-y-4">
+                  <FormField
+                    control={loginForm.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="tu@email.com"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="login-password">Contraseña</Label>
-                  <Input
-                    id="login-password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
+                  <FormField
+                    control={loginForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Contraseña</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="password"
+                            placeholder="••••••••"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Cargando..." : "Iniciar Sesión"}
-              </Button>
-              
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full mt-2 border-amber-500 text-amber-700 hover:bg-amber-50"
-                onClick={handleDemoAccess}
-                disabled={loading}
-              >
-                🎭 Acceder a Versión Demo
-              </Button>
-              </form>
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Cargando..." : "Iniciar Sesión"}
+                  </Button>
+                  
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full mt-2 border-amber-500 text-amber-700 hover:bg-amber-50"
+                    onClick={handleDemoAccess}
+                    disabled={loading}
+                  >
+                    🎭 Acceder a Versión Demo
+                  </Button>
+                </form>
+              </Form>
             </TabsContent>
 
             <TabsContent value="register">
-              <form onSubmit={handleSignUp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="register-email">Email</Label>
-                  <Input
-                    id="register-email"
-                    type="email"
-                    placeholder="tu@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+              <Form {...registerForm}>
+                <form onSubmit={registerForm.handleSubmit(handleSignUp)} className="space-y-4">
+                  <FormField
+                    control={registerForm.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="tu@email.com"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="register-password">Contraseña</Label>
-                  <Input
-                    id="register-password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    minLength={6}
+                  <FormField
+                    control={registerForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Contraseña</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="password"
+                            placeholder="••••••••"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? "Cargando..." : "Crear Cuenta"}
-                </Button>
-              </form>
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Cargando..." : "Crear Cuenta"}
+                  </Button>
+                </form>
+              </Form>
             </TabsContent>
           </Tabs>
         </CardContent>
