@@ -4,8 +4,14 @@ import { Link } from "react-router-dom";
 import { 
   Coins, Shield, FileCheck, Activity, Cpu, Network, 
   ArrowLeft, ArrowRight, Calculator, Sparkles, TrendingUp, GitBranch, Lock,
-  Check, X, Zap, Crown, Building2
+  Check, X, Zap, Crown, Building2, HelpCircle
 } from "lucide-react";
+import { 
+  Accordion, 
+  AccordionContent, 
+  AccordionItem, 
+  AccordionTrigger 
+} from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
@@ -721,6 +727,119 @@ sequenceDiagram
             Todos los planes incluyen certificación Gaia-X y cumplimiento GDPR. 
             Precios sin IVA.
           </p>
+        </motion.section>
+
+        {/* FAQ Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-20"
+        >
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <HelpCircle className="h-6 w-6 text-primary" />
+              <Badge variant="outline">FAQ</Badge>
+            </div>
+            <h2 className="text-3xl font-bold mb-2">Preguntas Frecuentes</h2>
+            <p className="text-muted-foreground">
+              Resuelve tus dudas sobre planes, facturación y soporte
+            </p>
+          </div>
+          
+          <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="billing">
+                <AccordionTrigger className="text-left">
+                  ¿Cómo funciona la facturación?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  Facturación mensual o anual según tu preferencia. Aceptamos pago con tarjeta, 
+                  transferencia SEPA o EUROe (stablecoin). Todas las facturas se generan 
+                  automáticamente con IVA desglosado y están disponibles en tu panel de control.
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="change-plan">
+                <AccordionTrigger className="text-left">
+                  ¿Puedo cambiar de plan en cualquier momento?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  Sí, puedes hacer upgrade al instante y solo pagarás la diferencia prorrateada. 
+                  Si decides bajar de plan, el cambio se aplica al inicio del siguiente ciclo de 
+                  facturación, manteniendo todas tus funcionalidades hasta entonces.
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="commitment">
+                <AccordionTrigger className="text-left">
+                  ¿Hay permanencia o compromiso mínimo?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  No hay ningún compromiso de permanencia. Puedes cancelar tu suscripción cuando 
+                  quieras. Tus datos permanecen accesibles durante 30 días tras la cancelación 
+                  para que puedas exportarlos.
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="data-cancel">
+                <AccordionTrigger className="text-left">
+                  ¿Qué pasa con mis datos si cancelo?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  Tienes 30 días para exportar todos tus datos en formato estándar. Después de 
+                  ese período, los datos se eliminan de nuestros servidores. Sin embargo, tus 
+                  certificados blockchain permanecen inmutables y verificables para siempre.
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="migration">
+                <AccordionTrigger className="text-left">
+                  ¿Puedo migrar datos desde otro sistema?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  Sí. Ofrecemos conectores nativos para SAP, Oracle, Microsoft Dynamics y APIs 
+                  REST genéricas. El plan Pro incluye soporte de migración asistida. Para Enterprise, 
+                  asignamos un equipo dedicado para garantizar una transición sin interrupciones.
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="suppliers-payment">
+                <AccordionTrigger className="text-left">
+                  ¿Mis proveedores necesitan pagar para conectarse?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  No necesariamente. Tus proveedores pueden usar el tier Free para recibir 
+                  solicitudes de datos y participar en tu cadena. Con el modelo Network Builder, 
+                  puedes subsidiar su acceso Pro como parte de tu inversión en digitalización.
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="support">
+                <AccordionTrigger className="text-left">
+                  ¿Qué nivel de soporte incluye cada plan?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <strong>Free:</strong> acceso a documentación y comunidad. 
+                  <strong className="ml-2">Pro:</strong> soporte por email con respuesta garantizada en 24h laborables. 
+                  <strong className="ml-2">Enterprise:</strong> gestor de cuenta dedicado, SLA garantizado y 
+                  soporte telefónico prioritario.
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="security">
+                <AccordionTrigger className="text-left">
+                  ¿Dónde se almacenan mis datos?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  Toda la infraestructura está alojada en centros de datos europeos certificados 
+                  bajo el sello Gaia-X. Cumplimiento total con GDPR. El plan Enterprise ofrece 
+                  opción de nube privada o despliegue on-premise para máxima soberanía.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         </motion.section>
 
         {/* Simulador ROI Gamificado */}
