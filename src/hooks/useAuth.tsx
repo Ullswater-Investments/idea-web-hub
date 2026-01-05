@@ -3,11 +3,19 @@ import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useWeb3Wallet } from "@/hooks/useWeb3Wallet";
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  // Web3 identity fields
+  walletAddress: string | null;
+  did: string | null;
+  isWeb3Connected: boolean;
+  connectWallet: (silent?: boolean) => Promise<void>;
+  disconnectWallet: () => void;
+  // Auth methods
   signUp: (email: string, password: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
@@ -20,6 +28,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  
+  // Integrate Web3 wallet
+  const { wallet, connect, disconnect, hasWeb3 } = useWeb3Wallet();
 
   useEffect(() => {
     // Set up auth state listener
@@ -87,8 +98,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const contextValue: AuthContextType = {
+    user,
+    session,
+    loading,
+    // Web3 identity
+    walletAddress: wallet.address,
+    did: wallet.did,
+    isWeb3Connected: wallet.isConnected,
+    connectWallet: connect,
+    disconnectWallet: disconnect,
+    // Auth methods
+    signUp,
+    signIn,
+    signOut,
+  };
+
   return (
-    <AuthContext.Provider value={{ user, session, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
