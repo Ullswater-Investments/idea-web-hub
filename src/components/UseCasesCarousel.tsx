@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 
 interface UseCase {
+  id: string;
   title: string;
   description: string;
   icon: LucideIcon;
@@ -35,6 +36,7 @@ interface UseCase {
 
 const USE_CASES: UseCase[] = [
   {
+    id: "kyb-onboarding",
     title: "Onboarding KYB",
     description: "Verificación instantánea de proveedores mediante identidad soberana (DID) en Pontus-X.",
     icon: ShieldCheck,
@@ -43,6 +45,7 @@ const USE_CASES: UseCase[] = [
     bgColor: "bg-blue-500/10",
   },
   {
+    id: "huella-carbono",
     title: "Huella de Carbono",
     description: "Reportes ESG inmutables y auditables para cumplir con normativas CSRD.",
     icon: Leaf,
@@ -51,6 +54,7 @@ const USE_CASES: UseCase[] = [
     bgColor: "bg-green-500/10",
   },
   {
+    id: "marketplace-euroe",
     title: "Marketplace de Datos",
     description: "Compraventa segura de activos industriales pagando con EUROe.",
     icon: Coins,
@@ -59,6 +63,7 @@ const USE_CASES: UseCase[] = [
     bgColor: "bg-yellow-500/10",
   },
   {
+    id: "kill-switch",
     title: "Kill-Switch de Datos",
     description: "Revocación de accesos en tiempo real ante brechas de seguridad.",
     icon: LockKeyhole,
@@ -67,6 +72,7 @@ const USE_CASES: UseCase[] = [
     bgColor: "bg-red-500/10",
   },
   {
+    id: "pasaporte-digital",
     title: "Pasaporte Digital (DPP)",
     description: "Trazabilidad completa del producto agregando datos de múltiples proveedores.",
     icon: Package,
@@ -75,6 +81,7 @@ const USE_CASES: UseCase[] = [
     bgColor: "bg-purple-500/10",
   },
   {
+    id: "compute-to-data",
     title: "Compute-to-Data",
     description: "Entrena IA sobre datos sensibles sin exponerlos fuera del sandbox.",
     icon: Cpu,
@@ -83,6 +90,7 @@ const USE_CASES: UseCase[] = [
     bgColor: "bg-violet-500/10",
   },
   {
+    id: "gestion-recalls",
     title: "Gestión de Recalls",
     description: "Rastreo instantáneo de lotes defectuosos en toda la cadena de suministro.",
     icon: AlertTriangle,
@@ -91,6 +99,7 @@ const USE_CASES: UseCase[] = [
     bgColor: "bg-orange-500/10",
   },
   {
+    id: "financiacion-defi",
     title: "Financiación DeFi",
     description: "Historial de entregas verificado en blockchain para acceder a crédito.",
     icon: Landmark,
@@ -99,6 +108,7 @@ const USE_CASES: UseCase[] = [
     bgColor: "bg-emerald-500/10",
   },
   {
+    id: "cadena-frio",
     title: "Auditoría Cadena Frío",
     description: "Sensores IoT registran temperatura inmutablemente para resolver disputas.",
     icon: Thermometer,
@@ -107,6 +117,7 @@ const USE_CASES: UseCase[] = [
     bgColor: "bg-cyan-500/10",
   },
   {
+    id: "licencias-odrl",
     title: "Licencias ODRL",
     description: "Negociación dinámica de contratos con restricciones temporales y de uso.",
     icon: FileSignature,
@@ -150,8 +161,8 @@ export default function UseCasesCarousel() {
                     {useCase.description}
                   </p>
                   <Button asChild variant="outline" size="sm" className="w-full group">
-                    <Link to="/requests/new">
-                      Ver Demo
+                    <Link to={`/use-cases#${useCase.id}`}>
+                      Ver Detalle
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </Button>
