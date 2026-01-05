@@ -1,203 +1,210 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { useOrganizationContext } from "@/hooks/useOrganizationContext";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Wallet, ArrowUpRight, ArrowDownLeft, Copy, Coins } from "lucide-react";
-import { toast } from "sonner";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import type { Wallet as WalletType, WalletTransaction } from "@/types/database.extensions";
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuGroup,
+} from '@/components/ui/dropdown-menu';
+import { 
+  Wallet, 
+  Loader2, 
+  Copy, 
+  ExternalLink, 
+  ShieldCheck, 
+  LogOut, 
+  CreditCard, 
+  ChevronDown 
+} from 'lucide-react';
+import { pontusXService, PONTUSX_NETWORK_CONFIG } from '@/services/pontusX';
+import type { WalletState } from '@/types/web3.types';
+import { toast } from 'sonner';
+
+const initialWalletState: WalletState = {
+  address: null,
+  chainId: null,
+  balance: null,
+  euroeBalance: null,
+  did: null,
+  isConnected: false
+};
 
 export const WalletButton = () => {
-  const { activeOrg } = useOrganizationContext();
+  const [loading, setLoading] = useState(false);
+  const [wallet, setWallet] = useState<WalletState>(initialWalletState);
+  const [hasWeb3, setHasWeb3] = useState(false);
 
-  const { data: wallet } = useQuery<WalletType | null>({
-    queryKey: ["org-wallet", activeOrg?.id],
-    queryFn: async () => {
-      if (!activeOrg) return null;
-      const { data, error } = await supabase
-        .from("wallets")
-        .select("*")
-        .eq("organization_id", activeOrg.id)
-        .maybeSingle();
+  useEffect(() => {
+    setHasWeb3(pontusXService.isWeb3Available());
+  }, []);
+
+  const handleConnect = async () => {
+    setLoading(true);
+    try {
+      const walletState = await pontusXService.connectWallet();
+      setWallet(walletState);
       
-      // Mock data si no existe la tabla o no hay wallet
-      if (error || !data) {
-        console.warn("Wallet table not found or no wallet, using mock data");
-        return { 
-          id: 'mock', 
-          address: '0x71C7...9A21', 
-          balance: 15420.50, 
-          currency: 'EUR',
-          organization_id: activeOrg.id,
-          is_frozen: false,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        } as WalletType;
-      }
-      return data as WalletType;
-    },
-    enabled: !!activeOrg
-  });
-
-  const { data: transactions } = useQuery<WalletTransaction[]>({
-    queryKey: ["wallet-txs", wallet?.id],
-    queryFn: async () => {
-      if (!wallet || wallet.id === 'mock') {
-        // Mock transactions for demo
-        return [
-          {
-            id: '1',
-            amount: 2500,
-            currency: 'EUR',
-            created_at: new Date().toISOString(),
-            to_wallet_id: wallet?.id || null,
-            from_wallet_id: null,
-            transaction_type: 'payment',
-            status: 'completed',
-            reference_id: null,
-            metadata: null
-          },
-          {
-            id: '2',
-            amount: 1200,
-            currency: 'EUR',
-            created_at: new Date(Date.now() - 86400000).toISOString(),
-            from_wallet_id: wallet?.id || null,
-            to_wallet_id: null,
-            transaction_type: 'payment',
-            status: 'completed',
-            reference_id: null,
-            metadata: null
-          }
-        ] as WalletTransaction[];
-      }
-      
-      const { data, error } = await supabase
-        .from("wallet_transactions")
-        .select("*")
-        .or(`from_wallet_id.eq.${wallet.id},to_wallet_id.eq.${wallet.id}`)
-        .order("created_at", { ascending: false })
-        .limit(5);
-      
-      if (error) {
-        console.warn("Error fetching transactions, returning empty array");
-        return [];
-      }
-      return (data || []) as WalletTransaction[];
-    },
-    enabled: !!wallet
-  });
-
-  if (!wallet) return null;
-
-  const copyAddress = () => {
-    navigator.clipboard.writeText(wallet.address);
-    toast.success("Dirección copiada al portapapeles");
+      toast.success("Conexión Exitosa", {
+        description: "Identidad verificada en la red Pontus-X."
+      });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "No se pudo conectar a la billetera.";
+      console.error(error);
+      toast.error("Error de Conexión", {
+        description: message
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const handleDisconnect = () => {
+    pontusXService.disconnect();
+    setWallet(initialWalletState);
+    toast.info("Desconectado", {
+      description: "Has cerrado la sesión de tu wallet."
+    });
+  };
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copiado", {
+      description: `${label} copiado al portapapeles.`
+    });
+  };
+
+  const truncate = (str: string | null) => {
+    if (!str) return '';
+    return `${str.slice(0, 6)}...${str.slice(-4)}`;
+  };
+
+  const openExplorer = () => {
+    if (wallet.address && PONTUSX_NETWORK_CONFIG.blockExplorerUrls?.[0]) {
+      window.open(`${PONTUSX_NETWORK_CONFIG.blockExplorerUrls[0]}address/${wallet.address}`, '_blank');
+    }
+  };
+
+  // No Web3 available - show disabled state
+  if (!hasWeb3) {
+    return (
+      <Button variant="outline" size="sm" disabled className="gap-2">
+        <Wallet className="h-4 w-4" />
+        No Wallet Detected
+      </Button>
+    );
+  }
+
+  // Not connected - show connect button
+  if (!wallet.isConnected) {
+    return (
+      <Button 
+        variant="outline" 
+        size="sm" 
+        onClick={handleConnect}
+        disabled={loading}
+        className="gap-2"
+      >
+        {loading ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Connecting...
+          </>
+        ) : (
+          <>
+            <Wallet className="h-4 w-4" />
+            Connect Wallet
+          </>
+        )}
+      </Button>
+    );
+  }
+
+  // Connected - show profile dropdown
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button 
-          variant="outline" 
-          className="flex gap-2 border-blue-200/60 bg-blue-50/50 hover:bg-blue-100 text-blue-900 dark:bg-blue-950/30 dark:text-blue-200 dark:border-blue-800"
-          data-wallet-button
-        >
-          <Wallet className="h-4 w-4" />
-          <span className="font-mono font-bold">
-            {new Intl.NumberFormat('es-ES', { 
-              style: 'currency', 
-              currency: wallet.currency 
-            }).format(wallet.balance)}
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="gap-2">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
           </span>
+          {truncate(wallet.address)}
+          <ChevronDown className="h-3 w-3 opacity-50" />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80 p-0" align="end">
-        <div className="p-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-t-md">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-white/10 rounded-full">
-              <Coins className="h-5 w-5 text-yellow-400" />
-            </div>
-            <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full border border-green-500/30">
-              Active Wallet
-            </span>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent align="end" className="w-72 bg-popover border-border">
+        {/* Header */}
+        <DropdownMenuLabel className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-green-500" />
+            <span>Pontus-X Identity</span>
           </div>
-          <h4 className="text-2xl font-bold tracking-tight">
-            {new Intl.NumberFormat('es-ES', { 
-              style: 'currency', 
-              currency: wallet.currency 
-            }).format(wallet.balance)}
-          </h4>
-          <div 
-            className="flex items-center gap-2 mt-2 text-slate-400 text-xs cursor-pointer hover:text-white transition-colors" 
-            onClick={copyAddress}
-          >
-            <span className="font-mono">{wallet.address}</span>
-            <Copy className="h-3 w-3" />
-          </div>
-        </div>
-        
-        <div className="p-4">
-          <span className="text-xs font-semibold text-muted-foreground uppercase mb-2 block">
-            Últimos Movimientos
+          <span className="text-xs bg-green-500/20 text-green-500 px-2 py-0.5 rounded-full">
+            Verificado
           </span>
-          <ScrollArea className="h-[200px]">
-            <div className="space-y-3">
-              {transactions && transactions.length > 0 ? (
-                transactions.map((tx) => {
-                  const isIncoming = tx.to_wallet_id === wallet.id;
-                  return (
-                    <div key={tx.id} className="flex justify-between items-center text-sm">
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className={`p-1.5 rounded-full ${
-                            isIncoming 
-                              ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
-                              : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                          }`}
-                        >
-                          {isIncoming ? (
-                            <ArrowDownLeft className="h-3 w-3" />
-                          ) : (
-                            <ArrowUpRight className="h-3 w-3" />
-                          )}
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="font-medium">
-                            {isIncoming ? "Recibido" : "Enviado"}
-                          </span>
-                          <span className="text-[10px] text-muted-foreground">
-                            {new Date(tx.created_at).toLocaleDateString('es-ES')}
-                          </span>
-                        </div>
-                      </div>
-                      <span 
-                        className={`font-mono font-medium ${
-                          isIncoming ? "text-green-600 dark:text-green-400" : "text-foreground"
-                        }`}
-                      >
-                        {isIncoming ? "+" : "-"}
-                        {new Intl.NumberFormat('es-ES', { 
-                          style: 'currency', 
-                          currency: tx.currency || 'EUR' 
-                        }).format(tx.amount)}
-                      </span>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="text-center py-8 text-muted-foreground text-xs">
-                  <p>No hay transacciones recientes en el ledger.</p>
-                </div>
-              )}
-            </div>
-          </ScrollArea>
-          <Button className="w-full mt-4" size="sm">
-            Añadir Fondos
-          </Button>
+        </DropdownMenuLabel>
+        
+        <DropdownMenuSeparator />
+        
+        {/* Balances */}
+        <DropdownMenuGroup>
+          <DropdownMenuItem className="flex justify-between cursor-default">
+            <span className="flex items-center gap-2 text-muted-foreground">
+              <CreditCard className="h-4 w-4" />
+              Balance EUROe
+            </span>
+            <span className="font-mono font-medium">
+              € {parseFloat(wallet.euroeBalance || "0").toFixed(2)}
+            </span>
+          </DropdownMenuItem>
+          
+          <DropdownMenuItem className="flex justify-between cursor-default">
+            <span className="text-muted-foreground">Native Gas (GX)</span>
+            <span className="font-mono text-sm">
+              {parseFloat(wallet.balance || "0").toFixed(4)}
+            </span>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+
+        {/* DID Section */}
+        <DropdownMenuSeparator />
+        <div className="px-2 py-2">
+          <p className="text-xs text-muted-foreground mb-1">DID (Decentralized ID)</p>
+          <div className="flex items-center gap-2">
+            <code className="text-xs bg-muted px-2 py-1 rounded flex-1 truncate">
+              {wallet.did}
+            </code>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 shrink-0"
+              onClick={() => copyToClipboard(wallet.did || "", "DID")}
+            >
+              <Copy className="h-3 w-3" />
+            </Button>
+          </div>
         </div>
-      </PopoverContent>
-    </Popover>
+
+        <DropdownMenuSeparator />
+        
+        {/* Actions */}
+        <DropdownMenuItem onClick={openExplorer} className="cursor-pointer">
+          <ExternalLink className="h-4 w-4 mr-2" />
+          Ver en Explorer
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem 
+          onClick={handleDisconnect}
+          className="text-destructive focus:text-destructive cursor-pointer"
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Desconectar
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
