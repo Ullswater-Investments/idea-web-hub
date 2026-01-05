@@ -85,7 +85,7 @@ export default function Landing() {
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
             <a href="#features" className="hover:text-primary">Funcionalidades</a>
-            <a href="#models" className="hover:text-primary">Modelos de Negocio</a>
+            <Link to="/models" className="hover:text-primary">Modelos de Negocio</Link>
             <a href="#cases" className="hover:text-primary">Casos de Uso</a>
             <Link to="/architecture" className="hover:text-primary">Arquitectura Técnica</Link>
             <Link 
@@ -163,59 +163,27 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* MODELOS DE NEGOCIO & RETRIBUCIÓN */}
-        <section id="models" className="py-20">
-          <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-3xl font-bold mb-6">Modelos de Retribución Flexibles</h2>
-                <p className="text-lg text-muted-foreground mb-6">
-                  PROCUREDATA no solo gestiona el acceso, sino que habilita la economía del dato. 
-                  Soporta múltiples modelos de monetización nativos.
-                </p>
-                <div className="space-y-4">
-                  {[
-                    { title: "Suscripción Recurrente", desc: "Acceso ilimitado a datasets vivos (ej. Clima, Bolsa)." },
-                    { title: "Pay-per-API-Call", desc: "Micro-pagos por cada consulta de validación." },
-                    { title: "Revenue Share (Smart Contracts)", desc: "Reparto automático de beneficios entre generadores de datos." },
-                    { title: "Freemium / Open Data", desc: "Capas gratuitas para fomentar la adopción." }
-                  ].map((item, i) => (
-                    <div key={i} className="flex gap-3">
-                      <CheckCircle className="h-6 w-6 text-green-500 shrink-0" />
-                      <div>
-                        <h4 className="font-semibold">{item.title}</h4>
-                        <p className="text-sm text-muted-foreground">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-4">
-                <Card className="bg-primary/5 border-primary/20">
-                  <CardHeader>
-                    <CardTitle className="flex justify-between">
-                      <span>Caso de Éxito: EcoAuto</span>
-                      <Badge>Automoción</Badge>
-                    </CardTitle>
-                    <CardDescription>Monetización de Datos de Baterías</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm">EcoAuto monetiza la telemetría de baterías vendiéndola a aseguradoras (para ajustar primas) y a recicladores (para prever stock), generando <strong>+1.5M€/año</strong> en nuevos ingresos.</p>
-                  </CardContent>
-                </Card>
-                <Card className="bg-primary/5 border-primary/20">
-                  <CardHeader>
-                    <CardTitle className="flex justify-between">
-                      <span>Caso de Éxito: AgriFood Coop</span>
-                      <Badge>Agricultura</Badge>
-                    </CardTitle>
-                    <CardDescription>Optimización Logística Compartida</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm">Cooperativas comparten datos de capacidad de carga de camiones. Resultado: reducción del <strong>30% en viajes en vacío</strong> y bajada drástica de huella de carbono.</p>
-                  </CardContent>
-                </Card>
-              </div>
+        {/* MODELOS DE NEGOCIO TEASER */}
+        <section id="models" className="py-20 bg-gradient-to-b from-background to-slate-50">
+          <div className="container mx-auto px-4 text-center">
+            <Badge className="mb-4" variant="secondary">
+              <Sparkles className="h-3 w-3 mr-1" />
+              6 Modelos de Monetización
+            </Badge>
+            <h2 className="text-3xl font-bold mb-4">Ecosistema de Valor Web3</h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Desde comisiones por transacción hasta sandboxing de IA. 
+              Descubre cómo PROCUREDATA habilita la economía del dato industrial.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button asChild size="lg">
+                <Link to="/models">
+                  Explorar Modelos <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link to="/whitepaper">Ver Whitepaper</Link>
+              </Button>
             </div>
           </div>
         </section>

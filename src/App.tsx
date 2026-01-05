@@ -33,6 +33,7 @@ import InnovationLab from "./pages/InnovationLab";
 import Opportunities from "./pages/Opportunities";
 import InteractiveWhitepaper from "./pages/InteractiveWhitepaper";
 import TechnicalDocs from "./pages/TechnicalDocs";
+import BusinessModels from "./pages/BusinessModels";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/architecture" element={<Architecture />} />
             <Route path="/whitepaper" element={<InteractiveWhitepaper />} />
             <Route path="/docs/tecnico" element={<TechnicalDocs />} />
+            <Route path="/models" element={<BusinessModels />} />
               
               {/* Protected routes with AppLayout */}
               <Route element={
