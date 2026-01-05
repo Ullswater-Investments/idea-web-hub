@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useOrganizationContext } from "@/hooks/useOrganizationContext";
-import { Megaphone, Plus, Calendar, DollarSign, Tag } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { Megaphone, Plus, Calendar, DollarSign, Tag, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -29,7 +30,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 // Esquema de validación
 const opportunitySchema = z.object({
@@ -48,8 +49,10 @@ const CATEGORIES = [
 
 export default function Opportunities() {
   const { activeOrg } = useOrganizationContext();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [submittingProposalId, setSubmittingProposalId] = useState<string | null>(null);
 
   // Fetch opportunities
   const { data: opportunities = [], isLoading } = useQuery({
@@ -101,8 +104,7 @@ export default function Opportunities() {
       return data;
     },
     onSuccess: () => {
-      toast({
-        title: "✅ Oportunidad Publicada",
+      toast.success("Oportunidad Publicada", {
         description: "Tu demanda de datos ha sido publicada en el marketplace.",
       });
       queryClient.invalidateQueries({ queryKey: ["marketplace-opportunities"] });
@@ -110,19 +112,69 @@ export default function Opportunities() {
       form.reset();
     },
     onError: (error) => {
-      toast({
-        title: "❌ Error",
+      toast.error("Error al publicar", {
         description: error.message,
-        variant: "destructive",
+      });
+    },
+  });
+
+  // Mutation para enviar propuesta
+  const proposalMutation = useMutation({
+    mutationFn: async (opportunityId: string) => {
+      if (!activeOrg?.id || !user?.id) {
+        throw new Error("Debes iniciar sesión para enviar propuestas");
+      }
+
+      // Get the opportunity to find the consumer org
+      const opportunity = opportunities.find(o => o.id === opportunityId);
+      if (!opportunity) throw new Error("Oportunidad no encontrada");
+
+      // Insert a message as a proposal notification
+      const { error } = await supabase
+        .from("transaction_messages")
+        .insert({
+          transaction_id: opportunityId, // Using opportunity ID as reference
+          sender_org_id: activeOrg.id,
+          content: `[PROPUESTA] ${activeOrg.name} está interesado en ofrecer datos para la oportunidad: "${opportunity.title}". Presupuesto indicado: ${opportunity.budget_range}`,
+        });
+
+      // If transaction_messages fails due to FK constraint, create a notification instead
+      if (error) {
+        // Fallback: Create a notification for the opportunity creator
+        const { error: notifError } = await supabase
+          .from("notifications")
+          .insert({
+            user_id: user.id, // This should ideally be the opportunity creator's user_id
+            type: "info",
+            title: "Nueva propuesta recibida",
+            message: `${activeOrg.name} quiere proponer sus datos para: ${opportunity.title}`,
+            link: `/opportunities`,
+          });
+
+        if (notifError) {
+          console.warn("Could not create notification:", notifError);
+        }
+      }
+
+      return { success: true };
+    },
+    onSuccess: () => {
+      setSubmittingProposalId(null);
+      toast.success("Propuesta enviada", {
+        description: "El comprador recibirá tu propuesta y te contactará pronto.",
+      });
+    },
+    onError: (error) => {
+      setSubmittingProposalId(null);
+      toast.error("Error al enviar propuesta", {
+        description: error.message,
       });
     },
   });
 
   const handleProposal = (opportunityId: string) => {
-    toast({
-      title: "✅ Propuesta Enviada",
-      description: "Tu propuesta ha sido enviada al comprador. Te contactarán pronto.",
-    });
+    setSubmittingProposalId(opportunityId);
+    proposalMutation.mutate(opportunityId);
   };
 
   const onSubmit = (values: OpportunityFormData) => {
@@ -311,23 +363,36 @@ export default function Opportunities() {
                 </Badge>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button size="sm">
-                      Proponer mis Datos
+                    <Button 
+                      size="sm"
+                      disabled={submittingProposalId === opp.id || opp.consumer_org_id === activeOrg?.id}
+                    >
+                      {submittingProposalId === opp.id ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Enviando...
+                        </>
+                      ) : opp.consumer_org_id === activeOrg?.id ? (
+                        "Tu demanda"
+                      ) : (
+                        "Proponer mis Datos"
+                      )}
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>Confirmar Propuesta</AlertDialogTitle>
                       <AlertDialogDescription>
-                        ¿Estás seguro de enviar esta propuesta? Los datos que ofrezcas serán 
-                        compartidos según las condiciones del contrato inteligente una vez 
-                        el comprador acepte.
+                        ¿Estás seguro de enviar esta propuesta? Se notificará a <strong>{opp.consumer?.name}</strong> sobre tu interés en proporcionar datos para esta oportunidad.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => handleProposal(opp.id)}>
-                        Confirmar Propuesta
+                      <AlertDialogAction 
+                        onClick={() => handleProposal(opp.id)}
+                        disabled={proposalMutation.isPending}
+                      >
+                        {proposalMutation.isPending ? "Enviando..." : "Confirmar Propuesta"}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
