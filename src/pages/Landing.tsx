@@ -32,11 +32,18 @@ export default function Landing() {
             <span className="procuredata-gradient">PROCUREDATA</span>
             <Badge variant="outline" className="text-xs">DEMO PORTAL</Badge>
           </div>
-          <nav className="hidden md:flex gap-6 text-sm font-medium">
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
             <a href="#features" className="hover:text-primary">Funcionalidades</a>
             <a href="#models" className="hover:text-primary">Modelos de Negocio</a>
             <a href="#cases" className="hover:text-primary">Casos de Uso</a>
             <Link to="/architecture" className="hover:text-primary">Arquitectura Técnica</Link>
+            <Link 
+              to="/whitepaper" 
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+            >
+              <Sparkles className="h-4 w-4" />
+              <span>Tech Whitepaper</span>
+            </Link>
           </nav>
           <div className="flex gap-4">
             {user ? (
