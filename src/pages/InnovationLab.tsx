@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { 
   Bot, 
@@ -14,7 +16,13 @@ import {
   ShieldCheck, 
   AlertTriangle,
   TrendingUp,
-  Microscope
+  Microscope,
+  Search,
+  Lightbulb,
+  Cpu,
+  Leaf,
+  Link2,
+  Zap
 } from "lucide-react";
 import { 
   AreaChart, 
@@ -26,30 +34,109 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
-  Legend
+  Legend,
+  PieChart,
+  Pie,
+  Cell
 } from "recharts";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface InnovationConcept {
+  id: string;
+  title: string;
+  short_description: string;
+  full_analysis: string;
+  category: string;
+  business_impact: string;
+  maturity_level: number | null;
+  chart_type: string;
+  chart_data: unknown;
+  chart_config: unknown;
+  created_at: string | null;
+}
+
+const CATEGORIES = [
+  { id: 'all', label: 'Todos', icon: Lightbulb },
+  { id: 'AI', label: 'IA', icon: Bot },
+  { id: 'Blockchain', label: 'Blockchain', icon: Link2 },
+  { id: 'IoT', label: 'IoT', icon: Cpu },
+  { id: 'Sustainability', label: 'Sostenibilidad', icon: Leaf },
+];
+
+const CATEGORY_COLORS: Record<string, string> = {
+  'AI': 'bg-purple-500/10 text-purple-600 border-purple-500/20',
+  'Blockchain': 'bg-blue-500/10 text-blue-600 border-blue-500/20',
+  'IoT': 'bg-orange-500/10 text-orange-600 border-orange-500/20',
+  'Sustainability': 'bg-green-500/10 text-green-600 border-green-500/20',
+};
+
+const getCategoryIcon = (category: string) => {
+  switch (category) {
+    case 'AI': return Bot;
+    case 'Blockchain': return Link2;
+    case 'IoT': return Cpu;
+    case 'Sustainability': return Leaf;
+    default: return Lightbulb;
+  }
+};
 
 export default function InnovationLab() {
   const { activeOrg } = useOrganizationContext();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [qualityScore, setQualityScore] = useState(72);
   
+  // --- Estado para búsqueda y filtrado ---
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  
   // --- Estado para el Simulador ---
-  const [demandFactor, setDemandFactor] = useState([50]); // 0-100
-  const [supplyVolatility, setSupplyVolatility] = useState([20]); // 0-100
-  const [innovationImpact, setInnovationImpact] = useState([30]); // 0-100
+  const [demandFactor, setDemandFactor] = useState([50]);
+  const [supplyVolatility, setSupplyVolatility] = useState([20]);
+  const [innovationImpact, setInnovationImpact] = useState([30]);
 
-  // --- Lógica del Simulador (Generación de datos reactiva) ---
+  // --- Fetch concepts from database ---
+  const { data: concepts, isLoading: loadingConcepts } = useQuery({
+    queryKey: ['innovation-concepts'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('innovation_lab_concepts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return (data || []) as InnovationConcept[];
+    },
+  });
+
+  // --- Filter concepts ---
+  const filteredConcepts = useMemo(() => {
+    if (!concepts) return [];
+    
+    return concepts.filter(concept => {
+      const matchesSearch = searchQuery === "" || 
+        concept.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        concept.short_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        concept.category.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesCategory = selectedCategory === "all" || 
+        concept.category === selectedCategory;
+      
+      return matchesSearch && matchesCategory;
+    });
+  }, [concepts, searchQuery, selectedCategory]);
+
+  // --- Lógica del Simulador ---
   const simulationData = useMemo(() => {
     const baseData = [];
     const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
     let previousValue = 1000;
 
     for (let i = 0; i < 12; i++) {
-      // Factores de simulación
-      const growth = (demandFactor[0] - 50) / 10; // -5% a +5% crecimiento mensual
-      const volatility = (Math.random() - 0.5) * (supplyVolatility[0] * 5); // Ruido aleatorio
-      const innovationBoost = i > 5 ? (innovationImpact[0] * i * 2) : 0; // Impacto exponencial tras 6 meses
+      const growth = (demandFactor[0] - 50) / 10;
+      const volatility = (Math.random() - 0.5) * (supplyVolatility[0] * 5);
+      const innovationBoost = i > 5 ? (innovationImpact[0] * i * 2) : 0;
 
       const newValue = previousValue * (1 + growth / 100) + volatility + innovationBoost;
       previousValue = newValue;
@@ -69,19 +156,82 @@ export default function InnovationLab() {
     setIsAnalyzing(true);
     setQualityScore(0);
     
-    // Simular proceso de carga
     let progress = 0;
     const interval = setInterval(() => {
       progress += Math.random() * 15;
       if (progress >= 100) {
         clearInterval(interval);
         setIsAnalyzing(false);
-        setQualityScore(Math.floor(Math.random() * 15) + 80); // Score entre 80-95
+        setQualityScore(Math.floor(Math.random() * 15) + 80);
         toast.success("Análisis de Inteligencia Artificial completado");
       } else {
         setQualityScore(Math.min(Math.round(progress), 99));
       }
     }, 300);
+  };
+
+  const renderConceptChart = (concept: InnovationConcept) => {
+    const chartData = concept.chart_data as Array<Record<string, unknown>>;
+    const chartConfig = concept.chart_config as Record<string, unknown>;
+    
+    if (!chartData || chartData.length === 0) return null;
+
+    const CHART_COLORS = ['hsl(var(--primary))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))'];
+
+    switch (concept.chart_type) {
+      case 'pie':
+        return (
+          <ResponsiveContainer width="100%" height={120}>
+            <PieChart>
+              <Pie
+                data={chartData}
+                dataKey={chartConfig?.dataKey as string || 'value'}
+                nameKey={chartConfig?.nameKey as string || 'name'}
+                cx="50%"
+                cy="50%"
+                outerRadius={45}
+                innerRadius={25}
+              >
+                {chartData.map((_, index) => (
+                  <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        );
+      case 'bar':
+        return (
+          <ResponsiveContainer width="100%" height={120}>
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" tick={{ fontSize: 10 }} />
+              <YAxis tick={{ fontSize: 10 }} />
+              <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        );
+      case 'area':
+      case 'line':
+      default:
+        return (
+          <ResponsiveContainer width="100%" height={120}>
+            <AreaChart data={chartData}>
+              <defs>
+                <linearGradient id={`gradient-${concept.id}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.4}/>
+                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <Area 
+                type="monotone" 
+                dataKey="value" 
+                stroke="hsl(var(--primary))" 
+                fill={`url(#gradient-${concept.id})`}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        );
+    }
   };
 
   return (
@@ -99,12 +249,165 @@ export default function InnovationLab() {
         </div>
       </div>
 
-      <Tabs defaultValue="simulator" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
-          <TabsTrigger value="simulator">Simulador Predictivo</TabsTrigger>
-          <TabsTrigger value="quality">AI Data Auditor</TabsTrigger>
-          <TabsTrigger value="insights">Market Insights</TabsTrigger>
+      <Tabs defaultValue="concepts" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-4 lg:w-[500px]">
+          <TabsTrigger value="concepts">Conceptos I+D</TabsTrigger>
+          <TabsTrigger value="simulator">Simulador</TabsTrigger>
+          <TabsTrigger value="quality">AI Auditor</TabsTrigger>
+          <TabsTrigger value="insights">Insights</TabsTrigger>
         </TabsList>
+
+        {/* --- TAB 0: CONCEPTS --- */}
+        <TabsContent value="concepts" className="space-y-6">
+          {/* Search and Filter Bar */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar conceptos..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {CATEGORIES.map((cat) => {
+                const Icon = cat.icon;
+                return (
+                  <Button
+                    key={cat.id}
+                    variant={selectedCategory === cat.id ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(cat.id)}
+                    className="gap-2"
+                  >
+                    <Icon className="h-4 w-4" />
+                    {cat.label}
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Concepts Grid */}
+          {loadingConcepts ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <Card key={i} className="overflow-hidden">
+                  <CardHeader>
+                    <Skeleton className="h-5 w-3/4" />
+                    <Skeleton className="h-4 w-full mt-2" />
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className="h-[120px] w-full" />
+                    <Skeleton className="h-4 w-1/2 mt-4" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : filteredConcepts.length === 0 ? (
+            <div className="py-16 text-center">
+              <Lightbulb className="h-12 w-12 mx-auto text-muted-foreground opacity-50 mb-4" />
+              <h3 className="text-lg font-medium">No se encontraron conceptos</h3>
+              <p className="text-muted-foreground">
+                {searchQuery || selectedCategory !== 'all' 
+                  ? "Intenta con otros filtros de búsqueda" 
+                  : "Aún no hay conceptos de innovación registrados"}
+              </p>
+            </div>
+          ) : (
+            <motion.div 
+              layout 
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              <AnimatePresence mode="popLayout">
+                {filteredConcepts.map((concept) => {
+                  const CategoryIcon = getCategoryIcon(concept.category);
+                  return (
+                    <motion.div
+                      key={concept.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow group">
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex-1">
+                              <CardTitle className="text-base line-clamp-2 group-hover:text-primary transition-colors">
+                                {concept.title}
+                              </CardTitle>
+                            </div>
+                            <Badge 
+                              variant="outline" 
+                              className={`shrink-0 ${CATEGORY_COLORS[concept.category] || ''}`}
+                            >
+                              <CategoryIcon className="h-3 w-3 mr-1" />
+                              {concept.category}
+                            </Badge>
+                          </div>
+                          <CardDescription className="line-clamp-2 mt-1">
+                            {concept.short_description}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          {/* Chart Preview */}
+                          <div className="bg-muted/30 rounded-lg p-2">
+                            {renderConceptChart(concept)}
+                          </div>
+
+                          {/* Maturity Level */}
+                          {concept.maturity_level && (
+                            <div className="space-y-1">
+                              <div className="flex justify-between text-xs">
+                                <span className="text-muted-foreground">Madurez</span>
+                                <span className="font-medium">Nivel {concept.maturity_level}/5</span>
+                              </div>
+                              <Progress 
+                                value={(concept.maturity_level / 5) * 100} 
+                                className="h-1.5"
+                              />
+                            </div>
+                          )}
+
+                          {/* Business Impact */}
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <Zap className="h-3 w-3" />
+                            <span className="line-clamp-1">{concept.business_impact}</span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </motion.div>
+          )}
+
+          {/* Stats Summary */}
+          {concepts && concepts.length > 0 && (
+            <div className="flex items-center gap-4 text-sm text-muted-foreground pt-4 border-t">
+              <span>
+                Mostrando <strong className="text-foreground">{filteredConcepts.length}</strong> de{" "}
+                <strong className="text-foreground">{concepts.length}</strong> conceptos
+              </span>
+              {(searchQuery || selectedCategory !== 'all') && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedCategory("all");
+                  }}
+                >
+                  Limpiar filtros
+                </Button>
+              )}
+            </div>
+          )}
+        </TabsContent>
 
         {/* --- TAB 1: SIMULADOR --- */}
         <TabsContent value="simulator" className="space-y-4">
@@ -205,7 +508,6 @@ export default function InnovationLab() {
               </CardHeader>
               <CardContent className="flex flex-col items-center justify-center py-8 space-y-6">
                 <div className="relative flex items-center justify-center w-48 h-48">
-                  {/* Círculo animado */}
                   <svg className="w-full h-full transform -rotate-90">
                     <circle
                       cx="96"
