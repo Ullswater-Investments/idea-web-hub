@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { 
   Coins, Shield, FileCheck, Activity, Cpu, Network, 
-  ArrowLeft, ArrowRight, Calculator, Sparkles, TrendingUp, GitBranch
+  ArrowLeft, ArrowRight, Calculator, Sparkles, TrendingUp, GitBranch, Lock
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
@@ -394,6 +394,95 @@ sequenceDiagram
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Corporation: compliance CSRD. Proveedor: digitalización gratis. Plataforma: efecto red.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </motion.section>
+
+        {/* Diagrama de Flujo - Compute-to-Data */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-20"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-red-500/10 rounded-lg">
+              <Cpu className="h-5 w-5 text-red-600" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold">Flujo de Valor: Compute-to-Data</h2>
+              <p className="text-muted-foreground text-sm">
+                Cómo los algoritmos de IA procesan datos sensibles sin exponerlos
+              </p>
+            </div>
+          </div>
+          
+          <MermaidDiagram
+            chart={`
+sequenceDiagram
+    participant DO as 🏭 Data Owner<br/>(Datos Sensibles)
+    participant SB as 🔒 PROCUREDATA<br/>(Sandbox Seguro)
+    participant AI as 🤖 Algorithm<br/>(Proveedor IA)
+    participant OUT as 📊 Output<br/>(Solo Modelo)
+    
+    Note over DO,OUT: Compute-to-Data: Los datos NUNCA salen del sandbox
+    
+    DO->>SB: 1. Upload datos encriptados
+    Note right of DO: Fórmulas, pacientes,<br/>secretos industriales
+    
+    AI->>SB: 2. Envía algoritmo ML
+    Note left of AI: TensorFlow, PyTorch,<br/>código auditado
+    
+    rect rgb(255, 230, 230)
+        Note over SB: 🔐 ZONA SEGURA - Ejecución Aislada
+        SB->>SB: 3. Desencripta datos temporalmente
+        SB->>SB: 4. Ejecuta algoritmo sobre datos
+        SB->>SB: 5. Genera modelo entrenado
+        SB->>SB: 6. Destruye datos crudos
+    end
+    
+    SB-->>AI: 7. Entrega modelo entrenado
+    SB-->>DO: 8. Pago por uso de datos
+    
+    Note over DO,OUT: ✅ Data Owner: Monetiza sin exponer<br/>✅ AI Provider: Obtiene modelo valioso<br/>✅ PROCUREDATA: Cobra por orquestación
+            `}
+            className="border-2 border-red-500/20 bg-gradient-to-br from-red-50/50 to-orange-50/30 dark:from-red-950/20 dark:to-orange-950/10"
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <Card className="bg-red-500/5 border-red-500/20">
+              <CardContent className="pt-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Cpu className="h-4 w-4 text-red-600" />
+                  <span className="font-semibold text-sm">Soberanía Matemática</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Los datos nunca abandonan el sandbox. Prueba criptográfica de que solo el modelo salió.
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="bg-orange-500/5 border-orange-500/20">
+              <CardContent className="pt-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Lock className="h-4 w-4 text-orange-600" />
+                  <span className="font-semibold text-sm">Zero-Knowledge</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  El proveedor de IA nunca ve los datos crudos. Solo recibe el aprendizaje consolidado.
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="bg-green-500/5 border-green-500/20">
+              <CardContent className="pt-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Coins className="h-4 w-4 text-green-600" />
+                  <span className="font-semibold text-sm">Monetización Pasiva</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  El Data Owner cobra por cada ejecución sin gestionar nada. Ingreso recurrente de activos dormidos.
                 </p>
               </CardContent>
             </Card>
