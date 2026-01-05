@@ -207,6 +207,29 @@ class PontusXService {
       window.ethereum.removeListener('chainChanged', () => {});
     }
   }
+
+  /**
+   * Revoca el acceso a un recurso específico.
+   * Simula la interacción con el smart contract de permisos.
+   * @param did - Identificador descentralizado del usuario
+   * @param resourceId - ID del recurso/transacción a revocar
+   * @returns Hash de la transacción blockchain
+   */
+  async revokeAccess(did: string, resourceId: string): Promise<string> {
+    if (!this.signer) throw new Error("Wallet no conectada");
+    
+    // Simulación de latencia de red blockchain (2-3 segundos)
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Genera un hash de transacción pseudo-aleatorio
+        const txHash = "0x" + Array(64)
+          .fill(0)
+          .map(() => Math.floor(Math.random() * 16).toString(16))
+          .join('');
+        resolve(txHash);
+      }, 2000);
+    });
+  }
 }
 
 // Exportar una instancia Singleton

@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Download, Send, FileText, Building2, Info, Activity, TrendingUp } from "lucide-react";
+import { ArrowLeft, Download, Send, FileText, Building2, Info, Activity, TrendingUp, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { ESGDataView } from "@/components/ESGDataView";
 import { IoTDataView } from "@/components/IoTDataView";
@@ -18,6 +18,8 @@ import { GenericJSONView } from "@/components/GenericJSONView";
 import { ArrayDataView } from "@/components/ArrayDataView";
 import { CodeIntegrationModal } from "@/components/CodeIntegrationModal";
 import { DataLineage } from "@/components/DataLineage";
+import DataLineageBlockchain from "@/components/DataLineageBlockchain";
+import { RevokeAccessButton } from "@/components/RevokeAccessButton";
 import { Progress } from "@/components/ui/progress";
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { generateLicensePDF } from "@/utils/pdfGenerator";
@@ -263,10 +265,22 @@ const DataView = () => {
       </header>
 
       <main className="container mx-auto p-6">
-        <Button variant="ghost" onClick={() => navigate("/requests")} className="mb-6">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Volver a solicitudes
-        </Button>
+        <div className="flex items-center justify-between mb-6">
+          <Button variant="ghost" onClick={() => navigate("/requests")}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Volver a solicitudes
+          </Button>
+          
+          {canViewData && (
+            <RevokeAccessButton 
+              resourceId={id || ""} 
+              resourceName={transaction.asset?.product?.name}
+              onRevoked={(txHash) => {
+                toast.info("El acceso ha sido revocado. Hash: " + txHash.slice(0, 16) + "...");
+              }}
+            />
+          )}
+        </div>
 
         <div className="mb-6">
           <h2 className="mb-2 text-3xl font-bold">Visualización de Datos</h2>
@@ -456,6 +470,10 @@ const DataView = () => {
                   {supplierData && supplierData.length > 0 && (
                     <TabsTrigger value="supplier">Datos de Proveedor</TabsTrigger>
                   )}
+                  <TabsTrigger value="blockchain">
+                    <ShieldCheck className="h-4 w-4 mr-1" />
+                    Auditoría Blockchain
+                  </TabsTrigger>
                 </TabsList>
 
                 {/* Tab de Payload flexible (ESG, IoT, etc.) */}
@@ -639,6 +657,11 @@ const DataView = () => {
                     </Card>
                   </TabsContent>
                 )}
+
+                {/* Tab de Auditoría Blockchain */}
+                <TabsContent value="blockchain">
+                  <DataLineageBlockchain />
+                </TabsContent>
               </Tabs>
             )}
           </div>
