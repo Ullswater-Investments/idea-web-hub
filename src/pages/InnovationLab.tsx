@@ -42,6 +42,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
+import { ConceptDetailModal } from "@/components/innovation/ConceptDetailModal";
 
 interface InnovationConcept {
   id: string;
@@ -90,6 +91,7 @@ export default function InnovationLab() {
   // --- Estado para búsqueda y filtrado ---
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedConcept, setSelectedConcept] = useState<InnovationConcept | null>(null);
   
   // --- Estado para el Simulador ---
   const [demandFactor, setDemandFactor] = useState([50]);
@@ -331,8 +333,10 @@ export default function InnovationLab() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.9 }}
                       transition={{ duration: 0.3 }}
+                      onClick={() => setSelectedConcept(concept)}
+                      className="cursor-pointer"
                     >
-                      <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow group">
+                      <Card className="overflow-hidden h-full hover:shadow-lg hover:scale-[1.02] transition-all group">
                         <CardHeader className="pb-3">
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex-1">
@@ -644,6 +648,13 @@ export default function InnovationLab() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Concept Detail Modal */}
+      <ConceptDetailModal
+        isOpen={!!selectedConcept}
+        onClose={() => setSelectedConcept(null)}
+        concept={selectedConcept}
+      />
     </div>
   );
 }
