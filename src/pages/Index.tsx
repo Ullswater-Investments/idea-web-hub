@@ -7,17 +7,17 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { 
-  Shield, 
-  GitBranch, 
-  BarChart3, 
-  Lock, 
-  CheckCircle2, 
+import {
+  Shield,
+  GitBranch,
+  BarChart3,
+  Lock,
+  CheckCircle2,
   FileText,
   Bell,
   Database,
   ArrowRight,
-  Sparkles
+  Sparkles,
 } from "lucide-react";
 import { FadeIn, SlideUp, ScaleIn, StaggerContainer, StaggerItem } from "@/components/AnimatedSection";
 
@@ -69,78 +69,70 @@ const Index = () => {
     setLoading(true);
     const demoEmail = "demo@procuredata.app";
     const demoPassword = "demo123456";
-    
+
     const { error: loginError } = await signIn(demoEmail, demoPassword);
-    
+
     if (loginError) {
       const { error: signupError } = await signUp(demoEmail, demoPassword);
-      
+
       if (!signupError) {
         await signIn(demoEmail, demoPassword);
       }
     }
-    
+
     setLoading(false);
   };
 
   const scrollToAuth = () => {
-    document.getElementById('auth-section')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById("auth-section")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section with Parallax */}
-      <section ref={heroRef} className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+      <section
+        ref={heroRef}
+        className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/5"
+      >
         {/* Decorative background elements with parallax */}
-        <motion.div 
+        <motion.div
           style={{ y: useTransform(scrollYProgress, [0, 1], [0, -300]), opacity: 0.1 }}
           className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"
         />
-        <motion.div 
+        <motion.div
           style={{ y: useTransform(scrollYProgress, [0, 1], [0, -200]), opacity: 0.1 }}
           className="absolute bottom-20 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl"
         />
-        
-        <motion.div 
-          style={{ opacity, scale }}
-          className="container mx-auto px-4 py-20 lg:py-32 relative z-10"
-        >
+
+        <motion.div style={{ opacity, scale }} className="container mx-auto px-4 py-20 lg:py-32 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <FadeIn delay={0.1}>
-              <motion.div 
-                style={{ y: yBadge }}
-                className="inline-block"
-              >
+              <motion.div style={{ y: yBadge }} className="inline-block">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary backdrop-blur-sm">
                   <Sparkles className="w-4 h-4" />
                   Sistema de Gobernanza Multi-Tenant
                 </div>
               </motion.div>
             </FadeIn>
-            
+
             <SlideUp delay={0.2}>
-              <motion.h1 
-                style={{ y: yTitle }}
-                className="text-4xl md:text-6xl font-bold text-foreground leading-tight"
-              >
+              <motion.h1 style={{ y: yTitle }} className="text-4xl md:text-6xl font-bold text-foreground leading-tight">
                 <span className="procuredata-gradient">PROCUREDATA</span>
               </motion.h1>
             </SlideUp>
-            
+
             <FadeIn delay={0.3}>
-              <motion.p 
+              <motion.p
                 style={{ y: ySubtitle }}
                 className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto"
               >
-                Plataforma integral para la gestión y gobernanza de transacciones de datos entre organizaciones con flujos de aprobación multi-actor
+                Plataforma integral para la gestión y gobernanza de transacciones de datos entre organizaciones con
+                flujos de aprobación multi-actor
               </motion.p>
             </FadeIn>
-            
+
             <FadeIn delay={0.4}>
-              <motion.div 
-                style={{ y: yButtons }}
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-              >
+              <motion.div style={{ y: yButtons }} className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" variant="hero" onClick={scrollToAuth} className="text-lg">
                   Comenzar Ahora
                   <ArrowRight className="ml-2 w-5 h-5" />
@@ -159,15 +151,13 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <FadeIn>
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Características Principales
-              </h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Características Principales</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Gestión completa del ciclo de vida de transacciones de datos con seguridad empresarial
               </p>
             </div>
           </FadeIn>
-          
+
           <StaggerContainer className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <StaggerItem>
               <ScaleIn>
@@ -178,7 +168,8 @@ const Index = () => {
                     </div>
                     <h3 className="text-xl font-bold text-foreground">Multi-Tenant Seguro</h3>
                     <p className="text-muted-foreground">
-                      Aislamiento completo por organización mediante Row Level Security (RLS). Cada organización solo accede a sus datos.
+                      Aislamiento completo por organización mediante Row Level Security (RLS). Cada organización solo
+                      accede a sus datos.
                     </p>
                   </CardContent>
                 </Card>
@@ -194,7 +185,8 @@ const Index = () => {
                     </div>
                     <h3 className="text-xl font-bold text-foreground">Flujo de Aprobaciones</h3>
                     <p className="text-muted-foreground">
-                      Sistema de 3 actores (Consumer, Subject, Holder) con máquina de estados que garantiza el cumplimiento del proceso.
+                      Sistema de 3 actores (Consumer, Subject, Holder) con máquina de estados que garantiza el
+                      cumplimiento del proceso.
                     </p>
                   </CardContent>
                 </Card>
@@ -225,15 +217,13 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <FadeIn>
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                ¿Cómo Funciona?
-              </h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">¿Cómo Funciona?</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Flujo de trabajo simplificado en 4 pasos
               </p>
             </div>
           </FadeIn>
-          
+
           <div className="max-w-4xl mx-auto space-y-8">
             <SlideUp delay={0.1}>
               <div className="flex gap-6 items-start">
@@ -243,7 +233,8 @@ const Index = () => {
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-foreground mb-2">Consumer Solicita Datos</h3>
                   <p className="text-muted-foreground">
-                    Una organización consumidora inicia una solicitud de datos de proveedores a través del catálogo integrado.
+                    Una organización consumidora inicia una solicitud de datos de proveedores a través del catálogo
+                    integrado.
                   </p>
                 </div>
               </div>
@@ -257,7 +248,8 @@ const Index = () => {
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-foreground mb-2">Subject Pre-Aprueba</h3>
                   <p className="text-muted-foreground">
-                    El sujeto de los datos (proveedor) recibe notificación y decide si autoriza compartir su información.
+                    El sujeto de los datos (proveedor) recibe notificación y decide si autoriza compartir su
+                    información.
                   </p>
                 </div>
               </div>
@@ -285,7 +277,8 @@ const Index = () => {
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-foreground mb-2">Datos Disponibles</h3>
                   <p className="text-muted-foreground">
-                    Los datos quedan disponibles para visualización, análisis y exportación automática al ERP configurado.
+                    Los datos quedan disponibles para visualización, análisis y exportación automática al ERP
+                    configurado.
                   </p>
                 </div>
               </div>
@@ -299,15 +292,13 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <FadeIn>
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Beneficios del Sistema
-              </h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Beneficios del Sistema</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Todas las capacidades que necesita para una gobernanza efectiva
               </p>
             </div>
           </FadeIn>
-          
+
           <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             <StaggerItem>
               <div className="flex gap-4 items-start p-6 bg-card border rounded-lg hover:shadow-md transition-shadow h-full">
@@ -338,9 +329,7 @@ const Index = () => {
                 <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="font-bold text-foreground mb-2">Trazabilidad Completa</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Historial detallado de cada transacción y aprobación
-                  </p>
+                  <p className="text-sm text-muted-foreground">Historial detallado de cada transacción y aprobación</p>
                 </div>
               </div>
             </StaggerItem>
@@ -362,9 +351,7 @@ const Index = () => {
                 <Bell className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="font-bold text-foreground mb-2">Notificaciones Automáticas</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Alertas en tiempo real para cada cambio de estado
-                  </p>
+                  <p className="text-sm text-muted-foreground">Alertas en tiempo real para cada cambio de estado</p>
                 </div>
               </div>
             </StaggerItem>
@@ -390,114 +377,113 @@ const Index = () => {
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
             <SlideUp>
               <div className="space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-                Comience a Usar <span className="procuredata-gradient">PROCUREDATA</span>
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                Cree su cuenta o acceda al sistema para comenzar a gestionar transacciones de datos de forma segura y eficiente.
-              </p>
-              <div className="space-y-4">
-                <div className="flex gap-3 items-start">
-                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <p className="text-muted-foreground">Sin costos de configuración inicial</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                  Comience a Usar <span className="procuredata-gradient">PROCUREDATA</span>
+                </h2>
+                <p className="text-lg text-muted-foreground">
+                  Cree su cuenta o acceda al sistema para comenzar a gestionar transacciones de datos de forma segura y
+                  eficiente.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex gap-3 items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-muted-foreground">Sin costos de configuración inicial</p>
+                  </div>
+                  <div className="flex gap-3 items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-muted-foreground">Modo demo disponible para evaluación</p>
+                  </div>
+                  <div className="flex gap-3 items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-muted-foreground">Soporte completo incluido</p>
+                  </div>
                 </div>
-                <div className="flex gap-3 items-start">
-                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <p className="text-muted-foreground">Modo demo disponible para evaluación</p>
-                </div>
-                <div className="flex gap-3 items-start">
-                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <p className="text-muted-foreground">Soporte completo incluido</p>
-                </div>
-              </div>
               </div>
             </SlideUp>
 
             <ScaleIn delay={0.2}>
               <Card className="shadow-xl">
-              <CardContent className="pt-6">
-                <Tabs defaultValue="login" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="login">Iniciar Sesión</TabsTrigger>
-                    <TabsTrigger value="register">Registrarse</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="login">
-                    <form onSubmit={handleSignIn} className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="login-email">Email</Label>
-                        <Input
-                          id="login-email"
-                          type="email"
-                          placeholder="tu@email.com"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="login-password">Contraseña</Label>
-                        <Input
-                          id="login-password"
-                          type="password"
-                          placeholder="••••••••"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <Button type="submit" className="w-full" disabled={loading}>
-                        {loading ? "Cargando..." : "Iniciar Sesión"}
-                      </Button>
-                    </form>
-                  </TabsContent>
+                <CardContent className="pt-6">
+                  <Tabs defaultValue="login" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="login">Iniciar Sesión</TabsTrigger>
+                      <TabsTrigger value="register">Registrarse</TabsTrigger>
+                    </TabsList>
 
-                  <TabsContent value="register">
-                    <form onSubmit={handleSignUp} className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="register-email">Email</Label>
-                        <Input
-                          id="register-email"
-                          type="email"
-                          placeholder="tu@email.com"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="register-password">Contraseña</Label>
-                        <Input
-                          id="register-password"
-                          type="password"
-                          placeholder="••••••••"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                          minLength={6}
-                        />
-                      </div>
-                      <Button type="submit" className="w-full" disabled={loading}>
-                        {loading ? "Cargando..." : "Crear Cuenta"}
-                      </Button>
-                    </form>
-                  </TabsContent>
-                </Tabs>
+                    <TabsContent value="login">
+                      <form onSubmit={handleSignIn} className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="login-email">Email</Label>
+                          <Input
+                            id="login-email"
+                            type="email"
+                            placeholder="tu@email.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="login-password">Contraseña</Label>
+                          <Input
+                            id="login-password"
+                            type="password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <Button type="submit" className="w-full" disabled={loading}>
+                          {loading ? "Cargando..." : "Iniciar Sesión"}
+                        </Button>
+                      </form>
+                    </TabsContent>
 
-                <div className="mt-6 pt-6 border-t">
-                  <p className="text-sm text-muted-foreground text-center mb-3">
-                    ¿Quiere explorar primero?
-                  </p>
-                  <Button
-                    variant="outline"
-                    className="w-full border-2 border-amber-500 text-amber-700 hover:bg-amber-50 hover:text-amber-800"
-                    onClick={handleDemoAccess}
-                    disabled={loading}
-                  >
-                    🎭 Acceder a Versión Demo
-                  </Button>
-                </div>
-              </CardContent>
+                    <TabsContent value="register">
+                      <form onSubmit={handleSignUp} className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="register-email">Email</Label>
+                          <Input
+                            id="register-email"
+                            type="email"
+                            placeholder="tu@email.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="register-password">Contraseña</Label>
+                          <Input
+                            id="register-password"
+                            type="password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            minLength={6}
+                          />
+                        </div>
+                        <Button type="submit" className="w-full" disabled={loading}>
+                          {loading ? "Cargando..." : "Crear Cuenta"}
+                        </Button>
+                      </form>
+                    </TabsContent>
+                  </Tabs>
+
+                  <div className="mt-6 pt-6 border-t">
+                    <p className="text-sm text-muted-foreground text-center mb-3">¿Quiere explorar primero?</p>
+                    <Button
+                      variant="outline"
+                      className="w-full border-2 border-amber-500 text-amber-700 hover:bg-amber-50 hover:text-amber-800"
+                      onClick={handleDemoAccess}
+                      disabled={loading}
+                    >
+                      🎭 Acceder a Versión Demo
+                    </Button>
+                  </div>
+                </CardContent>
               </Card>
             </ScaleIn>
           </div>
@@ -518,37 +504,47 @@ const Index = () => {
                 </p>
               </div>
             </StaggerItem>
-            
+
             <StaggerItem>
               <div className="space-y-4">
                 <h4 className="font-semibold text-foreground">Enlaces Rápidos</h4>
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li>
-                    <a href="#" className="hover:text-primary transition-colors">Documentación</a>
+                    <a href="#" className="hover:text-primary transition-colors">
+                      Documentación
+                    </a>
                   </li>
                   <li>
-                    <a href="#" onClick={handleDemoAccess} className="hover:text-primary transition-colors">Modo Demo</a>
+                    <a href="#" onClick={handleDemoAccess} className="hover:text-primary transition-colors">
+                      Modo Demo
+                    </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-primary transition-colors">Arquitectura</a>
+                    <a href="#" className="hover:text-primary transition-colors">
+                      Arquitectura
+                    </a>
                   </li>
                 </ul>
               </div>
             </StaggerItem>
-            
+
             <StaggerItem>
               <div className="space-y-4">
                 <h4 className="font-semibold text-foreground">Contacto</h4>
                 <p className="text-sm text-muted-foreground">
-                  Para más información sobre <span className="procuredata-gradient">PROCUREDATA</span> y sus capacidades.
+                  Para más información sobre <span className="procuredata-gradient">PROCUREDATA</span> y sus
+                  capacidades.
                 </p>
               </div>
             </StaggerItem>
           </StaggerContainer>
-          
+
           <FadeIn delay={0.3}>
             <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-              <p>&copy; {new Date().getFullYear()} <span className="procuredata-gradient">PROCUREDATA</span>. Sistema de Gobernanza de Datos.</p>
+              <p>
+                &copy; {new Date().getFullYear()} <span className="procuredata-gradient">PROCUREDATA</span>. Sistema de
+                Gobernanza de Datos.
+              </p>
             </div>
           </FadeIn>
         </div>
