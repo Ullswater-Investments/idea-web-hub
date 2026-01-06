@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useOrganizationContext } from "@/hooks/useOrganizationContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,8 +10,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TeamManagement } from "@/components/TeamManagement";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Save, Upload, Globe, Linkedin, Building2 } from "lucide-react";
+import { Save, Upload, Globe, Linkedin, Building2, CheckCircle2, AlertCircle } from "lucide-react";
 import { FadeIn } from "@/components/AnimatedSection";
 
 export default function SettingsOrganization() {
@@ -37,17 +39,59 @@ export default function SettingsOrganization() {
     else toast.success("Perfil actualizado correctamente");
   };
 
+  // Calculate profile completeness
+  const profileCompleteness = useMemo(() => {
+    if (!activeOrg) return 0;
+    const fields = [
+      activeOrg.name,
+      activeOrg.sector,
+      activeOrg.website,
+      activeOrg.logo_url,
+      activeOrg.marketplace_description,
+      activeOrg.linkedin_url
+    ];
+    const completed = fields.filter(Boolean).length;
+    return Math.round((completed / fields.length) * 100);
+  }, [activeOrg]);
+
   if (!activeOrg) return null;
 
   return (
     <div className="container py-8 fade-in">
       <FadeIn>
         <div className="mb-8">
-          <h2 className="text-3xl font-bold flex items-center gap-2">
-            <Building2 className="h-8 w-8 text-blue-600" />
-            Configuración de Organización
-          </h2>
-          <p className="text-muted-foreground mt-2">Gestiona el perfil público y los miembros de tu organización.</p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h2 className="text-3xl font-bold flex items-center gap-2">
+                <Building2 className="h-8 w-8 text-blue-600" />
+                Configuración de Organización
+              </h2>
+              <p className="text-muted-foreground mt-2">Gestiona el perfil público y los miembros de tu organización.</p>
+            </div>
+            
+            {/* Profile Completeness Indicator */}
+            <Card className="w-full md:w-72 border-dashed">
+              <CardContent className="pt-4 pb-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium">Perfil Completado</span>
+                  <Badge 
+                    variant={profileCompleteness >= 80 ? "default" : "secondary"}
+                    className={profileCompleteness >= 80 ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300" : ""}
+                  >
+                    {profileCompleteness >= 80 ? (
+                      <><CheckCircle2 className="h-3 w-3 mr-1" /> Óptimo</>
+                    ) : (
+                      <><AlertCircle className="h-3 w-3 mr-1" /> Incompleto</>
+                    )}
+                  </Badge>
+                </div>
+                <Progress value={profileCompleteness} className="h-2" />
+                <p className="text-xs text-muted-foreground mt-2">
+                  {profileCompleteness}% - {profileCompleteness < 100 ? "Completa tu perfil para mejor visibilidad" : "¡Perfil completo!"}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </FadeIn>
 

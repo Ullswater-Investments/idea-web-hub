@@ -3,13 +3,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useOrganizationContext } from "@/hooks/useOrganizationContext";
 import { useAuth } from "@/hooks/useAuth";
-import { Megaphone, Plus, Calendar, DollarSign, Tag, Loader2, Search, BadgeCheck, AlertCircle } from "lucide-react";
+import { Megaphone, Plus, Calendar, DollarSign, Tag, Loader2, Search, BadgeCheck, AlertCircle, TrendingUp, ShoppingBag } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import type { MarketplaceOpportunity } from "@/types/database.extensions";
 import { EmptyState } from "@/components/EmptyState";
 import { differenceInDays } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -52,6 +53,7 @@ export default function Opportunities() {
   const { activeOrg } = useOrganizationContext();
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [submittingProposalId, setSubmittingProposalId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -366,7 +368,7 @@ export default function Opportunities() {
         </div>
       ) : filteredOpportunities.length === 0 ? (
         <Card className="border-dashed">
-          <CardContent>
+          <CardContent className="py-12">
             <EmptyState
               icon={Megaphone}
               title={opportunities.length === 0 ? "No hay oportunidades publicadas" : "Sin resultados"}
@@ -375,10 +377,20 @@ export default function Opportunities() {
                 : "No se encontraron oportunidades con los filtros aplicados. Intenta con otros términos."
               }
               action={opportunities.length === 0 && (
-                <Button onClick={() => setDialogOpen(true)} className="gap-2">
-                  <Plus className="h-4 w-4" />
-                  Publicar Necesidad
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                  <Button onClick={() => setDialogOpen(true)} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Publicar Necesidad
+                  </Button>
+                  <Button variant="outline" onClick={() => navigate('/catalog')} className="gap-2">
+                    <ShoppingBag className="h-4 w-4" />
+                    Explorar Catálogo
+                  </Button>
+                  <Button variant="ghost" onClick={() => navigate('/reports')} className="gap-2">
+                    <TrendingUp className="h-4 w-4" />
+                    Ver Tendencias
+                  </Button>
+                </div>
               )}
             />
           </CardContent>
