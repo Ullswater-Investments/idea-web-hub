@@ -25,6 +25,7 @@ export default function Guide() {
           <button onClick={() => scrollToSection('features')} className="block w-full text-left p-2 hover:bg-muted rounded text-muted-foreground hover:text-foreground transition-colors">3. Funcionalidades Core</button>
           <button onClick={() => scrollToSection('business')} className="block w-full text-left p-2 hover:bg-muted rounded text-muted-foreground hover:text-foreground transition-colors">4. Modelo de Negocio</button>
           <button onClick={() => scrollToSection('tech')} className="block w-full text-left p-2 hover:bg-muted rounded text-muted-foreground hover:text-foreground transition-colors">5. Arquitectura Técnica</button>
+          <button onClick={() => scrollToSection('web3')} className="block w-full text-left p-2 hover:bg-muted rounded text-muted-foreground hover:text-foreground transition-colors">6. Integración Web3</button>
         </nav>
         <div className="mt-8 pt-8 border-t">
           <Link to="/">
@@ -137,7 +138,7 @@ export default function Guide() {
           </section>
 
           {/* SECCIÓN 5: TECNOLOGÍA */}
-          <section id="tech" className="space-y-6 mb-24">
+          <section id="tech" className="space-y-6 mb-12">
             <h2 className="text-3xl font-bold">5. Arquitectura Técnica</h2>
             <p className="leading-7">
               Construido sobre un stack moderno y escalable:
@@ -151,6 +152,39 @@ export default function Guide() {
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
               Integraciones preparadas para <strong>Gaia-X</strong> mediante conectores EDC y soporte para <strong>Webhooks</strong> empresariales.
+            </p>
+          </section>
+
+          {/* SECCIÓN 6: WEB3 */}
+          <section id="web3" className="space-y-6 mb-24">
+            <h2 className="text-3xl font-bold">6. Integración Web3</h2>
+            <Badge className="bg-primary/10 text-primary border-primary/20">Nuevo en v3.1</Badge>
+            <p className="leading-7">
+              ProcureData se integra nativamente con la <strong>blockchain Pontus-X</strong> para ofrecer identidad descentralizada, 
+              pagos seguros y trazabilidad inmutable de acuerdos de datos.
+            </p>
+            <div className="grid gap-4 md:grid-cols-3 mt-6">
+              <Card className="p-4 bg-muted/30 border-dashed">
+                <h4 className="font-semibold mb-2">🔗 Pontus-X Network</h4>
+                <p className="text-sm text-muted-foreground">
+                  Red blockchain europea para intercambio de datos compatible con Gaia-X.
+                </p>
+              </Card>
+              <Card className="p-4 bg-muted/30 border-dashed">
+                <h4 className="font-semibold mb-2">💶 EUROe Wallet</h4>
+                <p className="text-sm text-muted-foreground">
+                  Stablecoin regulada para pagos instantáneos sin volatilidad.
+                </p>
+              </Card>
+              <Card className="p-4 bg-muted/30 border-dashed">
+                <h4 className="font-semibold mb-2">🆔 DID Identity</h4>
+                <p className="text-sm text-muted-foreground">
+                  Identidad descentralizada (did:ethr) para firmas verificables on-chain.
+                </p>
+              </Card>
+            </div>
+            <p className="mt-4 text-sm text-muted-foreground">
+              El <strong>Web3StatusWidget</strong> del Dashboard muestra en tiempo real el estado de conexión, balance y DID del usuario.
             </p>
           </section>
 
