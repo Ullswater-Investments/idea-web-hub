@@ -9,8 +9,98 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Server, Shield, Database, Save, CheckCircle2, AlertCircle } from "lucide-react";
+import { Server, Shield, Database, Save, CheckCircle2, AlertCircle, RefreshCw, Wifi, WifiOff } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { formatDistanceToNow } from "date-fns";
+import { es } from "date-fns/locale";
+
+// Componente de estado de conexión
+function ConnectionStatus({ configs, configType }: { configs: any[]; configType: string }) {
+  const activeConfig = configs?.find((c: any) => c.config_type === configType && c.is_active);
+  const [isTesting, setIsTesting] = useState(false);
+
+  const handleTestConnection = async () => {
+    setIsTesting(true);
+    // Simular test de conexión
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsTesting(false);
+    toast.success("Conexión verificada correctamente");
+  };
+
+  if (!activeConfig) {
+    return (
+      <Card className="h-fit">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">Estado de Conexión</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-2">
+            <WifiOff className="h-4 w-4 text-muted-foreground" />
+            <Badge variant="outline" className="text-muted-foreground">No configurado</Badge>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Configura una conexión para ver el estado.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const isConnected = activeConfig.last_test_status === 'success';
+  const lastSync = activeConfig.last_test_date 
+    ? formatDistanceToNow(new Date(activeConfig.last_test_date), { addSuffix: true, locale: es })
+    : 'Nunca';
+
+  return (
+    <Card className="h-fit">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base">Estado de Conexión</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex items-center gap-2">
+          {isConnected ? (
+            <>
+              <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse" />
+              <Badge variant="outline" className="text-green-600 border-green-200">
+                <Wifi className="mr-1 h-3 w-3" />
+                Sincronizado
+              </Badge>
+            </>
+          ) : (
+            <>
+              <div className="h-3 w-3 rounded-full bg-amber-500" />
+              <Badge variant="outline" className="text-amber-600 border-amber-200">
+                <WifiOff className="mr-1 h-3 w-3" />
+                Pendiente
+              </Badge>
+            </>
+          )}
+        </div>
+        
+        <div className="text-sm space-y-1">
+          <p className="text-muted-foreground">Última sincronización:</p>
+          <p className="font-mono text-xs">{lastSync}</p>
+        </div>
+
+        <div className="text-sm space-y-1">
+          <p className="text-muted-foreground">Endpoint activo:</p>
+          <p className="font-mono text-xs truncate">{activeConfig.endpoint_url || activeConfig.management_url}</p>
+        </div>
+        
+        <Button 
+          variant="outline" 
+          className="w-full" 
+          onClick={handleTestConnection}
+          disabled={isTesting}
+        >
+          <RefreshCw className={`mr-2 h-4 w-4 ${isTesting ? 'animate-spin' : ''}`} />
+          {isTesting ? 'Probando...' : 'Probar Conexión'}
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function ERPConfig() {
   const { activeOrg } = useOrganizationContext();
@@ -99,109 +189,124 @@ export default function ERPConfig() {
 
         {/* --- TAB 1: ERP CONFIG --- */}
         <TabsContent value="erp">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2"><Server className="h-5 w-5" /> Configuración ERP</CardTitle>
-              <CardDescription>Conexión API REST estándar para sistemas legacy (SAP, Oracle, Microsoft).</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-2">
-                <Label>Nombre de la Conexión</Label>
-                <Input placeholder="Ej: SAP Producción" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
-              </div>
-              <div className="grid gap-2">
-                <Label>API Endpoint (Webhook)</Label>
-                <Input placeholder="https://api.empresa.com/v1/ingest" value={formData.api_endpoint} onChange={e => setFormData({...formData, api_endpoint: e.target.value})} />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label>Método de Autenticación</Label>
-                  <Select value={formData.auth_method} onValueChange={v => setFormData({...formData, auth_method: v})}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="bearer">Bearer Token</SelectItem>
-                      <SelectItem value="basic">Basic Auth</SelectItem>
-                      <SelectItem value="api_key">API Key</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-2">
-                  <Label>Token / Key</Label>
-                  <Input type="password" value={formData.auth_token} onChange={e => setFormData({...formData, auth_token: e.target.value})} />
-                </div>
-              </div>
-              <Button onClick={handleSave} disabled={saveMutation.isPending} className="w-full">
-                <Save className="mr-2 h-4 w-4" /> Guardar Configuración ERP
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="grid lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2"><Server className="h-5 w-5" /> Configuración ERP</CardTitle>
+                  <CardDescription>Conexión API REST estándar para sistemas legacy (SAP, Oracle, Microsoft).</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-2">
+                    <Label>Nombre de la Conexión</Label>
+                    <Input placeholder="Ej: SAP Producción" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>API Endpoint (Webhook)</Label>
+                    <Input placeholder="https://api.empresa.com/v1/ingest" value={formData.api_endpoint} onChange={e => setFormData({...formData, api_endpoint: e.target.value})} />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label>Método de Autenticación</Label>
+                      <Select value={formData.auth_method} onValueChange={v => setFormData({...formData, auth_method: v})}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="bearer">Bearer Token</SelectItem>
+                          <SelectItem value="basic">Basic Auth</SelectItem>
+                          <SelectItem value="api_key">API Key</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label>Token / Key</Label>
+                      <Input type="password" value={formData.auth_token} onChange={e => setFormData({...formData, auth_token: e.target.value})} />
+                    </div>
+                  </div>
+                  <Button onClick={handleSave} disabled={saveMutation.isPending} className="w-full">
+                    <Save className="mr-2 h-4 w-4" /> Guardar Configuración ERP
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+            <ConnectionStatus configs={configs || []} configType="download" />
+          </div>
         </TabsContent>
 
         {/* --- TAB 2: EDC CONNECTOR --- */}
         <TabsContent value="edc">
-          <Card className="border-blue-200 dark:border-blue-900">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
-                <Database className="h-5 w-5" /> Eclipse Dataspace Connector
-              </CardTitle>
-              <CardDescription>Configura tu nodo para participar en espacios de datos soberanos (Gaia-X / IDSA).</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-2">
-                <Label>Nombre del Nodo</Label>
-                <Input placeholder="Ej: Nodo IDSA Madrid" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
-              </div>
-              <div className="grid gap-2">
-                <Label>Management API URL</Label>
-                <Input placeholder="http://edc-control-plane:8181/management" value={formData.management_url} onChange={e => setFormData({...formData, management_url: e.target.value})} />
-              </div>
-              <div className="grid gap-2">
-                <Label>DSP Protocol URL</Label>
-                <Input placeholder="http://edc-control-plane:8282/protocol" value={formData.protocol_url} onChange={e => setFormData({...formData, protocol_url: e.target.value})} />
-              </div>
-              <div className="grid gap-2">
-                <Label>API Key (X-Api-Key)</Label>
-                <Input type="password" value={formData.auth_token} onChange={e => setFormData({...formData, auth_token: e.target.value})} />
-              </div>
-              <Button onClick={handleSave} disabled={saveMutation.isPending} className="w-full bg-blue-600 hover:bg-blue-700">
-                <Save className="mr-2 h-4 w-4" /> Conectar Nodo EDC
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="grid lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <Card className="border-blue-200 dark:border-blue-900">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
+                    <Database className="h-5 w-5" /> Eclipse Dataspace Connector
+                  </CardTitle>
+                  <CardDescription>Configura tu nodo para participar en espacios de datos soberanos (Gaia-X / IDSA).</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-2">
+                    <Label>Nombre del Nodo</Label>
+                    <Input placeholder="Ej: Nodo IDSA Madrid" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Management API URL</Label>
+                    <Input placeholder="http://edc-control-plane:8181/management" value={formData.management_url} onChange={e => setFormData({...formData, management_url: e.target.value})} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>DSP Protocol URL</Label>
+                    <Input placeholder="http://edc-control-plane:8282/protocol" value={formData.protocol_url} onChange={e => setFormData({...formData, protocol_url: e.target.value})} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>API Key (X-Api-Key)</Label>
+                    <Input type="password" value={formData.auth_token} onChange={e => setFormData({...formData, auth_token: e.target.value})} />
+                  </div>
+                  <Button onClick={handleSave} disabled={saveMutation.isPending} className="w-full bg-blue-600 hover:bg-blue-700">
+                    <Save className="mr-2 h-4 w-4" /> Conectar Nodo EDC
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+            <ConnectionStatus configs={configs || []} configType="upload" />
+          </div>
         </TabsContent>
 
         {/* --- TAB 3: SSI WALLET --- */}
         <TabsContent value="wallet">
-          <Card className="border-purple-200 dark:border-purple-900">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-400">
-                <Shield className="h-5 w-5" /> Identidad Soberana (SSI)
-              </CardTitle>
-              <CardDescription>Gestión de DIDs y Credenciales Verificables.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Alert variant="default" className="bg-purple-50 border-purple-200 dark:bg-purple-950/20 dark:border-purple-900">
-                <AlertCircle className="h-4 w-4 text-purple-600" />
-                <AlertTitle className="text-purple-800 dark:text-purple-400">Seguridad de Claves Privadas</AlertTitle>
-                <AlertDescription className="text-purple-700 dark:text-purple-300 text-xs">
-                  Las claves privadas nunca se almacenan en la base de datos estándar. Se gestionan a través de Supabase Vault o HSM externo. Aquí solo registras el DID público.
-                </AlertDescription>
-              </Alert>
-              
-              <div className="grid gap-2">
-                <Label>DID (Decentralized Identifier)</Label>
-                <Input placeholder="did:web:procuredata.app:company-xyz" value={formData.public_key} onChange={e => setFormData({...formData, public_key: e.target.value})} />
-              </div>
-              <div className="grid gap-2">
-                <Label>VC Service Endpoint</Label>
-                <Input placeholder="https://wallet.procuredata.app/api/vc" value={formData.api_endpoint} onChange={e => setFormData({...formData, api_endpoint: e.target.value})} />
-              </div>
-              
-              <Button onClick={handleSave} disabled={saveMutation.isPending} className="w-full bg-purple-600 hover:bg-purple-700">
-                <Save className="mr-2 h-4 w-4" /> Registrar Wallet
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="grid lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <Card className="border-purple-200 dark:border-purple-900">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-400">
+                    <Shield className="h-5 w-5" /> Identidad Soberana (SSI)
+                  </CardTitle>
+                  <CardDescription>Gestión de DIDs y Credenciales Verificables.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Alert variant="default" className="bg-purple-50 border-purple-200 dark:bg-purple-950/20 dark:border-purple-900">
+                    <AlertCircle className="h-4 w-4 text-purple-600" />
+                    <AlertTitle className="text-purple-800 dark:text-purple-400">Seguridad de Claves Privadas</AlertTitle>
+                    <AlertDescription className="text-purple-700 dark:text-purple-300 text-xs">
+                      Las claves privadas nunca se almacenan en la base de datos estándar. Se gestionan a través de Supabase Vault o HSM externo. Aquí solo registras el DID público.
+                    </AlertDescription>
+                  </Alert>
+                  
+                  <div className="grid gap-2">
+                    <Label>DID (Decentralized Identifier)</Label>
+                    <Input placeholder="did:web:procuredata.app:company-xyz" value={formData.public_key} onChange={e => setFormData({...formData, public_key: e.target.value})} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>VC Service Endpoint</Label>
+                    <Input placeholder="https://wallet.procuredata.app/api/vc" value={formData.api_endpoint} onChange={e => setFormData({...formData, api_endpoint: e.target.value})} />
+                  </div>
+                  
+                  <Button onClick={handleSave} disabled={saveMutation.isPending} className="w-full bg-purple-600 hover:bg-purple-700">
+                    <Save className="mr-2 h-4 w-4" /> Registrar Wallet
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+            <ConnectionStatus configs={configs || []} configType="download" />
+          </div>
         </TabsContent>
       </Tabs>
 

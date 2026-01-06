@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useOrganizationContext } from "@/hooks/useOrganizationContext";
-import { Shield, Search, Download, Eye, Calendar } from "lucide-react";
+import { Shield, Search, Download, Eye, Calendar, Filter, Globe } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FadeIn } from "@/components/AnimatedSection";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, format } from "date-fns";
 import { es } from "date-fns/locale";
 import { toast } from "sonner";
 import type { AuditLog } from "@/types/database.extensions";
@@ -18,13 +19,13 @@ import type { AuditLog } from "@/types/database.extensions";
 export default function AuditLogs() {
   const { activeOrg } = useOrganizationContext();
   const [searchQuery, setSearchQuery] = useState("");
+  const [actionFilter, setActionFilter] = useState("all");
 
   const { data: auditLogs = [], isLoading } = useQuery({
     queryKey: ["audit-logs", activeOrg?.id],
     queryFn: async () => {
       if (!activeOrg) return [];
 
-      // const { data, error } = await supabase
       const { data, error } = await supabase
         .from("audit_logs")
         .select("*")
@@ -38,14 +39,20 @@ export default function AuditLogs() {
     enabled: !!activeOrg,
   });
 
-  const filteredLogs = auditLogs.filter((log) => {
-    const searchLower = searchQuery.toLowerCase();
-    return (
-      log.action.toLowerCase().includes(searchLower) ||
-      (log.actor_email || "").toLowerCase().includes(searchLower) ||
-      (log.resource || "").toLowerCase().includes(searchLower)
-    );
-  });
+  const filteredLogs = useMemo(() => {
+    return auditLogs.filter((log) => {
+      const searchLower = searchQuery.toLowerCase();
+      const matchesSearch = 
+        log.action.toLowerCase().includes(searchLower) ||
+        (log.actor_email || "").toLowerCase().includes(searchLower) ||
+        (log.resource || "").toLowerCase().includes(searchLower);
+      
+      const matchesAction = actionFilter === "all" || 
+        log.action.toLowerCase().includes(actionFilter.toLowerCase());
+      
+      return matchesSearch && matchesAction;
+    });
+  }, [auditLogs, searchQuery, actionFilter]);
 
   const handleExportCSV = () => {
     const csvContent = [
@@ -110,14 +117,31 @@ export default function AuditLogs() {
               </Button>
             </div>
             
-            <div className="relative mt-4">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Buscar por acción, usuario o recurso..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
+            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar por acción, usuario o recurso..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <Select value={actionFilter} onValueChange={setActionFilter}>
+                <SelectTrigger className="w-full sm:w-48">
+                  <Filter className="mr-2 h-4 w-4" />
+                  <SelectValue placeholder="Tipo de acción" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas las acciones</SelectItem>
+                  <SelectItem value="download">Descargas</SelectItem>
+                  <SelectItem value="upload">Subidas</SelectItem>
+                  <SelectItem value="approve">Aprobaciones</SelectItem>
+                  <SelectItem value="publish">Publicaciones</SelectItem>
+                  <SelectItem value="access">Accesos</SelectItem>
+                  <SelectItem value="config">Configuración</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardHeader>
 
@@ -159,11 +183,19 @@ export default function AuditLogs() {
                         </div>
                       </div>
                       
-                      {log.resource && (
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Recurso: <span className="font-mono">{log.resource}</span>
-                        </p>
-                      )}
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground mb-2">
+                        {log.resource && (
+                          <span>
+                            Recurso: <span className="font-mono bg-muted px-1 rounded">{log.resource}</span>
+                          </span>
+                        )}
+                        {log.ip_address && (
+                          <span className="flex items-center gap-1">
+                            <Globe className="h-3 w-3" />
+                            <span className="font-mono">{log.ip_address}</span>
+                          </span>
+                        )}
+                      </div>
 
                       {log.details && (
                         <Popover>
