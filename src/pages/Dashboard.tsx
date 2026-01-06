@@ -229,7 +229,7 @@ export default function Dashboard() {
             </Link>
           ) : (
             <Link to="/catalog">
-              <Button className="gap-2 bg-blue-600 hover:bg-blue-700"><ShoppingCart className="h-4 w-4"/> Ir al Mercado</Button>
+              <Button variant="brand" className="gap-2"><ShoppingCart className="h-4 w-4"/> Ir al Mercado</Button>
             </Link>
           )}
         </div>
@@ -243,7 +243,7 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Balance Wallet
             </CardTitle>
-            <Wallet className="h-4 w-4 text-muted-foreground" />
+            <Wallet className="h-4 w-4 text-[hsl(32_94%_54%)]" />
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -265,7 +265,7 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               {isProvider ? "Ingresos del Mes" : "Gastos del Mes"}
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <DollarSign className="h-4 w-4 text-[hsl(32_94%_50%)]" />
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -296,7 +296,7 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Transacciones Activas
             </CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <Activity className="h-4 w-4 text-[hsl(32_94%_54%)]" />
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -316,7 +316,7 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Completadas (6 meses)
             </CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <TrendingUp className="h-4 w-4 text-[hsl(32_90%_50%)]" />
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -357,12 +357,12 @@ export default function Dashboard() {
                 <AreaChart data={chartData}>
                   <defs>
                     <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="hsl(32, 94%, 54%)" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="hsl(32, 94%, 54%)" stopOpacity={0}/>
                     </linearGradient>
                     <linearGradient id="colorSpend" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="hsl(0, 0%, 40%)" stopOpacity={0.6}/>
+                      <stop offset="95%" stopColor="hsl(0, 0%, 40%)" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -377,14 +377,14 @@ export default function Dashboard() {
                     type="monotone" 
                     dataKey="revenue" 
                     name="Ingresos"
-                    stroke="#10b981" 
+                    stroke="hsl(32, 94%, 54%)" 
                     fill="url(#colorRevenue)" 
                   />
                   <Area 
                     type="monotone" 
                     dataKey="spend" 
                     name="Gastos"
-                    stroke="#f59e0b" 
+                    stroke="hsl(0, 0%, 40%)" 
                     fill="url(#colorSpend)" 
                   />
                 </AreaChart>
@@ -403,13 +403,13 @@ export default function Dashboard() {
 
         {/* Side Widgets */}
         <div className="space-y-6">
-          <Card className="bg-gradient-to-br from-slate-900 to-slate-800 text-white border-none shadow-xl">
+          <Card className="bg-gradient-to-br from-[hsl(0_0%_15%)] to-[hsl(32_50%_25%)] text-white border-none shadow-xl">
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-4">
                 <div className="p-2 bg-white/10 rounded-lg">
-                  <DollarSign className="h-6 w-6 text-green-400" />
+                  <DollarSign className="h-6 w-6 text-[hsl(32_94%_60%)]" />
                 </div>
-                <span className="text-xs font-medium bg-white/20 px-2 py-1 rounded text-white/80">Este mes</span>
+                <span className="text-xs font-medium bg-[hsl(32_94%_54%/0.3)] px-2 py-1 rounded text-white/90">Este mes</span>
               </div>
               <div className="space-y-1">
                 <p className="text-sm text-slate-300">
@@ -426,8 +426,8 @@ export default function Dashboard() {
               <div className="mt-4 pt-4 border-t border-white/10 flex items-center gap-2 text-sm">
                 {(isProvider ? revenueChange : spendChange) >= 0 ? (
                   <>
-                    <ArrowUpRight className="h-4 w-4 text-green-300" />
-                    <span className="text-green-300">
+                    <ArrowUpRight className="h-4 w-4 text-[hsl(32_94%_70%)]" />
+                    <span className="text-[hsl(32_94%_70%)]">
                       +{Math.abs(isProvider ? revenueChange : spendChange).toFixed(1)}% vs mes anterior
                     </span>
                   </>

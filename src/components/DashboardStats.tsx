@@ -80,25 +80,25 @@ export const DashboardStats = () => {
       title: "Productos en Catálogo",
       value: stats.products,
       icon: Package,
-      color: "text-green-600 dark:text-green-400",
+      color: "text-[hsl(32_94%_54%)]",
     },
     {
       title: "Solicitudes Pendientes",
       value: stats.pending,
       icon: ClipboardList,
-      color: "text-amber-600 dark:text-amber-400",
+      color: "text-[hsl(32_94%_44%)]",
     },
     {
       title: "Completadas Este Mes",
       value: stats.completed,
       icon: Database,
-      color: "text-purple-600 dark:text-purple-400",
+      color: "text-[hsl(0_0%_35%)] dark:text-[hsl(0_0%_65%)]",
     },
     {
       title: "Organizaciones Activas",
       value: stats.organizations,
       icon: TrendingUp,
-      color: "text-blue-600 dark:text-blue-400",
+      color: "text-[hsl(32_90%_50%)]",
     },
   ];
 

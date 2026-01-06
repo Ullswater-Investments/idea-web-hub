@@ -10,10 +10,10 @@ import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
 
 const ACTION_LABELS: Record<string, { label: string; icon: any; color: string }> = {
-  pre_approve: { label: "Pre-aprobó", icon: CheckCircle, color: "text-green-600" },
-  approve: { label: "Aprobó", icon: CheckCircle, color: "text-green-600" },
-  deny: { label: "Denegó", icon: XCircle, color: "text-red-600" },
-  initiated: { label: "Inició", icon: ArrowRight, color: "text-blue-600" },
+  pre_approve: { label: "Pre-aprobó", icon: CheckCircle, color: "text-[hsl(32_94%_54%)]" },
+  approve: { label: "Aprobó", icon: CheckCircle, color: "text-[hsl(32_94%_44%)]" },
+  deny: { label: "Denegó", icon: XCircle, color: "text-destructive" },
+  initiated: { label: "Inició", icon: ArrowRight, color: "text-[hsl(0_0%_40%)] dark:text-[hsl(0_0%_60%)]" },
 };
 
 export const ActivityFeed = () => {
