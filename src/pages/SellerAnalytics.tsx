@@ -8,7 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useMemo } from "react";
 import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
 import { es } from "date-fns/locale";
-import { CHART_COLORS, CHART_TOOLTIP_STYLE, CHART_GRID_STYLE } from "@/lib/chartTheme";
+import { CHART_COLORS, CHART_TOOLTIP_STYLE, CHART_GRID_STYLE, CHART_ANIMATION_CONFIG } from "@/lib/chartTheme";
+import { StaggerContainer, StaggerItem, ChartFadeIn } from "@/components/AnimatedSection";
 
 interface TransactionWithDetails {
   id: string;
@@ -234,7 +235,8 @@ export default function SellerAnalytics() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <StaggerContainer className="grid gap-4 md:grid-cols-4">
+        <StaggerItem>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Ingresos Totales</CardTitle>
@@ -253,6 +255,8 @@ export default function SellerAnalytics() {
             )}
           </CardContent>
         </Card>
+        </StaggerItem>
+        <StaggerItem>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Ventas Completadas</CardTitle>
@@ -269,6 +273,8 @@ export default function SellerAnalytics() {
             )}
           </CardContent>
         </Card>
+        </StaggerItem>
+        <StaggerItem>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Clientes Únicos</CardTitle>
@@ -285,6 +291,8 @@ export default function SellerAnalytics() {
             )}
           </CardContent>
         </Card>
+        </StaggerItem>
+        <StaggerItem>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Rating Promedio</CardTitle>
@@ -305,7 +313,8 @@ export default function SellerAnalytics() {
             )}
           </CardContent>
         </Card>
-      </div>
+        </StaggerItem>
+      </StaggerContainer>
 
       {/* Charts Row */}
       <div className="grid gap-4 md:grid-cols-2">
@@ -319,6 +328,7 @@ export default function SellerAnalytics() {
             {loadingTransactions ? (
               <Skeleton className="h-full w-full" />
             ) : analytics.monthlyData.length > 0 ? (
+              <ChartFadeIn delay={0.1} className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={analytics.monthlyData}>
                   <CartesianGrid {...CHART_GRID_STYLE} />
@@ -341,6 +351,8 @@ export default function SellerAnalytics() {
                     strokeWidth={2} 
                     name="Ingresos (€)" 
                     dot={{ fill: CHART_COLORS.primary }}
+                    animationDuration={CHART_ANIMATION_CONFIG.line.animationDuration}
+                    animationEasing={CHART_ANIMATION_CONFIG.line.animationEasing}
                   />
                   <Line 
                     yAxisId="right" 
@@ -350,9 +362,12 @@ export default function SellerAnalytics() {
                     strokeWidth={2} 
                     name="Ventas" 
                     dot={{ fill: CHART_COLORS.secondary }}
+                    animationDuration={CHART_ANIMATION_CONFIG.line.animationDuration}
+                    animationEasing={CHART_ANIMATION_CONFIG.line.animationEasing}
                   />
                 </LineChart>
               </ResponsiveContainer>
+              </ChartFadeIn>
             ) : (
               <div className="h-full flex items-center justify-center text-muted-foreground">
                 Sin datos de ventas aún
@@ -371,6 +386,7 @@ export default function SellerAnalytics() {
             {loadingTransactions ? (
               <Skeleton className="h-full w-full" />
             ) : analytics.productPerformance.length > 0 ? (
+              <ChartFadeIn delay={0.2} className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={analytics.productPerformance} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} className="stroke-muted" />
@@ -387,9 +403,13 @@ export default function SellerAnalytics() {
                     radius={[0, 4, 4, 0]} 
                     barSize={30}
                     name="Ingresos"
+                    animationDuration={CHART_ANIMATION_CONFIG.bar.animationDuration}
+                    animationBegin={CHART_ANIMATION_CONFIG.bar.animationBegin}
+                    animationEasing={CHART_ANIMATION_CONFIG.bar.animationEasing}
                   />
                 </BarChart>
               </ResponsiveContainer>
+              </ChartFadeIn>
             ) : (
               <div className="h-full flex items-center justify-center text-muted-foreground">
                 Sin productos vendidos aún

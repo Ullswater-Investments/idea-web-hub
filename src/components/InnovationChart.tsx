@@ -1,5 +1,5 @@
 import { ResponsiveContainer, BarChart, Bar, LineChart, Line, PieChart, Pie, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell } from "recharts";
-import { CHART_COLORS, CHART_TOOLTIP_STYLE, CHART_GRID_STYLE } from "@/lib/chartTheme";
+import { CHART_COLORS, CHART_TOOLTIP_STYLE, CHART_GRID_STYLE, CHART_ANIMATION_CONFIG } from "@/lib/chartTheme";
 
 interface ChartSeries {
   key: string;
@@ -51,6 +51,9 @@ export function InnovationChart({ type, data, config }: InnovationChartProps) {
               fill={series.color || CHART_COLORS.palette[idx % CHART_COLORS.palette.length]} 
               name={series.name}
               radius={[4, 4, 0, 0]}
+              animationDuration={CHART_ANIMATION_CONFIG.bar.animationDuration}
+              animationBegin={CHART_ANIMATION_CONFIG.bar.animationBegin + idx * 100}
+              animationEasing={CHART_ANIMATION_CONFIG.bar.animationEasing}
             />
           ))}
         </BarChart>
@@ -77,6 +80,8 @@ export function InnovationChart({ type, data, config }: InnovationChartProps) {
               strokeWidth={2}
               dot={{ r: 4, fill: series.color || CHART_COLORS.palette[idx % CHART_COLORS.palette.length] }}
               activeDot={{ r: 6 }}
+              animationDuration={CHART_ANIMATION_CONFIG.line.animationDuration}
+              animationEasing={CHART_ANIMATION_CONFIG.line.animationEasing}
             />
           ))}
         </LineChart>
@@ -97,6 +102,9 @@ export function InnovationChart({ type, data, config }: InnovationChartProps) {
             cy="50%"
             outerRadius={100}
             label
+            animationDuration={CHART_ANIMATION_CONFIG.pie.animationDuration}
+            animationBegin={CHART_ANIMATION_CONFIG.pie.animationBegin}
+            animationEasing={CHART_ANIMATION_CONFIG.pie.animationEasing}
           >
             {data.map((_, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -127,6 +135,8 @@ export function InnovationChart({ type, data, config }: InnovationChartProps) {
               fill={series.color || CHART_COLORS.palette[idx % CHART_COLORS.palette.length]}
               fillOpacity={0.6}
               name={series.name}
+              animationDuration={CHART_ANIMATION_CONFIG.area.animationDuration}
+              animationEasing={CHART_ANIMATION_CONFIG.area.animationEasing}
             />
           ))}
         </AreaChart>

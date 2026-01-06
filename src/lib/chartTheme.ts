@@ -75,3 +75,25 @@ export const CHART_GRID_STYLE = {
 export const CHART_AXIS_STYLE = {
   className: "text-xs",
 };
+
+// Animation configuration for charts
+export const CHART_ANIMATION_CONFIG = {
+  line: {
+    animationDuration: 1200,
+    animationEasing: "ease-out" as const,
+  },
+  bar: {
+    animationDuration: 800,
+    animationEasing: "ease-out" as const,
+    animationBegin: 100,
+  },
+  pie: {
+    animationDuration: 1000,
+    animationEasing: "ease-out" as const,
+    animationBegin: 0,
+  },
+  area: {
+    animationDuration: 1200,
+    animationEasing: "ease-out" as const,
+  },
+};

@@ -12,7 +12,8 @@ import { DollarSign, ShoppingCart, Package, TrendingUp, ArrowUpRight, ArrowDownR
 import { Link } from "react-router-dom";
 import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
 import { es } from "date-fns/locale";
-import { CHART_COLORS, CHART_GRADIENTS, CHART_TOOLTIP_STYLE, CHART_GRID_STYLE } from "@/lib/chartTheme";
+import { CHART_COLORS, CHART_GRADIENTS, CHART_TOOLTIP_STYLE, CHART_GRID_STYLE, CHART_ANIMATION_CONFIG } from "@/lib/chartTheme";
+import { StaggerContainer, StaggerItem, ChartFadeIn } from "@/components/AnimatedSection";
 
 interface WalletData {
   id: string;
@@ -237,8 +238,9 @@ export default function Dashboard() {
       </div>
 
       {/* Financial KPIs */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <StaggerContainer className="grid gap-4 md:grid-cols-4">
         {/* Wallet Balance */}
+        <StaggerItem>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -259,8 +261,10 @@ export default function Dashboard() {
             </p>
           </CardContent>
         </Card>
+        </StaggerItem>
 
         {/* Revenue/Spend this month */}
+        <StaggerItem>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -290,8 +294,10 @@ export default function Dashboard() {
             </p>
           </CardContent>
         </Card>
+        </StaggerItem>
 
         {/* Active Transactions */}
+        <StaggerItem>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -310,8 +316,10 @@ export default function Dashboard() {
             </p>
           </CardContent>
         </Card>
+        </StaggerItem>
 
         {/* Completed Transactions */}
+        <StaggerItem>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -332,7 +340,8 @@ export default function Dashboard() {
             </p>
           </CardContent>
         </Card>
-      </div>
+        </StaggerItem>
+      </StaggerContainer>
 
       {/* Stats Cards (existing component) */}
       <DashboardStats />
@@ -354,6 +363,7 @@ export default function Dashboard() {
                 <Skeleton className="w-full h-full" />
               </div>
             ) : chartData.length > 0 ? (
+              <ChartFadeIn delay={0.2} className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
                   <defs>
@@ -381,17 +391,22 @@ export default function Dashboard() {
                     dataKey="revenue" 
                     name="Ingresos"
                     stroke={CHART_COLORS.primary} 
-                    fill={`url(#${CHART_GRADIENTS.primary.id})`} 
+                    fill={`url(#${CHART_GRADIENTS.primary.id})`}
+                    animationDuration={CHART_ANIMATION_CONFIG.area.animationDuration}
+                    animationEasing={CHART_ANIMATION_CONFIG.area.animationEasing}
                   />
                   <Area 
                     type="monotone" 
                     dataKey="spend" 
                     name="Gastos"
                     stroke={CHART_COLORS.secondary} 
-                    fill={`url(#${CHART_GRADIENTS.secondary.id})`} 
+                    fill={`url(#${CHART_GRADIENTS.secondary.id})`}
+                    animationDuration={CHART_ANIMATION_CONFIG.area.animationDuration}
+                    animationEasing={CHART_ANIMATION_CONFIG.area.animationEasing}
                   />
                 </AreaChart>
               </ResponsiveContainer>
+              </ChartFadeIn>
             ) : (
               <div className="flex items-center justify-center h-full text-muted-foreground">
                 <div className="text-center">
