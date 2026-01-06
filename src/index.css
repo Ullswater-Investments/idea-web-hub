@@ -109,7 +109,7 @@ All colors MUST be HSL.
 
 /* Gradient for PROCUREDATA branding */
 .procuredata-gradient {
-  background: linear-gradient(135deg, #4A90E2 0%, #7CB9E8 50%, #AED6F1 100%);
+  background: linear-gradient(135deg, hsl(0 0% 24%) 0%, hsl(32 94% 54%) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
