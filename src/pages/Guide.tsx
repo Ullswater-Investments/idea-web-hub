@@ -41,7 +41,7 @@ export default function Guide() {
           
           {/* HEADER */}
           <div className="mb-12">
-            <Badge variant="outline" className="mb-4">White Paper v2.5</Badge>
+            <Badge variant="outline" className="mb-4">White Paper v3.1</Badge>
             <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">Guía del Ecosistema ProcureData</h1>
             <p className="text-xl text-muted-foreground">
               Manual técnico y comercial para usuarios, partners e integradores de la plataforma de datos soberanos.

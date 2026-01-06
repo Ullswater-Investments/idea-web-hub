@@ -1,7 +1,7 @@
 # PROCUREDATA - Documento de Contexto Maestro
 
-> **Versión**: 3.0 (Web3 Enabled)  
-> **Última actualización**: 2026-01-05  
+> **Versión**: 3.1 (Web3 Enabled)  
+> **Última actualización**: 2026-01-06  
 > **Propósito**: Fuente de verdad para agentes de IA y desarrolladores
 
 ---
@@ -46,9 +46,10 @@ graph TD
 ### Estado Actual
 
 - **Production-Ready** ✅
-- Auditoría de seguridad completada: 2025-11-30
+- Auditoría de seguridad completada: 2026-01-05
 - Modo Demo funcional con datos sintéticos
 - **Web3 Enabled**: Integración con Pontus-X Blockchain
+- **v3.1**: Web3StatusWidget, mejoras UX, scripts de datos sintéticos
 
 ---
 
