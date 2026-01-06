@@ -188,15 +188,19 @@ const Services = () => {
 
   // Filter and sort services
   const { myServices, marketplaceServices } = useMemo(() => {
-    if (!services || !activeOrg) return { myServices: [], marketplaceServices: [] };
+    if (!services) return { myServices: [], marketplaceServices: [] };
 
-    const my = services.filter(s => s.provider_org_id === activeOrg.id);
-    const marketplace = services.filter(s => s.provider_org_id !== activeOrg.id);
+    const my = activeOrg 
+      ? services.filter(s => s.provider_org_id === activeOrg.id)
+      : [];
+    const marketplace = activeOrg 
+      ? services.filter(s => s.provider_org_id !== activeOrg.id)
+      : services; // Si no hay org activa, mostrar todos los servicios
 
     // Sort marketplace by sector relevance
     const sorted = [...marketplace].sort((a, b) => {
-      const aSameSector = a.provider?.sector === activeOrg.sector ? 1 : 0;
-      const bSameSector = b.provider?.sector === activeOrg.sector ? 1 : 0;
+      const aSameSector = activeOrg && a.provider?.sector === activeOrg.sector ? 1 : 0;
+      const bSameSector = activeOrg && b.provider?.sector === activeOrg.sector ? 1 : 0;
       return bSameSector - aSameSector;
     });
 
