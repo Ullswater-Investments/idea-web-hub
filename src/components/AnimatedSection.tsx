@@ -103,3 +103,22 @@ export const StaggerItem = ({ children, className = "" }: { children: ReactNode;
     </motion.div>
   );
 };
+
+// Optimized animation for chart containers
+export const ChartFadeIn = ({ children, delay = 0, className = "" }: AnimatedSectionProps) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.98 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{
+        duration: 0.5,
+        delay,
+        ease: [0.25, 0.4, 0.25, 1],
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
