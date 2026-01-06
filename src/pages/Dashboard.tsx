@@ -2,13 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useOrganizationContext } from "@/hooks/useOrganizationContext";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { DashboardStats } from "@/components/DashboardStats";
-import { Web3StatusWidget } from "@/components/Web3StatusWidget";
+import { RecentTransactions } from "@/components/RecentTransactions";
+import { EnhancedWalletCard } from "@/components/EnhancedWalletCard";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, Legend } from "recharts";
-import { DollarSign, ShoppingCart, Package, TrendingUp, ArrowUpRight, ArrowDownRight, CreditCard, Activity, Wallet } from "lucide-react";
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, Legend } from "recharts";
+import { DollarSign, ShoppingCart, Package, TrendingUp, ArrowUpRight, ArrowDownRight, Activity, Wallet, Info } from "lucide-react";
 import { Link } from "react-router-dom";
 import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
 import { es } from "date-fns/locale";
@@ -30,8 +32,24 @@ interface TransactionData {
   asset: {
     price: number;
     currency: string;
+    product?: {
+      name: string;
+      category: string;
+    };
   } | null;
+  consumer_org?: { name: string };
+  subject_org?: { name: string };
 }
+
+// Mock data for when no real data exists
+const MOCK_CHART_DATA: MonthlyData[] = [
+  { name: 'Ago', revenue: 4200, spend: 2800 },
+  { name: 'Sep', revenue: 5100, spend: 3200 },
+  { name: 'Oct', revenue: 3800, spend: 4500 },
+  { name: 'Nov', revenue: 6200, spend: 2900 },
+  { name: 'Dic', revenue: 4800, spend: 3600 },
+  { name: 'Ene', revenue: 5500, spend: 3100 },
+];
 
 interface MonthlyData {
   name: string;
@@ -161,12 +179,18 @@ export default function Dashboard() {
           subject_org_id,
           asset:data_assets (
             price,
-            currency
-          )
+            currency,
+            product:data_products (
+              name,
+              category
+            )
+          ),
+          consumer_org:organizations!data_transactions_consumer_org_id_fkey (name),
+          subject_org:organizations!data_transactions_subject_org_id_fkey (name)
         `)
         .or(`consumer_org_id.eq.${activeOrg.id},subject_org_id.eq.${activeOrg.id}`)
         .gte("created_at", sixMonthsAgo)
-        .order("created_at", { ascending: true });
+        .order("created_at", { ascending: false });
       
       if (error) throw error;
       return data as TransactionData[];
@@ -193,12 +217,59 @@ export default function Dashboard() {
   });
 
   // Process data
-  const chartData = processTransactionsForChart(transactions, activeOrg?.id);
+  const realChartData = processTransactionsForChart(transactions, activeOrg?.id);
+  const hasRealData = realChartData.some(d => d.revenue > 0 || d.spend > 0);
+  const chartData = hasRealData ? realChartData : MOCK_CHART_DATA;
+  
   const { revenue, spend, prevRevenue, prevSpend } = calculateCurrentMonthMetrics(transactions, activeOrg?.id);
   
   // Calculate percentage changes
   const revenueChange = prevRevenue > 0 ? ((revenue - prevRevenue) / prevRevenue) * 100 : 0;
   const spendChange = prevSpend > 0 ? ((spend - prevSpend) / prevSpend) * 100 : 0;
+  
+  // For demo: calculate display values
+  const displayRevenue = hasRealData ? revenue : 5500;
+  const displaySpend = hasRealData ? spend : 3100;
+  const displayRevenueChange = hasRealData ? revenueChange : 14.6;
+  const displaySpendChange = hasRealData ? spendChange : -13.9;
+  
+  // Calculate category breakdown
+  const categoryBreakdown = (() => {
+    const categoryMap: Record<string, number> = {};
+    
+    (transactions || []).forEach((tx) => {
+      const isRelevant = isProvider 
+        ? tx.subject_org_id === activeOrg?.id 
+        : tx.consumer_org_id === activeOrg?.id;
+      
+      if (isRelevant && tx.status === "completed") {
+        const category = tx.asset?.product?.category || "Otros";
+        const amount = tx.asset?.price || 0;
+        categoryMap[category] = (categoryMap[category] || 0) + amount;
+      }
+    });
+    
+    // If no real data, use mock
+    if (Object.keys(categoryMap).length === 0) {
+      return [
+        { category: "ESG", amount: 680, percentage: 42 },
+        { category: "Logística", amount: 565, percentage: 35 },
+        { category: "IoT", amount: 242, percentage: 15 },
+        { category: "Otros", amount: 129, percentage: 8 },
+      ];
+    }
+    
+    const total = Object.values(categoryMap).reduce((a, b) => a + b, 0);
+    
+    return Object.entries(categoryMap)
+      .map(([category, amount]) => ({
+        category,
+        amount,
+        percentage: total > 0 ? Math.round((amount / total) * 100) : 0
+      }))
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 4);
+  })();
   
   const isLoading = walletLoading || transactionsLoading;
 
@@ -347,22 +418,32 @@ export default function Dashboard() {
       <DashboardStats />
 
       {/* Financial Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Main Chart */}
-        <Card className="lg:col-span-2 shadow-sm border-blue-100 dark:border-slate-800">
+        <Card className="lg:col-span-2 shadow-sm relative">
           <CardHeader>
-            <CardTitle>Evolución Financiera</CardTitle>
-            <CardDescription>
-              Ingresos y gastos de los últimos 6 meses
-            </CardDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Evolución Financiera</CardTitle>
+                <CardDescription>
+                  Ingresos y gastos de los últimos 6 meses
+                </CardDescription>
+              </div>
+              {!hasRealData && (
+                <Badge variant="outline" className="bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+                  <Info className="h-3 w-3 mr-1" />
+                  Datos Demo
+                </Badge>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="h-[350px]">
             {isLoading ? (
               <div className="flex items-center justify-center h-full">
                 <Skeleton className="w-full h-full" />
               </div>
-            ) : chartData.length > 0 ? (
+            ) : (
               <ChartFadeIn delay={0.2} className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
@@ -407,99 +488,27 @@ export default function Dashboard() {
                 </AreaChart>
               </ResponsiveContainer>
               </ChartFadeIn>
-            ) : (
-              <div className="flex items-center justify-center h-full text-muted-foreground">
-                <div className="text-center">
-                  <TrendingUp className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No hay datos de transacciones aún</p>
-                  <p className="text-sm">Completa transacciones para ver la evolución</p>
-                </div>
-              </div>
             )}
           </CardContent>
         </Card>
 
-        {/* Side Widgets */}
-        <div className="space-y-6">
-          <Card className="bg-gradient-to-br from-[hsl(0_0%_15%)] to-[hsl(32_50%_25%)] text-white border-none shadow-xl">
-            <CardContent className="p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div className="p-2 bg-white/10 rounded-lg">
-                  <DollarSign className="h-6 w-6 text-[hsl(32_94%_60%)]" />
-                </div>
-                <span className="text-xs font-medium bg-[hsl(32_94%_54%/0.3)] px-2 py-1 rounded text-white/90">Este mes</span>
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm text-slate-300">
-                  {isProvider ? "Ventas Netas" : "Total Gastado"}
-                </p>
-                {isLoading ? (
-                  <Skeleton className="h-9 w-28 bg-white/20" />
-                ) : (
-                  <h3 className="text-3xl font-bold">
-                    {formatCurrency(isProvider ? revenue : spend)}
-                  </h3>
-                )}
-              </div>
-              <div className="mt-4 pt-4 border-t border-white/10 flex items-center gap-2 text-sm">
-                {(isProvider ? revenueChange : spendChange) >= 0 ? (
-                  <>
-                    <ArrowUpRight className="h-4 w-4 text-[hsl(32_94%_70%)]" />
-                    <span className="text-[hsl(32_94%_70%)]">
-                      +{Math.abs(isProvider ? revenueChange : spendChange).toFixed(1)}% vs mes anterior
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <ArrowDownRight className="h-4 w-4 text-red-300" />
-                    <span className="text-red-300">
-                      {(isProvider ? revenueChange : spendChange).toFixed(1)}% vs mes anterior
-                    </span>
-                  </>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Web3 Wallet Status */}
-          <Web3StatusWidget />
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Acciones Rápidas</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {isProvider ? (
-                <>
-                  <Link to="/catalog">
-                    <Button variant="ghost" className="w-full justify-start gap-2 h-auto py-3">
-                      <Package className="h-4 w-4"/> Publicar Nuevo Activo
-                    </Button>
-                  </Link>
-                  <Link to="/settings">
-                    <Button variant="ghost" className="w-full justify-start gap-2 h-auto py-3">
-                      <CreditCard className="h-4 w-4"/> Configurar Payouts
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/catalog">
-                    <Button variant="ghost" className="w-full justify-start gap-2 h-auto py-3">
-                      <ShoppingCart className="h-4 w-4"/> Ver Wishlist
-                    </Button>
-                  </Link>
-                  <Link to="/settings">
-                    <Button variant="ghost" className="w-full justify-start gap-2 h-auto py-3">
-                      <CreditCard className="h-4 w-4"/> Recargar Wallet
-                    </Button>
-                  </Link>
-                </>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+        {/* Enhanced Wallet Card */}
+        <EnhancedWalletCard
+          totalBalance={isProvider ? displayRevenue : displaySpend}
+          change={isProvider ? displayRevenueChange : displaySpendChange}
+          categoryBreakdown={categoryBreakdown}
+          isLoading={isLoading}
+          isProvider={isProvider}
+        />
       </div>
+
+      {/* Recent Transactions */}
+      <RecentTransactions
+        transactions={transactions || []}
+        activeOrgId={activeOrg?.id}
+        isLoading={isLoading}
+        isDemo={!hasRealData}
+      />
 
       {/* Activity Feed */}
       <div className="grid gap-4">
