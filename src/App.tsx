@@ -25,6 +25,7 @@ import Settings from "./pages/Settings";
 import ERPConfig from "./pages/ERPConfig";
 import SettingsOrganization from "./pages/SettingsOrganization";
 import SettingsPreferences from "./pages/SettingsPreferences";
+import SettingsNotifications from "./pages/SettingsNotifications";
 import WebhookSettings from "./pages/WebhookSettings";
 import AuditLogs from "./pages/AuditLogs";
 import Services from "./pages/Services";
@@ -84,6 +85,7 @@ const App = () => (
                 <Route path="/settings/erp-config" element={<ERPConfig />} />
                 <Route path="/settings/organization" element={<SettingsOrganization />} />
                 <Route path="/settings/preferences" element={<SettingsPreferences />} />
+                <Route path="/settings/notifications" element={<SettingsNotifications />} />
                 <Route path="/settings/webhooks" element={<WebhookSettings />} />
                 <Route path="/settings/audit" element={<AuditLogs />} />
               </Route>

@@ -853,31 +853,70 @@ export type Database = {
           access_alerts: boolean | null
           anonymous_research: boolean | null
           created_at: string | null
+          email_notifications: boolean | null
           id: string
+          in_app_notifications: boolean | null
+          instant_alerts: boolean | null
+          notify_contracts: boolean | null
+          notify_data_requests: boolean | null
+          notify_marketing: boolean | null
+          notify_payments: boolean | null
+          notify_system: boolean | null
           profile_visible: boolean | null
+          push_notifications: boolean | null
+          quiet_hours_enabled: boolean | null
+          quiet_hours_end: string | null
+          quiet_hours_start: string | null
           show_access_history: boolean | null
           updated_at: string | null
           user_id: string
+          weekly_digest: boolean | null
         }
         Insert: {
           access_alerts?: boolean | null
           anonymous_research?: boolean | null
           created_at?: string | null
+          email_notifications?: boolean | null
           id?: string
+          in_app_notifications?: boolean | null
+          instant_alerts?: boolean | null
+          notify_contracts?: boolean | null
+          notify_data_requests?: boolean | null
+          notify_marketing?: boolean | null
+          notify_payments?: boolean | null
+          notify_system?: boolean | null
           profile_visible?: boolean | null
+          push_notifications?: boolean | null
+          quiet_hours_enabled?: boolean | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
           show_access_history?: boolean | null
           updated_at?: string | null
           user_id: string
+          weekly_digest?: boolean | null
         }
         Update: {
           access_alerts?: boolean | null
           anonymous_research?: boolean | null
           created_at?: string | null
+          email_notifications?: boolean | null
           id?: string
+          in_app_notifications?: boolean | null
+          instant_alerts?: boolean | null
+          notify_contracts?: boolean | null
+          notify_data_requests?: boolean | null
+          notify_marketing?: boolean | null
+          notify_payments?: boolean | null
+          notify_system?: boolean | null
           profile_visible?: boolean | null
+          push_notifications?: boolean | null
+          quiet_hours_enabled?: boolean | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
           show_access_history?: boolean | null
           updated_at?: string | null
           user_id?: string
+          weekly_digest?: boolean | null
         }
         Relationships: []
       }
