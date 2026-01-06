@@ -695,7 +695,7 @@ export default function InteractiveWhitepaper() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 font-bold text-xl">
             <span className="procuredata-gradient">PROCUREDATA</span>
-            <Badge variant="outline" className="text-xs">WHITEPAPER v3.0</Badge>
+            <Badge variant="outline" className="text-xs">WHITEPAPER v3.1</Badge>
           </Link>
           
           {started && (
