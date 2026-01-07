@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Bot, X, Send, Sparkles, ThumbsUp, ThumbsDown, ExternalLink, Calculator, Gauge, Activity, FileCheck, Minimize2, Maximize2, GripVertical, Heart, HeartPulse, ShoppingBag, Zap } from "lucide-react";
+import { Bot, X, Send, Sparkles, ThumbsUp, ThumbsDown, ExternalLink, Calculator, Gauge, Activity, FileCheck, Minimize2, Maximize2, GripVertical, Heart, HeartPulse, ShoppingBag, Zap, Plane, Wine, Thermometer, Ship, Building2, Mountain, Shirt, Receipt, Cpu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -103,6 +103,117 @@ function detectWidgets(content: string): WidgetAction[] {
       label: "Ver Caso EcoVolt Manufacturing", 
       path: "/success-stories/ecovolt-manufacturing", 
       icon: <Zap className="h-3 w-3" /> 
+    });
+  }
+
+  // ===== NEW 10 SECTORS =====
+  
+  // Aeronáutica (EN9100, Aviación)
+  if (lowerContent.includes("en9100") || lowerContent.includes("aeronáutica") || 
+      lowerContent.includes("aviación") || lowerContent.includes("aeroespacial") ||
+      lowerContent.includes("piezas críticas")) {
+    widgets.push({ 
+      label: "Ver SkyAero Systems", 
+      path: "/success-stories/sky-aero-systems", 
+      icon: <Plane className="h-3 w-3" /> 
+    });
+  }
+
+  // Vinos/D.O.
+  if (lowerContent.includes("vino") || lowerContent.includes("denominación de origen") || 
+      lowerContent.includes("bodega") || lowerContent.includes("exportación asia") ||
+      lowerContent.includes("falsificación etiqueta")) {
+    widgets.push({ 
+      label: "Ver VinosD.O. Elite", 
+      path: "/success-stories/vinosdoe-elite", 
+      icon: <Wine className="h-3 w-3" /> 
+    });
+  }
+
+  // Pharma/Cadena Frío
+  if (lowerContent.includes("vacuna") || lowerContent.includes("cadena de frío") || 
+      lowerContent.includes("termolábil") || lowerContent.includes("pharma") ||
+      lowerContent.includes("viales") || lowerContent.includes("temperatura")) {
+    widgets.push({ 
+      label: "Ver PharmaCold Logistix", 
+      path: "/success-stories/pharmacold-logistix", 
+      icon: <Thermometer className="h-3 w-3" /> 
+    });
+  }
+
+  // Aduanas/Puerto
+  if (lowerContent.includes("aduana") || lowerContent.includes("puerto") || 
+      lowerContent.includes("despacho") || lowerContent.includes("kyb") ||
+      lowerContent.includes("contenedor") || lowerContent.includes("comercio internacional")) {
+    widgets.push({ 
+      label: "Ver PortBCN Smart-Trade", 
+      path: "/success-stories/portbcn-smart-trade", 
+      icon: <Ship className="h-3 w-3" /> 
+    });
+  }
+
+  // Licitación Pública/Gobierno
+  if (lowerContent.includes("licitación") || lowerContent.includes("contratación pública") || 
+      lowerContent.includes("cuota discapacidad") || lowerContent.includes("ayuntamiento") ||
+      lowerContent.includes("transparencia pública")) {
+    widgets.push({ 
+      label: "Ver Ayuntamiento Ético", 
+      path: "/success-stories/ayuntamiento-etico", 
+      icon: <Building2 className="h-3 w-3" /> 
+    });
+  }
+
+  // Minería/B-Corp
+  if (lowerContent.includes("litio") || lowerContent.includes("baterías") || 
+      lowerContent.includes("minerales") || lowerContent.includes("conflicto") ||
+      lowerContent.includes("b-corp") || lowerContent.includes("tier 3")) {
+    widgets.push({ 
+      label: "Ver PureLithium Sourcing", 
+      path: "/success-stories/purelithium-sourcing", 
+      icon: <Mountain className="h-3 w-3" /> 
+    });
+  }
+
+  // Moda Circular
+  if (lowerContent.includes("moda circular") || lowerContent.includes("fibra reciclada") || 
+      lowerContent.includes("greenwashing") || lowerContent.includes("etiquetado textil")) {
+    widgets.push({ 
+      label: "Ver FastFashion Trace", 
+      path: "/success-stories/fastfashion-trace", 
+      icon: <Shirt className="h-3 w-3" /> 
+    });
+  }
+
+  // Factoring/Finanzas B2B
+  if (lowerContent.includes("factoring") || lowerContent.includes("liquidez pyme") || 
+      lowerContent.includes("adelanto factura") || lowerContent.includes("score crediticio") ||
+      lowerContent.includes("trade finance")) {
+    widgets.push({ 
+      label: "Ver InvoiceTrust", 
+      path: "/success-stories/invoicetrust-b2b", 
+      icon: <Receipt className="h-3 w-3" /> 
+    });
+  }
+
+  // Comunidades Energéticas
+  if (lowerContent.includes("comunidad energética") || lowerContent.includes("excedentes") || 
+      lowerContent.includes("autoconsumo") || lowerContent.includes("micro-pago") ||
+      lowerContent.includes("polígono industrial")) {
+    widgets.push({ 
+      label: "Ver GridFlow Energy", 
+      path: "/success-stories/gridflow-energy", 
+      icon: <Zap className="h-3 w-3" /> 
+    });
+  }
+
+  // IA/Datos Sintéticos
+  if (lowerContent.includes("datos sintéticos") || lowerContent.includes("entrenar ia") || 
+      lowerContent.includes("dataset") || lowerContent.includes("machine learning") ||
+      lowerContent.includes("privacidad ia") || lowerContent.includes("fidelidad estadística")) {
+    widgets.push({ 
+      label: "Ver AI-Labs Research", 
+      path: "/success-stories/ailabs-research", 
+      icon: <Cpu className="h-3 w-3" /> 
     });
   }
 

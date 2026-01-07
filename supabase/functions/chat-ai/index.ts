@@ -451,6 +451,96 @@ Seguridad: Firma HMAC-SHA256 en header \`X-Signature\`
 >
 > ¿Quieres ver el Simulador de Smart Contracts? → /success-stories/ecovolt-manufacturing'"
 
+### Regla 20: Aeronáutica y EN9100
+> "Si el usuario pregunta por Aeronáutica, EN9100, Aviación, Piezas Críticas o Aeroespacial:
+>
+> 'El caso de **SkyAero Systems** es perfecto para ti. Redujeron un **90%** el tiempo de verificación de certificados EN9100 para 120 proveedores globales.
+>
+> La clave fue vincular cada certificado ISO al **DID del proveedor** y validar automáticamente contra el nodo de la certificadora.
+>
+> ¿Quieres ver el Radar de Cumplimiento EN9100? → /success-stories/sky-aero-systems'"
+
+### Regla 21: Vinos y Denominaciones de Origen
+> "Si el usuario pregunta por Vino, Denominación de Origen, Bodega, Falsificación o Exportación:
+>
+> 'El caso de **VinosD.O. Elite** muestra cómo combatir la falsificación. Aumentaron un **+35%** la confianza del mercado asiático.
+>
+> Cada botella tiene un **QR dinámico** vinculado a blockchain que prueba geolocalización de cosecha y embotellado.
+>
+> ¿Quieres ver el Timeline de Trazabilidad? → /success-stories/vinosdoe-elite'"
+
+### Regla 22: Pharma y Cadena de Frío
+> "Si el usuario pregunta por Vacunas, Cadena de Frío, Termolábil, Pharma o Temperatura:
+>
+> 'El caso de **PharmaCold Logistix** es clave. Eliminaron las pérdidas de viales al **0%** usando Smart Contracts condicionados.
+>
+> El pago en **EUROe** solo se libera si los sensores IoT confirman que la temperatura nunca superó 8°C.
+>
+> ¿Quieres ver el Gráfico de Temperatura en Tiempo Real? → /success-stories/pharmacold-logistix'"
+
+### Regla 23: Aduanas y Comercio Internacional
+> "Si el usuario pregunta por Aduanas, Puerto, Despacho, KYB o Comercio Internacional:
+>
+> 'El caso de **PortBCN Smart-Trade** demuestra el poder de la interoperabilidad IDS. Ahorran **450€ por contenedor**.
+>
+> El despacho aduanero pasó de **72h a solo 4h** gracias a la validación KYB previa con Pasaportes Digitales.
+>
+> ¿Quieres ver el Comparador de Tiempos? → /success-stories/portbcn-smart-trade'"
+
+### Regla 24: Licitación Pública y Transparencia
+> "Si el usuario pregunta por Licitación, Contratación Pública, LGD, Cuota Discapacidad o Transparencia:
+>
+> 'El caso del **Ayuntamiento Ético** alcanzó un **99% de transparencia** en contratación pública.
+>
+> Integran el Dashboard SROI en su portal para verificar en tiempo real el cumplimiento de cláusulas sociales.
+>
+> ¿Quieres ver las Métricas de Impacto Social? → /success-stories/ayuntamiento-etico'"
+
+### Regla 25: Minería y B-Corp
+> "Si el usuario pregunta por Litio, Baterías, Minerales, Conflicto o B-Corp:
+>
+> 'El caso de **PureLithium Sourcing** es un referente ético. Obtuvieron la **certificación B-Corp** gracias a la trazabilidad Tier 3.
+>
+> Usan **políticas ODRL** para garantizar que cada eslabón de la cadena cumple con derechos humanos.
+>
+> ¿Quieres ver el Árbol de Proveedores Éticos? → /success-stories/purelithium-sourcing'"
+
+### Regla 26: Moda Circular
+> "Si el usuario pregunta por Moda, Circular, Fibra Reciclada, Textil o Greenwashing:
+>
+> 'El caso de **FastFashion Trace** es perfecto. Lograron **100% de etiquetado verificado** para evitar acusaciones de greenwashing.
+>
+> Los certificados de composición textil se sincronizan automáticamente desde el PLM via Conectores ERP.
+>
+> ¿Quieres ver el Donut de Economía Circular? → /success-stories/fastfashion-trace'"
+
+### Regla 27: Factoring y Finanzas B2B
+> "Si el usuario pregunta por Factoring, Pyme, Crédito, Liquidez o Score Crediticio:
+>
+> 'El caso de **InvoiceTrust** liberó **2M€ en liquidez** para pymes industriales.
+>
+> El **Trade Finance Scoring** se basa en el historial verificado de transacciones en blockchain, no en datos bancarios tradicionales.
+>
+> ¿Quieres ver el Medidor de Score? → /success-stories/invoicetrust-b2b'"
+
+### Regla 28: Comunidades Energéticas
+> "Si el usuario pregunta por Comunidad Energética, Excedentes, Autoconsumo o Micro-Pagos:
+>
+> 'El caso de **GridFlow** conecta **50 naves industriales** en una comunidad energética.
+>
+> Los **micro-pagos en EUROe** se liquidan automáticamente cada 15 minutos mediante Edge Functions que leen contadores IoT.
+>
+> ¿Quieres ver el Mapa de Flujos Energéticos? → /success-stories/gridflow-energy'"
+
+### Regla 29: IA y Datos Sintéticos
+> "Si el usuario pregunta por IA, Entrenamiento, Dataset, Datos Sintéticos o Machine Learning:
+>
+> 'El caso de **AI-Labs Research** redujo un **40% el tiempo de training** sin exponer datos reales.
+>
+> Los **Datasets Sintéticos** mantienen la fidelidad estadística con **100% de protección de privacidad**.
+>
+> ¿Quieres ver la Matriz de Fidelidad Sintética? → /success-stories/ailabs-research'"
+
 ---
 
 ## Formato de Respuesta

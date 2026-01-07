@@ -17,7 +17,17 @@ import {
   Target,
   ExternalLink,
   Quote,
-  TrendingUp
+  TrendingUp,
+  Plane,
+  Wine,
+  Thermometer,
+  Ship,
+  Building2,
+  Mountain,
+  Shirt,
+  Receipt,
+  Cpu,
+  BarChart2
 } from "lucide-react";
 import { ROISimulator } from "@/components/ROISimulator";
 import { AgroROISimulator } from "@/components/AgroROISimulator";
@@ -27,6 +37,7 @@ import { HealthMaintenanceSimulator } from "@/components/success-stories/HealthM
 import { RetailEthicsAudit } from "@/components/success-stories/RetailEthicsAudit";
 import { EnergySmartContract } from "@/components/success-stories/EnergySmartContract";
 import { SuccessStoryNavigator } from "@/components/success-stories/SuccessStoryNavigator";
+import { SuccessVisualRenderer } from "@/components/success-stories/SuccessVisualRenderer";
 
 const casesData: Record<string, {
   id: string;
@@ -45,7 +56,7 @@ const casesData: Record<string, {
   solution: string;
   services: string[];
   ariaQuote: string;
-  simulator: "industrial" | "agro" | "social" | "mobility" | "health" | "retail" | "energy";
+  simulator: "industrial" | "agro" | "social" | "mobility" | "health" | "retail" | "energy" | "aero" | "wine" | "pharma" | "customs" | "gov" | "mining" | "fashion" | "finance" | "grid" | "ai";
 }> = {
   "gigafactory-north": {
     id: "gigafactory-north",
@@ -179,6 +190,196 @@ const casesData: Record<string, {
     services: ["Wallet Web3 Empresarial", "Pontus-X Notary Node", "Conector Universal ERP", "Carbon Tracker ISO 14064", "Certificación Green Partner"],
     ariaQuote: "El pago en EUROe permite que la transferencia de valor y el certificado de energía ocurran en el mismo bloque de blockchain. Conciliación contable instantánea, de meses a 12 segundos.",
     simulator: "energy"
+  },
+  "sky-aero-systems": {
+    id: "sky-aero-systems",
+    title: "Validación EN9100 en Tiempo Real",
+    company: "SkyAero Systems",
+    sector: "Aeronáutica",
+    sectorIcon: Plane,
+    metric: "-90%",
+    metricLabel: "Tiempo Verificación",
+    color: "from-blue-600 to-slate-500",
+    bgColor: "bg-blue-50 dark:bg-blue-950/30",
+    textColor: "text-blue-600 dark:text-blue-400",
+    blockchainProof: "0x1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3",
+    blockNumber: "#18,301,234",
+    challenge: "Validar certificados EN9100 de 120 proveedores globales de piezas críticas, un proceso que bloqueaba las licitaciones por meses debido a verificaciones manuales y documentación dispersa.",
+    solution: "Auditoría Digital ISO vinculada a identidad DID del proveedor. Validación automática de vigencia contra el nodo de la entidad certificadora con actualización en tiempo real.",
+    services: ["Auditoría Digital ISO", "Validador DID Web3", "Homologación Flash 24h", "API Certificadora"],
+    ariaQuote: "En el sector aeroespacial, un papel caducado detiene un avión. Con ProcureData, el certificado se autogestiona y valida instantáneamente contra la fuente oficial.",
+    simulator: "aero"
+  },
+  "vinosdoe-elite": {
+    id: "vinosdoe-elite",
+    title: "Trazabilidad de D.O. para Exportación",
+    company: "VinosD.O. Elite",
+    sector: "Agroalimentario",
+    sectorIcon: Wine,
+    metric: "+35%",
+    metricLabel: "Confianza Mercado",
+    color: "from-rose-700 to-amber-600",
+    bgColor: "bg-rose-50 dark:bg-rose-950/30",
+    textColor: "text-rose-700 dark:text-rose-400",
+    blockchainProof: "0xf4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2",
+    blockNumber: "#18,342,901",
+    challenge: "Falsificación de etiquetas de origen en el mercado asiático que dañaba la marca de una agrupación de bodegas con Denominación de Origen protegida.",
+    solution: "Notarización de lotes y Denominaciones de Origen mediante Pontus-X. QR dinámico en botella vinculado a DID que prueba geolocalización de cosecha y embotellado.",
+    services: ["Pontus-X Notary Node", "Pasaporte Digital de Producto", "Certificación D.O.", "API Trazabilidad"],
+    ariaQuote: "La trazabilidad ya no es una promesa, es una prueba matemática grabada en el bloque #42901. Cada botella cuenta su historia verificable.",
+    simulator: "wine"
+  },
+  "pharmacold-logistix": {
+    id: "pharmacold-logistix",
+    title: "Cadena de Frío con Smart Contracts",
+    company: "PharmaCold Logistix",
+    sector: "Salud",
+    sectorIcon: Thermometer,
+    metric: "0%",
+    metricLabel: "Pérdida Viales",
+    color: "from-red-500 to-white",
+    bgColor: "bg-red-50 dark:bg-red-950/30",
+    textColor: "text-red-600 dark:text-red-400",
+    blockchainProof: "0x9c8b7a6d5e4f3c2b1a0d9e8f7c6b5a4d3e2f1c0b9a8d7e6f5c4b3a2d1e0f9c8b7",
+    blockNumber: "#18,378,567",
+    challenge: "Pérdida del 5% de vacunas por roturas de cadena de frío no detectadas a tiempo durante el transporte internacional.",
+    solution: "Telemetría IoT con liquidación de pagos condicionada via Smart Contracts. El pago en EUROe se bloquea si temperatura supera 8°C por más de 10 minutos.",
+    services: ["Wallet EUROe", "Smart Contracts IoT", "Carbon Tracker", "Escrow Automático"],
+    ariaQuote: "El contrato inteligente actúa como guardián de la salud pública, liberando el pago solo ante la calidad total verificada por sensores.",
+    simulator: "pharma"
+  },
+  "portbcn-smart-trade": {
+    id: "portbcn-smart-trade",
+    title: "Despacho Aduanero Acelerado",
+    company: "PortBCN Smart-Trade",
+    sector: "Movilidad",
+    sectorIcon: Ship,
+    metric: "450€",
+    metricLabel: "Ahorro/Container",
+    color: "from-blue-800 to-cyan-500",
+    bgColor: "bg-cyan-50 dark:bg-cyan-950/30",
+    textColor: "text-cyan-600 dark:text-cyan-400",
+    blockchainProof: "0x5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3",
+    blockNumber: "#18,401,234",
+    challenge: "Despacho de aduanas lento (72h media) por falta de documentos de origen verificados de los proveedores internacionales.",
+    solution: "Pasaporte Digital de Proveedor interoperable con sistemas portuarios. Conexión via Webhooks para validación KYB instantánea antes de llegada.",
+    services: ["Pasaporte Digital de Proveedor", "Webhooks IDS", "Validación KYB", "Conector Portuario"],
+    ariaQuote: "Los datos viajan más rápido que los barcos. La interoperabilidad IDS elimina las colas en la aduana de 72h a solo 4h.",
+    simulator: "customs"
+  },
+  "ayuntamiento-etico": {
+    id: "ayuntamiento-etico",
+    title: "Contratación Pública Transparente",
+    company: "Ayuntamiento Ético",
+    sector: "Economía Social",
+    sectorIcon: Building2,
+    metric: "99%",
+    metricLabel: "Transparencia",
+    color: "from-violet-600 to-white",
+    bgColor: "bg-violet-50 dark:bg-violet-950/30",
+    textColor: "text-violet-600 dark:text-violet-400",
+    blockchainProof: "0x2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4",
+    blockNumber: "#18,423,890",
+    challenge: "Dificultad para verificar en tiempo real si las empresas licitadoras cumplen con la cuota de discapacidad (LGD).",
+    solution: "Dashboard de Métricas SROI integrado en portal de contratación. Cálculo automático basado en nóminas verificadas y anonimizadas (GDPR).",
+    services: ["Dashboard SROI", "Auditoría Social Digital", "Verificador LGD", "Memoria Sostenibilidad"],
+    ariaQuote: "El impacto social es ahora una métrica financiera auditable, no una declaración de intenciones. Cada euro público maximiza su retorno social.",
+    simulator: "gov"
+  },
+  "purelithium-sourcing": {
+    id: "purelithium-sourcing",
+    title: "Trazabilidad Ética de Minerales",
+    company: "PureLithium Sourcing",
+    sector: "Industrial",
+    sectorIcon: Mountain,
+    metric: "B-Corp",
+    metricLabel: "Certificación",
+    color: "from-slate-600 to-green-500",
+    bgColor: "bg-slate-50 dark:bg-slate-950/30",
+    textColor: "text-slate-600 dark:text-slate-400",
+    blockchainProof: "0x8f9e0d1c2b3a4f5e6d7c8b9a0f1e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6b7a8f9e0",
+    blockNumber: "#18,456,123",
+    challenge: "Demostrar que el litio no provenía de zonas con explotación infantil para el reporte CSRD de clientes automotrices.",
+    solution: "Trazabilidad de proveedores Tier 3 mediante Gobernanza ODRL. Firma de políticas de 'Uso Ético' en cada eslabón de la cadena de suministro.",
+    services: ["Gobernanza ODRL", "Conector ERP", "Reporte CSRD", "Certificación B-Corp"],
+    ariaQuote: "La soberanía del dato permite rastrear la ética desde la mina hasta el coche eléctrico. Cada gramo de litio tiene historia verificable.",
+    simulator: "mining"
+  },
+  "fastfashion-trace": {
+    id: "fastfashion-trace",
+    title: "Etiquetado Circular Verificado",
+    company: "FastFashion Trace",
+    sector: "Comercio",
+    sectorIcon: Shirt,
+    metric: "100%",
+    metricLabel: "Etiquetado Verificado",
+    color: "from-pink-400 to-green-600",
+    bgColor: "bg-pink-50 dark:bg-pink-950/30",
+    textColor: "text-pink-600 dark:text-pink-400",
+    blockchainProof: "0x3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5",
+    blockNumber: "#18,478,901",
+    challenge: "Validar porcentaje de fibra reciclada en 1M de prendas para evitar acusaciones de Greenwashing y cumplir nueva regulación textil UE.",
+    solution: "Intercambio de certificados de composición textil via Conectores ERP. Sincronización automática entre PLM y certificados en ProcureData.",
+    services: ["Conectores ERP", "Raw Data Normalizer", "Certificación Textil", "Anti-Greenwashing"],
+    ariaQuote: "Si el dato es sintético, la confianza es real. Validamos la circularidad hilo por hilo y eliminamos el riesgo de greenwashing.",
+    simulator: "fashion"
+  },
+  "invoicetrust-b2b": {
+    id: "invoicetrust-b2b",
+    title: "Factoring Instantáneo con Score Verificado",
+    company: "InvoiceTrust",
+    sector: "Finanzas B2B",
+    sectorIcon: Receipt,
+    metric: "2M€",
+    metricLabel: "Liquidez Liberada",
+    color: "from-emerald-500 to-slate-600",
+    bgColor: "bg-emerald-50 dark:bg-emerald-950/30",
+    textColor: "text-emerald-600 dark:text-emerald-400",
+    blockchainProof: "0xc1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3",
+    blockNumber: "#18,501,567",
+    challenge: "Pymes industriales sin adelantos de facturas por falta de historial crediticio verificado y scoring tradicional insuficiente.",
+    solution: "Trade Finance Scoring basado en transacciones completadas. Score de solvencia inmutable basado en cumplimiento histórico de contratos ODRL.",
+    services: ["Trade Finance Scoring", "Factoring Connect", "Wallet EUROe", "Historial Blockchain"],
+    ariaQuote: "Tu comportamiento en el espacio de datos es tu mejor garantía financiera. El EUROe habilita el crédito instantáneo basado en confianza verificable.",
+    simulator: "finance"
+  },
+  "gridflow-energy": {
+    id: "gridflow-energy",
+    title: "Comunidades Energéticas Industriales",
+    company: "GridFlow",
+    sector: "Energía",
+    sectorIcon: Zap,
+    metric: "50",
+    metricLabel: "Naves Conectadas",
+    color: "from-yellow-500 to-black",
+    bgColor: "bg-yellow-50 dark:bg-yellow-950/30",
+    textColor: "text-yellow-600 dark:text-yellow-400",
+    blockchainProof: "0xd4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    blockNumber: "#18,534,890",
+    challenge: "Comunidades energéticas industriales sin forma ágil de liquidar venta de excedentes entre naves vecinas del polígono.",
+    solution: "Liquidación de micro-pagos mediante EUROe. Edge Functions disparan transacciones al leer datos de contadores IoT cada 15 minutos.",
+    services: ["Edge Functions IoT", "Wallet Web3", "Liquidación Automática", "Mapa Comunidad Energética"],
+    ariaQuote: "La energía y el dinero fluyen en el mismo cable digital gracias a la programabilidad Web3. Micro-pagos instantáneos entre vecinos industriales.",
+    simulator: "grid"
+  },
+  "ailabs-research": {
+    id: "ailabs-research",
+    title: "Datasets Sintéticos para IA",
+    company: "AI-Labs Research",
+    sector: "Tecnología",
+    sectorIcon: Cpu,
+    metric: "-40%",
+    metricLabel: "Tiempo Training",
+    color: "from-purple-600 to-orange-500",
+    bgColor: "bg-purple-50 dark:bg-purple-950/30",
+    textColor: "text-purple-600 dark:text-purple-400",
+    blockchainProof: "0xf7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9",
+    blockNumber: "#18,567,234",
+    challenge: "Startup de IA necesitaba datasets reales de logística para entrenar modelos, pero las empresas temían fugas de datos competitivos.",
+    solution: "Datasets Sintéticos con alta fidelidad estadística. Datos artificiales que mantienen patrones sin revelar proveedores reales ni datos sensibles.",
+    services: ["Anonimizador GDPR", "Raw Data Normalizer", "Generador Sintético", "Privacy Protection"],
+    ariaQuote: "Innovación sin exposición. Los datos sintéticos son la llave para la IA colaborativa en Europa con 100% de protección de privacidad.",
+    simulator: "ai"
   }
 };
 
@@ -346,21 +547,34 @@ const SuccessStoryDetail = () => {
           </CardContent>
         </Card>
 
-        {/* Impact Simulator */}
-        <div>
-          <div className="flex items-center gap-2 mb-6">
-            <TrendingUp className="w-5 h-5 text-primary" />
-            <h2 className="text-2xl font-bold">Simulador de Impacto</h2>
+        {/* Sector-Specific Visualization for new cases */}
+        {["aero", "wine", "pharma", "customs", "gov", "mining", "fashion", "finance", "grid", "ai"].includes(caseData.simulator) && (
+          <div>
+            <div className="flex items-center gap-2 mb-6">
+              <BarChart2 className="w-5 h-5 text-primary" />
+              <h2 className="text-2xl font-bold">Panel de Impacto Sectorial</h2>
+            </div>
+            <SuccessVisualRenderer caseId={caseData.id} />
           </div>
-          
-          {caseData.simulator === "industrial" && <ROISimulator />}
-          {caseData.simulator === "agro" && <AgroROISimulator />}
-          {caseData.simulator === "social" && <SocialImpactDashboard spend={150000} />}
-          {caseData.simulator === "mobility" && <MobilityScope3Report fleetSize={45} electricPercentage={35} />}
-          {caseData.simulator === "health" && <HealthMaintenanceSimulator />}
-          {caseData.simulator === "retail" && <RetailEthicsAudit />}
-          {caseData.simulator === "energy" && <EnergySmartContract />}
-        </div>
+        )}
+
+        {/* Impact Simulator for original cases */}
+        {["industrial", "agro", "social", "mobility", "health", "retail", "energy"].includes(caseData.simulator) && (
+          <div>
+            <div className="flex items-center gap-2 mb-6">
+              <TrendingUp className="w-5 h-5 text-primary" />
+              <h2 className="text-2xl font-bold">Simulador de Impacto</h2>
+            </div>
+            
+            {caseData.simulator === "industrial" && <ROISimulator />}
+            {caseData.simulator === "agro" && <AgroROISimulator />}
+            {caseData.simulator === "social" && <SocialImpactDashboard spend={150000} />}
+            {caseData.simulator === "mobility" && <MobilityScope3Report fleetSize={45} electricPercentage={35} />}
+            {caseData.simulator === "health" && <HealthMaintenanceSimulator />}
+            {caseData.simulator === "retail" && <RetailEthicsAudit />}
+            {caseData.simulator === "energy" && <EnergySmartContract />}
+          </div>
+        )}
 
         {/* CTA */}
         <Card className="bg-gradient-to-r from-primary to-accent text-primary-foreground">
