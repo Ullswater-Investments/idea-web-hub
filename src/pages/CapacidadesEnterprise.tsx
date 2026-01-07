@@ -225,11 +225,11 @@ export default function CapacidadesEnterprise() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-white/10">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-white transition-colors">
+          <Link to="/" className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors">
             <ArrowLeft className="h-4 w-4" />
             <span>Volver al Inicio</span>
           </Link>
@@ -242,7 +242,7 @@ export default function CapacidadesEnterprise() {
                   key={seccion.nombre}
                   onClick={() => scrollToSection(seccion.nombre)}
                   className={`text-sm transition-colors ${
-                    activeSection === sectionId ? seccion.color : "text-muted-foreground hover:text-white"
+                    activeSection === sectionId ? seccion.color : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
                   {seccion.nombre}
@@ -258,8 +258,8 @@ export default function CapacidadesEnterprise() {
       </header>
 
       {/* Hero */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent" />
+      <section className="py-20 relative overflow-hidden bg-slate-50">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
         
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
@@ -271,11 +271,11 @@ export default function CapacidadesEnterprise() {
               Especificación Técnica y Funcional
             </Badge>
             
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-white to-primary bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-slate-800 to-primary bg-clip-text text-transparent">
               Capacidades Enterprise
             </h1>
             
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-xl text-slate-600 mb-8">
               Los 13 pilares del "Motor de ProcureData" para entornos de producción industrial
             </p>
 
@@ -284,7 +284,7 @@ export default function CapacidadesEnterprise() {
                 <Button
                   key={seccion.nombre}
                   variant="outline"
-                  className="border-white/20 hover:border-white/40"
+                  className="border-slate-300 hover:border-slate-400 hover:bg-slate-100"
                   onClick={() => scrollToSection(seccion.nombre)}
                 >
                   <seccion.icon className={`h-4 w-4 mr-2 ${seccion.color}`} />
@@ -315,10 +315,10 @@ export default function CapacidadesEnterprise() {
                     <seccion.icon className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <Badge variant="outline" className="mb-1 text-xs">
+                    <Badge variant="outline" className="mb-1 text-xs border-slate-300 text-slate-600">
                       SECCIÓN {seccionIndex + 1}
                     </Badge>
-                    <h2 className="text-3xl font-bold">{seccion.nombre}</h2>
+                    <h2 className="text-3xl font-bold text-slate-900">{seccion.nombre}</h2>
                   </div>
                 </div>
                 <div className={`h-1 w-32 rounded-full bg-gradient-to-r ${seccionCapacidades[0]?.seccionColor}`} />
@@ -332,7 +332,7 @@ export default function CapacidadesEnterprise() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-slate-900/50 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition-colors"
+                    className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-slate-300 hover:shadow-lg transition-all shadow-md"
                   >
                     <div className="p-6 md:p-8">
                       <div className="flex flex-col lg:flex-row gap-8">
@@ -343,23 +343,23 @@ export default function CapacidadesEnterprise() {
                               <cap.icon className="h-6 w-6 text-white" />
                             </div>
                             <div>
-                              <h3 className="text-xl md:text-2xl font-bold mb-2">{cap.titulo}</h3>
-                              <p className="text-muted-foreground">{cap.descripcion}</p>
+                              <h3 className="text-xl md:text-2xl font-bold mb-2 text-slate-900">{cap.titulo}</h3>
+                              <p className="text-slate-600">{cap.descripcion}</p>
                             </div>
                           </div>
 
                           {/* Interfaz Gráfica */}
-                          <div className="bg-slate-800/50 rounded-xl p-4 border border-white/5">
-                            <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">Interfaz Gráfica</p>
-                            <p className="text-sm text-slate-300">{cap.interfaz}</p>
+                          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                            <p className="text-xs uppercase tracking-wider text-slate-500 mb-2">Interfaz Gráfica</p>
+                            <p className="text-sm text-slate-700">{cap.interfaz}</p>
                           </div>
 
                           {/* Especificaciones */}
                           <div>
-                            <p className="text-xs uppercase tracking-wider text-muted-foreground mb-3">Especificaciones Técnicas</p>
+                            <p className="text-xs uppercase tracking-wider text-slate-500 mb-3">Especificaciones Técnicas</p>
                             <div className="flex flex-wrap gap-2">
                               {cap.specs.map((spec, i) => (
-                                <Badge key={i} variant="secondary" className="bg-slate-800 text-slate-300">
+                                <Badge key={i} variant="secondary" className="bg-slate-100 text-slate-700 border border-slate-200">
                                   {spec}
                                 </Badge>
                               ))}
@@ -369,13 +369,13 @@ export default function CapacidadesEnterprise() {
 
                         {/* Right: Impact + Link */}
                         <div className="lg:w-80 space-y-4">
-                          <div className={`p-5 rounded-xl bg-gradient-to-br ${cap.seccionColor} bg-opacity-10 border border-white/10`}>
-                            <p className="text-xs uppercase tracking-wider text-white/70 mb-2">💡 Impacto de Negocio</p>
+                          <div className={`p-5 rounded-xl bg-gradient-to-br ${cap.seccionColor} border border-slate-200`}>
+                            <p className="text-xs uppercase tracking-wider text-white/90 mb-2">💡 Impacto de Negocio</p>
                             <p className="text-white font-medium">{cap.impacto}</p>
                           </div>
                           
                           <Link to={cap.ruta}>
-                            <Button variant="outline" className="w-full border-white/20 hover:bg-white/10">
+                            <Button variant="outline" className="w-full border-slate-300 hover:bg-slate-50">
                               Ver Detalle Completo →
                             </Button>
                           </Link>
@@ -392,11 +392,11 @@ export default function CapacidadesEnterprise() {
         {/* Secciones Detalladas Avanzadas */}
         <div className="mt-16 space-y-8">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-orange-500/20 text-orange-400 border-orange-500/30">
+            <Badge className="mb-4 bg-primary/20 text-primary border-primary/30">
               Deep Dive Técnico
             </Badge>
-            <h2 className="text-3xl font-bold text-white">Visualizaciones Avanzadas</h2>
-            <p className="text-muted-foreground mt-2">Diagramas interactivos y código real de las capacidades enterprise</p>
+            <h2 className="text-3xl font-bold text-slate-900">Visualizaciones Avanzadas</h2>
+            <p className="text-slate-600 mt-2">Diagramas interactivos y código real de las capacidades enterprise</p>
           </div>
           
           <SectionIDSA />
@@ -407,20 +407,20 @@ export default function CapacidadesEnterprise() {
       </main>
 
       {/* Footer CTA */}
-      <section className="py-16 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 border-t border-white/10">
+      <section className="py-16 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-t border-slate-200">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">¿Listo para implementar el Motor?</h2>
-          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">¿Listo para implementar el Motor?</h2>
+          <p className="text-slate-600 mb-8 max-w-2xl mx-auto">
             Contacte con nuestro equipo técnico para una demostración personalizada de las capacidades enterprise.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/catalog">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white">
                 Explorar Marketplace
               </Button>
             </Link>
             <Link to="/whitepaper">
-              <Button size="lg" variant="outline" className="border-white/20">
+              <Button size="lg" variant="outline" className="border-slate-300 hover:bg-slate-100 text-slate-900">
                 Leer Whitepaper
               </Button>
             </Link>
