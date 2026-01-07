@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { Bot, X, Send, Sparkles, ThumbsUp, ThumbsDown, ExternalLink, Calculator, Gauge, Activity, FileCheck } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Bot, X, Send, Sparkles, ThumbsUp, ThumbsDown, ExternalLink, Calculator, Gauge, Activity, FileCheck, Minimize2, Maximize2, GripVertical } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,6 +25,14 @@ interface WidgetAction {
   path: string;
   icon: React.ReactNode;
 }
+
+// Size constraints
+const MIN_WIDTH = 400;
+const MAX_WIDTH = 800;
+const MIN_HEIGHT = 300;
+const MAX_HEIGHT = 600;
+const DEFAULT_WIDTH = 600;
+const DEFAULT_HEIGHT = 450;
 
 // Detect widget triggers in AI response
 function detectWidgets(content: string): WidgetAction[] {
@@ -58,6 +66,8 @@ function detectWidgets(content: string): WidgetAction[] {
 
 export function AIConcierge() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [chatSize, setChatSize] = useState({ width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT });
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -70,13 +80,60 @@ export function AIConcierge() {
   const [isTyping, setIsTyping] = useState(false);
   const [showCorrectionModal, setShowCorrectionModal] = useState<string | null>(null);
   const [correctionText, setCorrectionText] = useState("");
+  
+  // Typewriter effect state
+  const [displayedContent, setDisplayedContent] = useState<Record<string, string>>({});
+  const typewriterRefs = useRef<Record<string, number>>({});
+  
+  // Resize state
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeStartRef = useRef<{ x: number; y: number; width: number; height: number } | null>(null);
+  
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
   const sector = useOrgSector();
 
-  // Auto-scroll when new messages arrive
+  // Typewriter effect for assistant messages
+  useEffect(() => {
+    messages.forEach(msg => {
+      if (msg.role === "assistant" && msg.content) {
+        const currentDisplayed = displayedContent[msg.id] || "";
+        
+        // If content is fully displayed, skip
+        if (currentDisplayed === msg.content) return;
+        
+        // If we're already animating this message, let it continue
+        if (typewriterRefs.current[msg.id]) return;
+        
+        // Start typewriter effect
+        let currentIndex = currentDisplayed.length;
+        
+        const animate = () => {
+          if (currentIndex < msg.content.length) {
+            currentIndex++;
+            setDisplayedContent(prev => ({
+              ...prev,
+              [msg.id]: msg.content.slice(0, currentIndex)
+            }));
+            typewriterRefs.current[msg.id] = window.setTimeout(animate, 15);
+          } else {
+            delete typewriterRefs.current[msg.id];
+          }
+        };
+        
+        typewriterRefs.current[msg.id] = window.setTimeout(animate, 15);
+      }
+    });
+    
+    // Cleanup on unmount
+    return () => {
+      Object.values(typewriterRefs.current).forEach(timeout => clearTimeout(timeout));
+    };
+  }, [messages]);
+
+  // Auto-scroll when new messages arrive or content updates
   useEffect(() => {
     if (scrollAreaRef.current) {
       const scrollContainer = scrollAreaRef.current.querySelector("[data-radix-scroll-area-viewport]");
@@ -84,7 +141,48 @@ export function AIConcierge() {
         scrollContainer.scrollTop = scrollContainer.scrollHeight;
       }
     }
-  }, [messages, isTyping]);
+  }, [messages, displayedContent, isTyping]);
+
+  // Resize handlers
+  const handleResizeStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+    resizeStartRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      width: chatSize.width,
+      height: chatSize.height
+    };
+  }, [chatSize]);
+
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!resizeStartRef.current) return;
+      
+      const deltaX = resizeStartRef.current.x - e.clientX;
+      const deltaY = e.clientY - resizeStartRef.current.y;
+      
+      const newWidth = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, resizeStartRef.current.width + deltaX));
+      const newHeight = Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, resizeStartRef.current.height + deltaY));
+      
+      setChatSize({ width: newWidth, height: newHeight });
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      resizeStartRef.current = null;
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isResizing]);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isTyping) return;
@@ -330,6 +428,25 @@ export function AIConcierge() {
     setIsOpen(false);
   };
 
+  const handleMaximize = () => {
+    if (isMinimized) {
+      setIsMinimized(false);
+    } else {
+      setChatSize({ width: MAX_WIDTH, height: MAX_HEIGHT });
+    }
+  };
+
+  const getDisplayedText = (message: Message): string => {
+    if (message.role === "user") return message.content;
+    return displayedContent[message.id] || "";
+  };
+
+  const isTypingMessage = (message: Message): boolean => {
+    if (message.role === "user") return false;
+    const displayed = displayedContent[message.id] || "";
+    return displayed.length < message.content.length;
+  };
+
   return (
     <>
       {/* Floating Button */}
@@ -356,10 +473,27 @@ export function AIConcierge() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-40 w-96 max-w-[calc(100vw-3rem)]"
+            className="fixed bottom-24 right-6 z-40"
+            style={{ 
+              width: isMinimized ? 300 : chatSize.width,
+              maxWidth: 'calc(100vw - 3rem)'
+            }}
           >
-            <Card className="shadow-2xl border-t-4 border-t-primary">
-              <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-primary/10">
+            <Card className="shadow-2xl border-t-4 border-t-primary relative overflow-hidden">
+              {/* Resize handle (bottom-left corner) */}
+              {!isMinimized && (
+                <div
+                  className="absolute bottom-0 left-0 w-6 h-6 cursor-sw-resize flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity z-10"
+                  onMouseDown={handleResizeStart}
+                >
+                  <GripVertical className="h-4 w-4 text-muted-foreground rotate-45" />
+                </div>
+              )}
+              
+              <CardHeader 
+                className="pb-3 bg-gradient-to-r from-primary/5 to-primary/10 cursor-pointer"
+                onClick={() => isMinimized && setIsMinimized(false)}
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-8 w-8 bg-gradient-to-br from-primary to-primary/80">
@@ -369,151 +503,201 @@ export function AIConcierge() {
                     </Avatar>
                     <div>
                       <CardTitle className="text-base">ARIA</CardTitle>
-                      <CardDescription className="text-xs">Asistente ProcureData</CardDescription>
+                      <CardDescription className="text-xs">
+                        {isMinimized ? "Click para expandir" : "Asistente ProcureData"}
+                      </CardDescription>
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} className="h-8 w-8 p-0">
-                    <X className="h-4 w-4" />
-                  </Button>
+                  <div className="flex items-center gap-1">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }} 
+                      className="h-8 w-8 p-0"
+                      title={isMinimized ? "Restaurar" : "Minimizar"}
+                    >
+                      <Minimize2 className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={(e) => { e.stopPropagation(); handleMaximize(); }} 
+                      className="h-8 w-8 p-0"
+                      title="Maximizar"
+                    >
+                      <Maximize2 className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} 
+                      className="h-8 w-8 p-0"
+                      title="Cerrar"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
 
-              <CardContent className="p-0">
-                {/* Messages */}
-                <ScrollArea ref={scrollAreaRef} className="h-[400px] p-4">
-                  <div className="space-y-4">
-                    {messages.map((message) => {
-                      const widgets = message.role === "assistant" ? detectWidgets(message.content) : [];
-                      
-                      return (
-                        <div key={message.id}>
-                          <div className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                            {message.role === "assistant" && (
+              <AnimatePresence>
+                {!isMinimized && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <CardContent className="p-0">
+                      {/* Messages */}
+                      <ScrollArea 
+                        ref={scrollAreaRef} 
+                        className="p-4"
+                        style={{ height: chatSize.height - 140 }}
+                      >
+                        <div className="space-y-4">
+                          {messages.map((message) => {
+                            const widgets = message.role === "assistant" ? detectWidgets(message.content) : [];
+                            const displayText = getDisplayedText(message);
+                            const isCurrentlyTyping = isTypingMessage(message);
+                            
+                            return (
+                              <div key={message.id}>
+                                <div className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+                                  {message.role === "assistant" && (
+                                    <Avatar className="h-8 w-8 bg-gradient-to-br from-primary to-primary/80 shrink-0">
+                                      <AvatarFallback className="bg-transparent text-primary-foreground">
+                                        <Bot className="h-4 w-4" />
+                                      </AvatarFallback>
+                                    </Avatar>
+                                  )}
+                                  <div className="flex flex-col gap-1 max-w-[80%]">
+                                    <div
+                                      className={`rounded-lg px-3 py-2 ${
+                                        message.role === "user"
+                                          ? "bg-primary text-primary-foreground"
+                                          : "bg-muted text-foreground"
+                                      }`}
+                                    >
+                                      <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                                        {displayText}
+                                        {isCurrentlyTyping && (
+                                          <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse" />
+                                        )}
+                                      </p>
+                                      <span className="text-[10px] opacity-60 mt-1 block">
+                                        {message.timestamp.toLocaleTimeString("es-ES", {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                        })}
+                                      </span>
+                                    </div>
+
+                                    {/* Feedback buttons for assistant messages */}
+                                    {message.role === "assistant" && message.id !== "welcome" && !isCurrentlyTyping && (
+                                      <div className="flex items-center gap-1 ml-1">
+                                        {message.feedbackGiven ? (
+                                          <span className="text-xs text-muted-foreground">
+                                            {message.feedbackGiven === "positive" ? "👍 ¡Gracias!" : "📝 Feedback enviado"}
+                                          </span>
+                                        ) : (
+                                          <>
+                                            <Button
+                                              variant="ghost"
+                                              size="sm"
+                                              className="h-6 w-6 p-0 hover:bg-green-100 dark:hover:bg-green-900/30"
+                                              onClick={() => handleFeedback(message.id, true)}
+                                            >
+                                              <ThumbsUp className="h-3 w-3 text-muted-foreground hover:text-green-600" />
+                                            </Button>
+                                            <Button
+                                              variant="ghost"
+                                              size="sm"
+                                              className="h-6 w-6 p-0 hover:bg-red-100 dark:hover:bg-red-900/30"
+                                              onClick={() => handleFeedback(message.id, false)}
+                                            >
+                                              <ThumbsDown className="h-3 w-3 text-muted-foreground hover:text-red-600" />
+                                            </Button>
+                                          </>
+                                        )}
+                                      </div>
+                                    )}
+
+                                    {/* Widget action buttons */}
+                                    {widgets.length > 0 && !isCurrentlyTyping && (
+                                      <div className="flex flex-wrap gap-1 mt-1">
+                                        {widgets.map((widget, idx) => (
+                                          <Button
+                                            key={idx}
+                                            variant="outline"
+                                            size="sm"
+                                            className="h-6 text-xs gap-1"
+                                            onClick={() => handleWidgetClick(widget.path)}
+                                          >
+                                            {widget.icon}
+                                            {widget.label}
+                                          </Button>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                  {message.role === "user" && (
+                                    <Avatar className="h-8 w-8 bg-primary shrink-0">
+                                      <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold">
+                                        TÚ
+                                      </AvatarFallback>
+                                    </Avatar>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+
+                          {/* Typing indicator */}
+                          {isTyping && (
+                            <div className="flex gap-2 justify-start">
                               <Avatar className="h-8 w-8 bg-gradient-to-br from-primary to-primary/80 shrink-0">
                                 <AvatarFallback className="bg-transparent text-primary-foreground">
                                   <Bot className="h-4 w-4" />
                                 </AvatarFallback>
                               </Avatar>
-                            )}
-                            <div className="flex flex-col gap-1 max-w-[80%]">
-                              <div
-                                className={`rounded-lg px-3 py-2 ${
-                                  message.role === "user"
-                                    ? "bg-primary text-primary-foreground"
-                                    : "bg-muted text-foreground"
-                                }`}
-                              >
-                                <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
-                                <span className="text-[10px] opacity-60 mt-1 block">
-                                  {message.timestamp.toLocaleTimeString("es-ES", {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })}
-                                </span>
+                              <div className="bg-muted rounded-lg px-3 py-2">
+                                <div className="flex gap-1">
+                                  <span className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                                  <span className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                                  <span className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                                </div>
                               </div>
-
-                              {/* Feedback buttons for assistant messages */}
-                              {message.role === "assistant" && message.id !== "welcome" && (
-                                <div className="flex items-center gap-1 ml-1">
-                                  {message.feedbackGiven ? (
-                                    <span className="text-xs text-muted-foreground">
-                                      {message.feedbackGiven === "positive" ? "👍 ¡Gracias!" : "📝 Feedback enviado"}
-                                    </span>
-                                  ) : (
-                                    <>
-                                      <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="h-6 w-6 p-0 hover:bg-green-100 dark:hover:bg-green-900/30"
-                                        onClick={() => handleFeedback(message.id, true)}
-                                      >
-                                        <ThumbsUp className="h-3 w-3 text-muted-foreground hover:text-green-600" />
-                                      </Button>
-                                      <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="h-6 w-6 p-0 hover:bg-red-100 dark:hover:bg-red-900/30"
-                                        onClick={() => handleFeedback(message.id, false)}
-                                      >
-                                        <ThumbsDown className="h-3 w-3 text-muted-foreground hover:text-red-600" />
-                                      </Button>
-                                    </>
-                                  )}
-                                </div>
-                              )}
-
-                              {/* Widget action buttons */}
-                              {widgets.length > 0 && (
-                                <div className="flex flex-wrap gap-1 mt-1">
-                                  {widgets.map((widget, idx) => (
-                                    <Button
-                                      key={idx}
-                                      variant="outline"
-                                      size="sm"
-                                      className="h-6 text-xs gap-1"
-                                      onClick={() => handleWidgetClick(widget.path)}
-                                    >
-                                      {widget.icon}
-                                      {widget.label}
-                                    </Button>
-                                  ))}
-                                </div>
-                              )}
                             </div>
-                            {message.role === "user" && (
-                              <Avatar className="h-8 w-8 bg-primary shrink-0">
-                                <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold">
-                                  TÚ
-                                </AvatarFallback>
-                              </Avatar>
-                            )}
-                          </div>
+                          )}
                         </div>
-                      );
-                    })}
+                      </ScrollArea>
 
-                    {/* Typing indicator */}
-                    {isTyping && (
-                      <div className="flex gap-2 justify-start">
-                        <Avatar className="h-8 w-8 bg-gradient-to-br from-primary to-primary/80 shrink-0">
-                          <AvatarFallback className="bg-transparent text-primary-foreground">
-                            <Bot className="h-4 w-4" />
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="bg-muted rounded-lg px-3 py-2">
-                          <div className="flex gap-1">
-                            <span className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                            <span className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                            <span className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-                          </div>
+                      {/* Input */}
+                      <div className="border-t p-4 bg-background">
+                        <div className="flex gap-2">
+                          <Input
+                            placeholder="Pregunta a ARIA..."
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                            disabled={isTyping}
+                            className="flex-1"
+                          />
+                          <Button onClick={handleSendMessage} disabled={isTyping || !inputValue.trim()} size="icon">
+                            <Send className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
-                    )}
-                  </div>
-                </ScrollArea>
-
-                {/* Input */}
-                <div className="border-t p-4 bg-background">
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Pregunta a ARIA..."
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      disabled={isTyping}
-                      className="flex-1"
-                    />
-                    <Button onClick={handleSendMessage} disabled={isTyping || !inputValue.trim()} size="icon">
-                      <Send className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
+                    </CardContent>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </Card>
 
             {/* Correction Modal */}
             <AnimatePresence>
-              {showCorrectionModal && (
+              {showCorrectionModal && !isMinimized && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
