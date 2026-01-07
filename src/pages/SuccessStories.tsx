@@ -137,7 +137,7 @@ const successCases = [
     textColor: "text-yellow-600 dark:text-yellow-400",
     blockchainProof: "0x6b3d...e9a1"
   },
-  // NEW 10 cases
+  // First 10 new cases
   {
     id: "sky-aero-systems",
     title: "Certificación Aeronáutica EN9100",
@@ -287,6 +287,157 @@ const successCases = [
     bgColor: "bg-purple-50 dark:bg-purple-950/30",
     textColor: "text-purple-600 dark:text-purple-400",
     blockchainProof: "0x0e1f...9a8b"
+  },
+  // ===== 10 NEW ENERGY & RENEWABLES CASES =====
+  {
+    id: "helios-fields",
+    title: "Mantenimiento Predictivo Solar",
+    company: "Helios Fields",
+    sector: "Energía Solar",
+    sectorCategory: "energia",
+    sectorIcon: Zap,
+    metric: "-25%",
+    metricLabel: "Costes Reparación",
+    description: "Telemetría IoT de 1M de lecturas diarias para detectar anomalías térmicas en inversores.",
+    color: "from-yellow-400 to-orange-500",
+    bgColor: "bg-yellow-50 dark:bg-yellow-950/30",
+    textColor: "text-yellow-600 dark:text-yellow-400",
+    blockchainProof: "0x7a8b...solar"
+  },
+  {
+    id: "aeolus-wind",
+    title: "PPAs Programables con Smart Contracts",
+    company: "Aeolus Wind",
+    sector: "Energía Eólica",
+    sectorCategory: "energia",
+    sectorIcon: Zap,
+    metric: "2s",
+    metricLabel: "Conciliación PPA",
+    description: "Liquidación instantánea de contratos PPA mediante Smart Contracts y EUROe.",
+    color: "from-cyan-400 to-blue-500",
+    bgColor: "bg-cyan-50 dark:bg-cyan-950/30",
+    textColor: "text-cyan-600 dark:text-cyan-400",
+    blockchainProof: "0x1c2d...wind"
+  },
+  {
+    id: "h2-pure",
+    title: "Certificación de Hidrógeno Verde",
+    company: "H2-Pure",
+    sector: "Hidrógeno Verde",
+    sectorCategory: "energia",
+    sectorIcon: Zap,
+    metric: "+20%",
+    metricLabel: "Valor de Venta",
+    description: "GdO digital inmutable que certifica el vínculo parque eólico-electrolizador.",
+    color: "from-emerald-400 to-green-600",
+    bgColor: "bg-emerald-50 dark:bg-emerald-950/30",
+    textColor: "text-emerald-600 dark:text-emerald-400",
+    blockchainProof: "0x5f6g...h2pure"
+  },
+  {
+    id: "poligono-ecolink",
+    title: "Marketplace de Comunidad Energética",
+    company: "Polígono Eco-Link",
+    sector: "Autoconsumo Industrial",
+    sectorCategory: "energia",
+    sectorIcon: Zap,
+    metric: "-15%",
+    metricLabel: "Factura Eléctrica",
+    description: "Gobernanza ODRL para intercambio de excedentes solares en tiempo real entre naves.",
+    color: "from-blue-500 to-indigo-600",
+    bgColor: "bg-blue-50 dark:bg-blue-950/30",
+    textColor: "text-blue-600 dark:text-blue-400",
+    blockchainProof: "0x9h8i...peer"
+  },
+  {
+    id: "gridflex-demand",
+    title: "Certificados de Flexibilidad Smart Grid",
+    company: "GridFlex",
+    sector: "Smart Grid",
+    sectorCategory: "energia",
+    sectorIcon: Zap,
+    metric: "0",
+    metricLabel: "Apagones/Año",
+    description: "Smart Alerts que activan protocolos de desconexión selectiva por incentivos en EUROe.",
+    color: "from-purple-500 to-pink-500",
+    bgColor: "bg-purple-50 dark:bg-purple-950/30",
+    textColor: "text-purple-600 dark:text-purple-400",
+    blockchainProof: "0x3j2k...flex"
+  },
+  {
+    id: "bateria-hub",
+    title: "Arbitraje Energético con IA",
+    company: "Batería-Hub",
+    sector: "Almacenamiento",
+    sectorCategory: "energia",
+    sectorIcon: Zap,
+    metric: "-3 años",
+    metricLabel: "ROI Batería",
+    description: "Algoritmos de IA predicen precios del pool para automatizar compra/venta de energía.",
+    color: "from-indigo-500 to-violet-600",
+    bgColor: "bg-indigo-50 dark:bg-indigo-950/30",
+    textColor: "text-indigo-600 dark:text-indigo-400",
+    blockchainProof: "0x1l2m...storage"
+  },
+  {
+    id: "bioheat-district",
+    title: "Trazabilidad de Biomasa RED III",
+    company: "BioHeat District",
+    sector: "Biomasa",
+    sectorCategory: "energia",
+    sectorIcon: Zap,
+    metric: "99%",
+    metricLabel: "Cumplimiento RED",
+    description: "DID por lote con geolocalización de tala para certificar limpieza forestal sostenible.",
+    color: "from-amber-700 to-green-600",
+    bgColor: "bg-amber-50 dark:bg-amber-950/30",
+    textColor: "text-amber-700 dark:text-amber-400",
+    blockchainProof: "0x4n5o...biomass"
+  },
+  {
+    id: "turbine-chain",
+    title: "Acero Verde para Aerogeneradores",
+    company: "Turbine-Chain",
+    sector: "Cadena de Suministro",
+    sectorCategory: "energia",
+    sectorIcon: Zap,
+    metric: "50M€",
+    metricLabel: "Contrato Ganado",
+    description: "Consolidación de emisiones Scope 3 de 15 proveedores de acero para reporte CSRD.",
+    color: "from-orange-500 to-red-500",
+    bgColor: "bg-orange-50 dark:bg-orange-950/30",
+    textColor: "text-orange-600 dark:text-orange-400",
+    blockchainProof: "0x8p9q...scope3"
+  },
+  {
+    id: "aquapower-nexus",
+    title: "Gestión del Nexo Agua-Energía",
+    company: "AquaPower",
+    sector: "Hidráulica",
+    sectorCategory: "energia",
+    sectorIcon: Zap,
+    metric: "+12%",
+    metricLabel: "Eficiencia Hídrica",
+    description: "Políticas ODRL regulan el uso de agua entre riego y generación eléctrica en tiempo real.",
+    color: "from-blue-900 to-cyan-600",
+    bgColor: "bg-slate-50 dark:bg-slate-950/30",
+    textColor: "text-slate-700 dark:text-slate-400",
+    blockchainProof: "0x2r3s...hydro"
+  },
+  {
+    id: "smartcharge-ev",
+    title: "Garantía de Origen para Usuarios EV",
+    company: "Smart-Charge",
+    sector: "Movilidad Eléctrica",
+    sectorCategory: "energia",
+    sectorIcon: Zap,
+    metric: "+40%",
+    metricLabel: "Fidelización EV",
+    description: "API consulta al Nodo Notario para mostrar origen solar/eólico en la App de carga.",
+    color: "from-lime-500 to-green-600",
+    bgColor: "bg-lime-50 dark:bg-lime-950/30",
+    textColor: "text-lime-600 dark:text-lime-400",
+    blockchainProof: "0x6t7u...evcharge"
   }
 ];
 
@@ -319,7 +470,7 @@ const SuccessStories = () => {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
               <Award className="w-4 h-4" />
-              17 Casos de Éxito Verificados
+              27 Casos de Éxito Verificados
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
               Transformación Digital en{" "}

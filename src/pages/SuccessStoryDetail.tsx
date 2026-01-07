@@ -27,7 +27,14 @@ import {
   Shirt,
   Receipt,
   Cpu,
-  BarChart2
+  BarChart2,
+  Sun,
+  Wind,
+  Droplets,
+  Battery,
+  TreePine,
+  Gauge,
+  Car
 } from "lucide-react";
 import { ROISimulator } from "@/components/ROISimulator";
 import { AgroROISimulator } from "@/components/AgroROISimulator";
@@ -56,7 +63,7 @@ const casesData: Record<string, {
   solution: string;
   services: string[];
   ariaQuote: string;
-  simulator: "industrial" | "agro" | "social" | "mobility" | "health" | "retail" | "energy" | "aero" | "wine" | "pharma" | "customs" | "gov" | "mining" | "fashion" | "finance" | "grid" | "ai";
+  simulator: "industrial" | "agro" | "social" | "mobility" | "health" | "retail" | "energy" | "aero" | "wine" | "pharma" | "customs" | "gov" | "mining" | "fashion" | "finance" | "grid" | "ai" | "solar" | "wind" | "hydrogen" | "community" | "smartgrid" | "storage" | "biomass" | "scope3" | "hydro" | "evcharge";
 }> = {
   "gigafactory-north": {
     id: "gigafactory-north",
@@ -380,6 +387,197 @@ const casesData: Record<string, {
     services: ["Anonimizador GDPR", "Raw Data Normalizer", "Generador Sintético", "Privacy Protection"],
     ariaQuote: "Innovación sin exposición. Los datos sintéticos son la llave para la IA colaborativa en Europa con 100% de protección de privacidad.",
     simulator: "ai"
+  },
+  // ===== 10 NEW ENERGY & RENEWABLES CASES =====
+  "helios-fields": {
+    id: "helios-fields",
+    title: "Mantenimiento Predictivo Solar con IoT",
+    company: "Helios Fields",
+    sector: "Energía Solar",
+    sectorIcon: Sun,
+    metric: "-25%",
+    metricLabel: "Costes Reparación",
+    color: "from-yellow-400 to-orange-500",
+    bgColor: "bg-yellow-50 dark:bg-yellow-950/30",
+    textColor: "text-yellow-600 dark:text-yellow-400",
+    blockchainProof: "0x7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b",
+    blockNumber: "#18,601,234",
+    challenge: "Un operador de parques solares perdía un 8% de eficiencia anual por fallos en inversores no detectados a tiempo, generando pérdidas millonarias.",
+    solution: "Intercambio de telemetría de paneles en tiempo real con proveedores de servicios técnicos vía ProcureData. Edge Functions procesan 1M de lecturas diarias detectando anomalías térmicas.",
+    services: ["Edge Functions IoT", "Conector ERP Universal", "Alertas Inteligentes", "Pasaporte Digital de Activo"],
+    ariaQuote: "Los datos de radiación y temperatura ahora disparan órdenes de trabajo automáticas en el ERP del mantenedor. El sol no espera a nadie.",
+    simulator: "solar"
+  },
+  "aeolus-wind": {
+    id: "aeolus-wind",
+    title: "PPAs Programables con Liquidación Instantánea",
+    company: "Aeolus Wind",
+    sector: "Energía Eólica",
+    sectorIcon: Wind,
+    metric: "2s",
+    metricLabel: "Conciliación PPA",
+    color: "from-cyan-400 to-blue-600",
+    bgColor: "bg-cyan-50 dark:bg-cyan-950/30",
+    textColor: "text-cyan-600 dark:text-cyan-400",
+    blockchainProof: "0x1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d",
+    blockNumber: "#18,634,567",
+    challenge: "Los contratos de compra de energía (PPA) tardaban 45 días en liquidarse debido a la conciliación manual de producción vs. precio de mercado.",
+    solution: "Liquidación instantánea de PPAs mediante Smart Contracts y EUROe. El contrato lee el sensor del aerogenerador y ejecuta el pago al detectar la inyección en red.",
+    services: ["Smart Contracts IoT", "Wallet EUROe", "Pontus-X Notary Node", "API Pool Eléctrico"],
+    ariaQuote: "Hemos convertido el viento en liquidez inmediata. El flujo de caja del parque eólico ahora es síncrono a la generación en 2 segundos.",
+    simulator: "wind"
+  },
+  "h2-pure": {
+    id: "h2-pure",
+    title: "Certificación de Origen Hidrógeno Verde",
+    company: "H2-Pure",
+    sector: "Hidrógeno Verde",
+    sectorIcon: Droplets,
+    metric: "+20%",
+    metricLabel: "Valor de Venta",
+    color: "from-emerald-400 to-green-600",
+    bgColor: "bg-emerald-50 dark:bg-emerald-950/30",
+    textColor: "text-emerald-600 dark:text-emerald-400",
+    blockchainProof: "0x5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5j6k",
+    blockNumber: "#18,667,890",
+    challenge: "Demostrar que el hidrógeno producido era 100% verde para acceder a subvenciones gubernamentales y exportación premium a Alemania.",
+    solution: "Notarización en blockchain del vínculo entre el parque eólico de origen y la planta de electrólisis. Certificado de Origen (GdO) digital inmutable anclado en Pontus-X.",
+    services: ["Pontus-X Notary Node", "Pasaporte Digital de Producto", "Certificación GdO", "API Subvenciones UE"],
+    ariaQuote: "No solo vendes moléculas de hidrógeno, vendes la prueba matemática de que son sostenibles. El bloque #42901 lo certifica.",
+    simulator: "hydrogen"
+  },
+  "poligono-ecolink": {
+    id: "poligono-ecolink",
+    title: "Marketplace de Comunidad Energética Industrial",
+    company: "Polígono Eco-Link",
+    sector: "Autoconsumo Industrial",
+    sectorIcon: Factory,
+    metric: "-15%",
+    metricLabel: "Factura Eléctrica",
+    color: "from-blue-500 to-indigo-600",
+    bgColor: "bg-blue-50 dark:bg-blue-950/30",
+    textColor: "text-blue-600 dark:text-blue-400",
+    blockchainProof: "0x9h8i7j6k5l4m3n2o1p0q9r8s7t6u5v4w3x2y1z0a9b8c7d6e5f4g3h2i1j0k9l8m",
+    blockNumber: "#18,701,234",
+    challenge: "Empresas de un mismo polígono no podían intercambiar excedentes de energía solar de forma ágil y legal, dependiendo de la red general.",
+    solution: "Marketplace local de energía operado sobre el modelo IDSA. Gobernanza ODRL define precios de intercambio entre vecinos en tiempo real.",
+    services: ["Gobernanza ODRL", "Wallet EUROe", "Smart Contracts P2P", "Mapa Comunidad Energética"],
+    ariaQuote: "La soberanía energética se logra cuando los datos de consumo de un vecino se convierten en la oportunidad de ahorro de otro.",
+    simulator: "community"
+  },
+  "gridflex-demand": {
+    id: "gridflex-demand",
+    title: "Certificados de Flexibilidad Smart Grid",
+    company: "GridFlex",
+    sector: "Smart Grid",
+    sectorIcon: Gauge,
+    metric: "0",
+    metricLabel: "Apagones/12 meses",
+    color: "from-purple-500 to-pink-500",
+    bgColor: "bg-purple-50 dark:bg-purple-950/30",
+    textColor: "text-purple-600 dark:text-purple-400",
+    blockchainProof: "0x3j2k1l0m9n8o7p6q5r4s3t2u1v0w9x8y7z6a5b4c3d2e1f0g9h8i7j6k5l4m3n2o",
+    blockNumber: "#18,734,567",
+    challenge: "Sobrecarga en transformadores por el aumento de cargadores de vehículos eléctricos en zonas industriales, riesgo de apagones.",
+    solution: "Emisión de Certificados de Flexibilidad. Las empresas reducen carga a petición de la red a cambio de incentivos en EUROe.",
+    services: ["Smart Alerts", "Wallet EUROe", "API Operador Red", "Dashboard Flexibilidad"],
+    ariaQuote: "La flexibilidad es la nueva moneda de la Smart Grid, y ProcureData es su banco central. Cero apagones en 12 meses.",
+    simulator: "smartgrid"
+  },
+  "bateria-hub": {
+    id: "bateria-hub",
+    title: "Arbitraje Energético con IA Predictiva",
+    company: "Batería-Hub",
+    sector: "Almacenamiento",
+    sectorIcon: Battery,
+    metric: "-3 años",
+    metricLabel: "ROI Batería",
+    color: "from-indigo-500 to-violet-600",
+    bgColor: "bg-indigo-50 dark:bg-indigo-950/30",
+    textColor: "text-indigo-600 dark:text-indigo-400",
+    blockchainProof: "0x1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5j6k7l8m9n0o1p2q",
+    blockNumber: "#18,767,890",
+    challenge: "Rentabilizar grandes sistemas de baterías almacenando energía barata y vendiéndola en picos de precio, ROI de 8 años.",
+    solution: "Algoritmos de IA Analytics integrados con la Wallet de la empresa. Automatización de la compra/venta en el mercado diario basada en predicciones.",
+    services: ["IA Analytics", "Wallet EUROe", "API Pool Eléctrico", "Dashboard Trading"],
+    ariaQuote: "ARIA ahora predice el precio del pool y decide cuándo es el momento óptimo para cargar o descargar tu activo. ROI reducido de 8 a 5 años.",
+    simulator: "storage"
+  },
+  "bioheat-district": {
+    id: "bioheat-district",
+    title: "Trazabilidad de Biomasa Directiva RED III",
+    company: "BioHeat District",
+    sector: "Biomasa",
+    sectorIcon: TreePine,
+    metric: "99%",
+    metricLabel: "Cumplimiento RED",
+    color: "from-amber-700 to-green-600",
+    bgColor: "bg-amber-50 dark:bg-amber-950/30",
+    textColor: "text-amber-700 dark:text-amber-400",
+    blockchainProof: "0x4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p3q4r5s",
+    blockNumber: "#18,801,234",
+    challenge: "Probar que el 100% de la madera provenía de limpiezas forestales sostenibles según la Directiva RED II/III para inspecciones medioambientales.",
+    solution: "Trazabilidad de camiones y origen mediante Pasaporte Digital de Proveedor. Cada lote tiene un DID vinculado a la geolocalización de la tala.",
+    services: ["Pasaporte Digital de Proveedor", "Validador DID Web3", "Geolocalización IoT", "Certificación RED III"],
+    ariaQuote: "Rastreamos el dato desde el bosque hasta la caldera, garantizando que el calor generado es verdaderamente neutro.",
+    simulator: "biomass"
+  },
+  "turbine-chain": {
+    id: "turbine-chain",
+    title: "Acero Verde para Aerogeneradores CSRD",
+    company: "Turbine-Chain",
+    sector: "Cadena de Suministro",
+    sectorIcon: Factory,
+    metric: "50M€",
+    metricLabel: "Contrato Ganado",
+    color: "from-orange-500 to-red-500",
+    bgColor: "bg-orange-50 dark:bg-orange-950/30",
+    textColor: "text-orange-600 dark:text-orange-400",
+    blockchainProof: "0x8p9q0r1s2t3u4v5w6x7y8z9a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u",
+    blockNumber: "#18,834,567",
+    challenge: "Un fabricante de aerogeneradores necesitaba reportar la huella de carbono de fabricación (Scope 3) de 15 proveedores de acero para una licitación de 50M€.",
+    solution: "Recopilación de datos de emisiones de proveedores Tier 3 vía ProcureData. Consolidación automática de informes CSRD agregando datos soberanos.",
+    services: ["Calculadora Scope 3", "Auditoría CSRD Automática", "Conector ERP Universal", "Reporte Consolidado"],
+    ariaQuote: "Ganar licitaciones hoy depende de cuántos datos verificados de tus proveedores eres capaz de mostrar. 50M€ adjudicados.",
+    simulator: "scope3"
+  },
+  "aquapower-nexus": {
+    id: "aquapower-nexus",
+    title: "Gestión del Nexo Agua-Energía",
+    company: "AquaPower",
+    sector: "Hidráulica",
+    sectorIcon: Droplets,
+    metric: "+12%",
+    metricLabel: "Eficiencia Hídrica",
+    color: "from-blue-900 to-cyan-600",
+    bgColor: "bg-slate-50 dark:bg-slate-950/30",
+    textColor: "text-slate-700 dark:text-slate-400",
+    blockchainProof: "0x2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w",
+    blockNumber: "#18,867,890",
+    challenge: "Coordinar el flujo de agua para riego agrícola y generación eléctrica sin conflictos de intereses entre Confederación Hidrográfica y Eléctrica.",
+    solution: "Plataforma de datos compartidos con políticas ODRL que regulan el uso del agua basándose en sensores de nivel de embalse en tiempo real.",
+    services: ["Gobernanza ODRL", "Sensores IoT Nivel", "API Confederación", "Dashboard Nexo"],
+    ariaQuote: "La paz hídrica se construye con datos transparentes y compartidos entre sectores. Optimización del 12% en el uso del recurso.",
+    simulator: "hydro"
+  },
+  "smartcharge-ev": {
+    id: "smartcharge-ev",
+    title: "Garantía de Origen para Usuarios EV",
+    company: "Smart-Charge",
+    sector: "Movilidad Eléctrica",
+    sectorIcon: Car,
+    metric: "+40%",
+    metricLabel: "Fidelización EV",
+    color: "from-lime-500 to-green-600",
+    bgColor: "bg-lime-50 dark:bg-lime-950/30",
+    textColor: "text-lime-600 dark:text-lime-400",
+    blockchainProof: "0x6t7u8v9w0x1y2z3a4b5c6d7e8f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y",
+    blockNumber: "#18,901,234",
+    challenge: "Los usuarios de vehículos eléctricos no confiaban en que la energía de los puntos de carga fuera realmente renovable, afectando la fidelización.",
+    solution: "Visualización del origen de la energía en la App de carga mediante ProcureData. API de consulta instantánea al Nodo Notario de la red de transporte.",
+    services: ["API Nodo Notario", "Pasaporte Digital de Energía", "Widget Mobile", "Certificación CO2"],
+    ariaQuote: "El usuario final ahora puede ver en su móvil el hash de blockchain que certifica que su coche corre con sol o viento.",
+    simulator: "evcharge"
   }
 };
 
@@ -548,7 +746,7 @@ const SuccessStoryDetail = () => {
         </Card>
 
         {/* Sector-Specific Visualization for new cases */}
-        {["aero", "wine", "pharma", "customs", "gov", "mining", "fashion", "finance", "grid", "ai"].includes(caseData.simulator) && (
+        {["aero", "wine", "pharma", "customs", "gov", "mining", "fashion", "finance", "grid", "ai", "solar", "wind", "hydrogen", "community", "smartgrid", "storage", "biomass", "scope3", "hydro", "evcharge"].includes(caseData.simulator) && (
           <div>
             <div className="flex items-center gap-2 mb-6">
               <BarChart2 className="w-5 h-5 text-primary" />
