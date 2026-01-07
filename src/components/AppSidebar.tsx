@@ -14,6 +14,7 @@ import {
   Lightbulb,
   Megaphone,
   TrendingUp,
+  Award,
 } from "lucide-react";
 import { useOrganizationContext } from "@/hooks/useOrganizationContext";
 import {
@@ -37,6 +38,7 @@ const menuItems = [
   { title: "Sostenibilidad", url: "/sustainability", icon: Leaf },
   { title: "Servicios", url: "/services", icon: Sparkles },
   { title: "Innovation Lab", url: "/innovation", icon: Lightbulb },
+  { title: "Casos de Éxito", url: "/success-stories", icon: Award },
   { title: "Oportunidades", url: "/opportunities", icon: Megaphone },
   { title: "Reportes", url: "/reports", icon: BarChart3 },
   { title: "Notificaciones", url: "/notifications", icon: Bell },

@@ -36,6 +36,8 @@ import ServiceDetail from "./pages/ServiceDetail";
 import Sustainability from "./pages/Sustainability";
 import InnovationLab from "./pages/InnovationLab";
 import Opportunities from "./pages/Opportunities";
+import SuccessStories from "./pages/SuccessStories";
+import SuccessStoryDetail from "./pages/SuccessStoryDetail";
 import InteractiveWhitepaper from "./pages/InteractiveWhitepaper";
 import TechnicalDocs from "./pages/TechnicalDocs";
 import BusinessModels from "./pages/BusinessModels";
@@ -135,6 +137,8 @@ const App = () => (
               <Route path="/services" element={<Services />} />
               <Route path="/services/:id" element={<ServiceDetail />} />
               <Route path="/innovation" element={<InnovationLab />} />
+              <Route path="/success-stories" element={<SuccessStories />} />
+              <Route path="/success-stories/:id" element={<SuccessStoryDetail />} />
             </Route>
               {/* Protected routes with AppLayout */}
               <Route element={
