@@ -21,6 +21,7 @@ import {
 import { ROISimulator } from "@/components/ROISimulator";
 import { AgroROISimulator } from "@/components/AgroROISimulator";
 import { SocialImpactDashboard } from "@/components/SocialImpactDashboard";
+import { MobilityScope3Report } from "@/components/success-stories/MobilityScope3Report";
 
 const casesData: Record<string, {
   id: string;
@@ -307,7 +308,8 @@ const SuccessStoryDetail = () => {
           {caseData.simulator === "industrial" && <ROISimulator />}
           {caseData.simulator === "agro" && <AgroROISimulator />}
           {caseData.simulator === "social" && <SocialImpactDashboard spend={150000} />}
-          {(caseData.simulator === "mobility" || caseData.simulator === "health") && (
+          {caseData.simulator === "mobility" && <MobilityScope3Report fleetSize={45} electricPercentage={35} />}
+          {caseData.simulator === "health" && (
             <Card className="p-8 text-center">
               <TrendingUp className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-xl font-bold mb-2">Simulador en Desarrollo</h3>
