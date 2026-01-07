@@ -35,3 +35,11 @@ export { BatteryLifeSimulator } from './BatteryLifeSimulator';
 export { UrbanMiningSimulator } from './UrbanMiningSimulator';
 export { WasteToValueSimulator } from './WasteToValueSimulator';
 export { GreenGovCircularSimulator } from './GreenGovCircularSimulator';
+// Oleada 5: Agri-Tech y Fitosanitarios (Blueprint 2.0)
+export { CitrusCheckSimulator } from './CitrusCheckSimulator';
+export { RiceSatelliteSimulator } from './RiceSatelliteSimulator';
+export { BioCottonTraceSimulator } from './BioCottonTraceSimulator';
+export { GreenhouseAISimulator } from './GreenhouseAISimulator';
+export { TropicalFlashSimulator } from './TropicalFlashSimulator';
+export { UrbanHydroSimulator } from './UrbanHydroSimulator';
+export { OliveOriginSimulator } from './OliveOriginSimulator';
