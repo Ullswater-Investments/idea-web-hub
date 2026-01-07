@@ -65,6 +65,7 @@ import { BlockchainProofCard } from "@/components/success-stories/BlockchainProo
 import { SectorSelector } from "@/components/success-stories/SectorSelector";
 import { NarrativeBlock } from "@/components/success-stories/NarrativeBlock";
 import { AriaQuoteCard } from "@/components/success-stories/AriaQuoteCard";
+import { SuccessStoryNavButtons } from "@/components/success-stories/SuccessStoryNavButtons";
 
 const casesData: Record<string, {
   id: string;
@@ -1037,6 +1038,9 @@ const SuccessStoryDetail = () => {
             <SectorSelector currentSector={caseData.sector} compact />
           </div>
 
+          {/* Navigation Buttons - Top */}
+          <SuccessStoryNavButtons currentCaseId={id || ''} />
+
           {/* Main Hero Grid */}
           <div className="grid lg:grid-cols-3 gap-8 items-start">
             {/* Left Column - Title and Metrics */}
@@ -1103,10 +1107,8 @@ const SuccessStoryDetail = () => {
           sectorColor={sectorColor}
         />
 
-        {/* Navigator for browsing cases */}
-        <div className="py-4">
-          <SuccessStoryNavigator />
-        </div>
+        {/* Navigation Buttons - Bottom */}
+        <SuccessStoryNavButtons currentCaseId={id || ''} />
 
         {/* ZONA 4: Simulación Interactiva / Gemelo Digital */}
         {/* Sector-Specific Visualization for new cases */}
