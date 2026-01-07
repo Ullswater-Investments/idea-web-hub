@@ -41,11 +41,11 @@ export default function ActivityFeed() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="border-b border-white/10 sticky top-0 bg-slate-950/95 backdrop-blur z-50">
+      <header className="border-b border-border sticky top-0 bg-background/95 backdrop-blur z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/#features" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+          <Link to="/#features" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Volver al Motor
           </Link>

@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 
 export default function PagosEUROe() {
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="border-b border-white/10 sticky top-0 bg-slate-950/95 backdrop-blur z-50">
+      <header className="border-b border-border sticky top-0 bg-background/95 backdrop-blur z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/#features" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+          <Link to="/#features" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Volver al Motor
           </Link>
@@ -35,7 +35,7 @@ export default function PagosEUROe() {
             </motion.div>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Pagos EUROe</h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Liquidación Instantánea en moneda regulada bajo normativa MiCA
           </p>
         </motion.div>
@@ -49,18 +49,18 @@ export default function PagosEUROe() {
             className="space-y-6"
           >
             {/* Comparison Chart */}
-            <Card className="bg-white/5 border-white/10 overflow-hidden">
-              <CardHeader className="border-b border-white/10 bg-white/5">
-                <CardTitle className="text-white">Comparativa de Tiempos</CardTitle>
+            <Card className="bg-card dark:bg-white/5 border-border dark:border-white/10 overflow-hidden">
+              <CardHeader className="border-b border-border dark:border-white/10 bg-muted/50 dark:bg-white/5">
+                <CardTitle className="text-foreground">Comparativa de Tiempos</CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 {/* Traditional */}
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-gray-400">Transferencia Tradicional</span>
+                    <span className="text-muted-foreground">Transferencia Tradicional</span>
                     <span className="text-red-400">3-5 días</span>
                   </div>
-                  <div className="h-4 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-4 bg-muted dark:bg-white/10 rounded-full overflow-hidden">
                     <motion.div 
                       className="h-full bg-gradient-to-r from-red-500 to-red-600"
                       initial={{ width: 0 }}
@@ -73,10 +73,10 @@ export default function PagosEUROe() {
                 {/* EUROe */}
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-gray-400">Pago EUROe</span>
+                    <span className="text-muted-foreground">Pago EUROe</span>
                     <span className="text-green-400">2 segundos</span>
                   </div>
-                  <div className="h-4 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-4 bg-muted dark:bg-white/10 rounded-full overflow-hidden">
                     <motion.div 
                       className="h-full bg-gradient-to-r from-green-500 to-green-600"
                       initial={{ width: 0 }}
@@ -89,31 +89,31 @@ export default function PagosEUROe() {
             </Card>
 
             {/* Payment Modal Simulation */}
-            <Card className="bg-gradient-to-br from-slate-900 to-yellow-900/20 border-yellow-500/30">
-              <CardHeader className="border-b border-white/10">
-                <CardTitle className="text-white flex items-center gap-2">
+            <Card className="bg-gradient-to-br from-muted dark:from-slate-900 to-yellow-900/20 border-yellow-500/30">
+              <CardHeader className="border-b border-border dark:border-white/10">
+                <CardTitle className="text-foreground flex items-center gap-2">
                   <ArrowRightLeft className="h-5 w-5 text-yellow-400" />
                   Confirmación de Pago
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
-                <div className="text-center p-6 bg-black/30 rounded-xl">
-                  <p className="text-sm text-gray-400 mb-2">Importe a Pagar</p>
-                  <p className="text-5xl font-bold text-white">100.00 <span className="text-yellow-400">EUROe</span></p>
-                  <p className="text-sm text-gray-500 mt-2">Servicio: Homologación Flash</p>
+                <div className="text-center p-6 bg-muted dark:bg-black/30 rounded-xl">
+                  <p className="text-sm text-muted-foreground mb-2">Importe a Pagar</p>
+                  <p className="text-5xl font-bold text-foreground">100.00 <span className="text-yellow-400">EUROe</span></p>
+                  <p className="text-sm text-muted-foreground/70 mt-2">Servicio: Homologación Flash</p>
                 </div>
 
                 <div className="space-y-3">
-                  <div className="flex justify-between p-3 bg-white/5 rounded-lg">
-                    <span className="text-gray-400">Red</span>
-                    <span className="text-white">Pontus-X</span>
+                  <div className="flex justify-between p-3 bg-muted dark:bg-white/5 rounded-lg">
+                    <span className="text-muted-foreground">Red</span>
+                    <span className="text-foreground">Pontus-X</span>
                   </div>
-                  <div className="flex justify-between p-3 bg-white/5 rounded-lg">
-                    <span className="text-gray-400">Tipo</span>
-                    <span className="text-white">Escrow (Garantía)</span>
+                  <div className="flex justify-between p-3 bg-muted dark:bg-white/5 rounded-lg">
+                    <span className="text-muted-foreground">Tipo</span>
+                    <span className="text-foreground">Escrow (Garantía)</span>
                   </div>
-                  <div className="flex justify-between p-3 bg-white/5 rounded-lg">
-                    <span className="text-gray-400">Hash Tx</span>
+                  <div className="flex justify-between p-3 bg-muted dark:bg-white/5 rounded-lg">
+                    <span className="text-muted-foreground">Hash Tx</span>
                     <span className="font-mono text-yellow-400 text-sm">0x9ab2...f123</span>
                   </div>
                 </div>
@@ -136,22 +136,22 @@ export default function PagosEUROe() {
             {/* Description */}
             <div>
               <h2 className="text-2xl font-bold mb-4">Dinero Electrónico Tokenizado</h2>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 ProcureData elimina la fricción financiera de las transferencias bancarias tradicionales 
                 (que tardan de 24 a 72 horas) mediante el uso de EUROe. El EUROe es dinero electrónico 
                 tokenizado con paridad 1:1 con el euro físico, respaldado por depósitos bancarios auditados.
               </p>
-              <p className="text-gray-400 leading-relaxed mt-4">
-                Gracias a los <strong className="text-white">Smart Contracts</strong>, la plataforma permite 
+              <p className="text-muted-foreground leading-relaxed mt-4">
+                Gracias a los <strong className="text-foreground">Smart Contracts</strong>, la plataforma permite 
                 el modelo de Escrow (Garantía): el pago se bloquea en la blockchain y solo se libera al 
                 proveedor una vez que el comprador ha recibido los datos verificados.
               </p>
             </div>
 
             {/* Technical Specs */}
-            <Card className="bg-gradient-to-br from-yellow-900/20 to-slate-900 border-yellow-500/20">
+            <Card className="bg-gradient-to-br from-yellow-900/20 to-muted dark:to-slate-900 border-yellow-500/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg flex items-center gap-2">
+                <CardTitle className="text-foreground text-lg flex items-center gap-2">
                   <Shield className="h-5 w-5 text-yellow-400" />
                   Especificaciones Técnicas
                 </CardTitle>
@@ -165,8 +165,8 @@ export default function PagosEUROe() {
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-white">{spec.label}</p>
-                      <p className="text-sm text-gray-400">{spec.value}</p>
+                      <p className="font-medium text-foreground">{spec.label}</p>
+                      <p className="text-sm text-muted-foreground">{spec.value}</p>
                     </div>
                   </div>
                 ))}
@@ -181,8 +181,8 @@ export default function PagosEUROe() {
                     <Zap className="h-6 w-6 text-orange-400" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white mb-2">Optimización del Circulante</h3>
-                    <p className="text-gray-300">
+                    <h3 className="font-bold text-foreground mb-2">Optimización del Circulante</h3>
+                    <p className="text-muted-foreground">
                       Liquidación en tiempo real y <strong className="text-orange-400">conciliación contable automática</strong>. 
                       La trazabilidad "On-Chain" permite auditorías financieras instantáneas y elimina 
                       los errores de facturación manual.
@@ -194,7 +194,7 @@ export default function PagosEUROe() {
 
             {/* CTA */}
             <div className="flex gap-4">
-              <Button asChild variant="outline" className="flex-1 border-white/20 hover:bg-white/10">
+              <Button asChild variant="outline" className="flex-1">
                 <Link to="/auth">Probar Demo</Link>
               </Button>
               <Button asChild className="flex-1 bg-primary hover:bg-primary/90">

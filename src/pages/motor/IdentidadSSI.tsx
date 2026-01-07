@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 
 export default function IdentidadSSI() {
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="border-b border-white/10 sticky top-0 bg-slate-950/95 backdrop-blur z-50">
+      <header className="border-b border-border sticky top-0 bg-background/95 backdrop-blur z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/#features" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+          <Link to="/#features" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Volver al Motor
           </Link>
@@ -35,7 +35,7 @@ export default function IdentidadSSI() {
             </motion.div>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Identidad SSI</h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Identidad Corporativa Descentralizada bajo el Trust Framework de Gaia-X
           </p>
         </motion.div>
@@ -47,10 +47,10 @@ export default function IdentidadSSI() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Card className="bg-gradient-to-br from-slate-900 to-purple-900/30 border-purple-500/30 overflow-hidden">
-              <CardHeader className="border-b border-white/10 bg-white/5">
+            <Card className="bg-gradient-to-br from-muted dark:from-slate-900 to-purple-900/30 border-purple-500/30 overflow-hidden">
+              <CardHeader className="border-b border-border dark:border-white/10 bg-muted/50 dark:bg-white/5">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-white flex items-center gap-2">
+                  <CardTitle className="text-foreground flex items-center gap-2">
                     <Globe className="h-5 w-5 text-purple-400" />
                     Pasaporte Digital Corporativo
                   </CardTitle>
@@ -58,8 +58,8 @@ export default function IdentidadSSI() {
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 {/* DID Display */}
-                <div className="bg-black/40 rounded-xl p-6 border border-purple-500/20">
-                  <p className="text-xs text-gray-400 mb-2">Identificador Descentralizado (DID)</p>
+                <div className="bg-muted dark:bg-black/40 rounded-xl p-6 border border-purple-500/20">
+                  <p className="text-xs text-muted-foreground mb-2">Identificador Descentralizado (DID)</p>
                   <p className="font-mono text-purple-400 text-sm break-all">
                     did:ethr:0x7ecc4a3b9f2d1e8c...4b2a
                   </p>
@@ -67,7 +67,7 @@ export default function IdentidadSSI() {
 
                 {/* Verified Attributes */}
                 <div>
-                  <p className="text-sm text-gray-400 mb-4">Atributos Verificados</p>
+                  <p className="text-sm text-muted-foreground mb-4">Atributos Verificados</p>
                   <div className="space-y-3">
                     {[
                       { label: "CIF Validado", issuer: "Agencia Tributaria", date: "2025-01-15" },
@@ -75,12 +75,12 @@ export default function IdentidadSSI() {
                       { label: "ISO 14001", issuer: "Bureau Veritas", date: "2024-11-01" },
                       { label: "Miembro PTIC", issuer: "Clúster PTIC", date: "2025-01-01" }
                     ].map((attr, i) => (
-                      <div key={i} className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-green-500/20">
+                      <div key={i} className="flex items-center justify-between p-3 bg-muted dark:bg-white/5 rounded-lg border border-green-500/20">
                         <div className="flex items-center gap-3">
                           <BadgeCheck className="h-5 w-5 text-green-400" />
                           <div>
-                            <p className="text-sm text-white font-medium">{attr.label}</p>
-                            <p className="text-xs text-gray-500">por {attr.issuer}</p>
+                            <p className="text-sm text-foreground font-medium">{attr.label}</p>
+                            <p className="text-xs text-muted-foreground">por {attr.issuer}</p>
                           </div>
                         </div>
                         <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
@@ -120,23 +120,23 @@ export default function IdentidadSSI() {
             {/* Description */}
             <div>
               <h2 className="text-2xl font-bold mb-4">Identidad Descentralizada (DID)</h2>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 ProcureData implementa el estándar de Identificadores Descentralizados (DID) para garantizar que 
                 cada organización sea la única dueña de su identidad y reputación. A diferencia de los modelos 
                 centralizados, nuestra infraestructura genera automáticamente una identidad compatible con la 
                 red Pontus-X.
               </p>
-              <p className="text-gray-400 leading-relaxed mt-4">
-                Esta identidad permite el intercambio de <strong className="text-white">Credenciales Verificables (VC)</strong>, 
+              <p className="text-muted-foreground leading-relaxed mt-4">
+                Esta identidad permite el intercambio de <strong className="text-foreground">Credenciales Verificables (VC)</strong>, 
                 lo que significa que una vez que un proveedor es validado, ese atributo queda vinculado a su 
                 identidad digital de forma inmutable.
               </p>
             </div>
 
             {/* Technical Specs */}
-            <Card className="bg-gradient-to-br from-purple-900/20 to-slate-900 border-purple-500/20">
+            <Card className="bg-gradient-to-br from-purple-900/20 to-muted dark:to-slate-900 border-purple-500/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg flex items-center gap-2">
+                <CardTitle className="text-foreground text-lg flex items-center gap-2">
                   <Shield className="h-5 w-5 text-purple-400" />
                   Especificaciones Técnicas
                 </CardTitle>
@@ -150,8 +150,8 @@ export default function IdentidadSSI() {
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-purple-400 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-white">{spec.label}</p>
-                      <p className="text-sm text-gray-400">{spec.value}</p>
+                      <p className="font-medium text-foreground">{spec.label}</p>
+                      <p className="text-sm text-muted-foreground">{spec.value}</p>
                     </div>
                   </div>
                 ))}
@@ -166,8 +166,8 @@ export default function IdentidadSSI() {
                     <Zap className="h-6 w-6 text-orange-400" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white mb-2">Solución al Problema nxm</h3>
-                    <p className="text-gray-300">
+                    <h3 className="font-bold text-foreground mb-2">Solución al Problema nxm</h3>
+                    <p className="text-muted-foreground">
                       El proveedor se valida <strong className="text-orange-400">UNA sola vez</strong> en el ecosistema. 
                       Su "Pasaporte Digital" es aceptado instantáneamente por cualquier nuevo cliente, 
                       reduciendo el tiempo de alta de <strong className="text-orange-400">3 semanas a milisegundos</strong>.
@@ -179,7 +179,7 @@ export default function IdentidadSSI() {
 
             {/* CTA */}
             <div className="flex gap-4">
-              <Button asChild variant="outline" className="flex-1 border-white/20 hover:bg-white/10">
+              <Button asChild variant="outline" className="flex-1">
                 <Link to="/auth">Probar Demo</Link>
               </Button>
               <Button asChild className="flex-1 bg-primary hover:bg-primary/90">

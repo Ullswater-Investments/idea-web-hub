@@ -194,20 +194,20 @@ export default function Landing() {
 
 
         {/* FUNCIONALIDADES TÉCNICAS */}
-        <section id="features" className="py-20 bg-slate-950 text-white">
+        <section id="features" className="py-20 bg-muted dark:bg-slate-950">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">El Motor de ProcureData</h2>
-              <p className="text-gray-400">12 capacidades enterprise listas para producción</p>
+              <h2 className="text-3xl font-bold mb-4 text-foreground">El Motor de ProcureData</h2>
+              <p className="text-muted-foreground">12 capacidades enterprise listas para producción</p>
             </div>
             
             <Tabs defaultValue="web3" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 bg-white/5 mb-8 h-auto">
+              <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 bg-background/50 dark:bg-white/5 mb-8 h-auto">
                 {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
                   <TabsTrigger 
                     key={key} 
                     value={key}
-                    className="data-[state=active]:bg-white/10 data-[state=active]:text-white py-3"
+                    className="data-[state=active]:bg-primary/10 data-[state=active]:text-foreground dark:data-[state=active]:bg-white/10 dark:data-[state=active]:text-white py-3"
                   >
                     {label}
                   </TabsTrigger>
@@ -226,17 +226,17 @@ export default function Landing() {
                     {items.map((feature, i) => (
                       <motion.div key={i} variants={cardVariants}>
                         <Link to={feature.path}>
-                          <Card className="h-full bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer group">
+                          <Card className="h-full bg-card dark:bg-white/5 border-border dark:border-white/10 hover:bg-accent dark:hover:bg-white/10 hover:border-primary/50 transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer group">
                             <CardHeader>
                               <div className="flex items-center gap-3">
-                                <div className="h-10 w-10 bg-white/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <div className="h-10 w-10 bg-muted dark:bg-white/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                                   <feature.icon className={`h-5 w-5 ${feature.color}`} />
                                 </div>
-                                <CardTitle className="text-lg text-white">{feature.title}</CardTitle>
+                                <CardTitle className="text-lg text-foreground">{feature.title}</CardTitle>
                               </div>
                             </CardHeader>
                             <CardContent>
-                              <p className="text-sm text-gray-400 mb-3">{feature.desc}</p>
+                              <p className="text-sm text-muted-foreground mb-3">{feature.desc}</p>
                               <span className="text-xs text-primary font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                 Ver detalle <ArrowRight className="h-3 w-3" />
                               </span>

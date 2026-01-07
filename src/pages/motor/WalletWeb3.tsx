@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 
 export default function WalletWeb3() {
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="border-b border-white/10 sticky top-0 bg-slate-950/95 backdrop-blur z-50">
+      <header className="border-b border-border sticky top-0 bg-background/95 backdrop-blur z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/#features" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+          <Link to="/#features" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Volver al Motor
           </Link>
@@ -35,7 +35,7 @@ export default function WalletWeb3() {
             </motion.div>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Wallet Web3</h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Gestión de Activos Soberanos mediante firma digital corporativa
           </p>
         </motion.div>
@@ -47,10 +47,10 @@ export default function WalletWeb3() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Card className="bg-white/5 border-white/10 overflow-hidden">
-              <CardHeader className="border-b border-white/10 bg-white/5">
+            <Card className="bg-card dark:bg-white/5 border-border dark:border-white/10 overflow-hidden">
+              <CardHeader className="border-b border-border dark:border-white/10 bg-muted/50 dark:bg-white/5">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-white flex items-center gap-2">
+                  <CardTitle className="text-foreground flex items-center gap-2">
                     <Wallet className="h-5 w-5 text-purple-400" />
                     ProcureData Wallet
                   </CardTitle>
@@ -59,37 +59,37 @@ export default function WalletWeb3() {
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 {/* Balance Display */}
-                <div className="bg-gradient-to-br from-purple-900/40 to-slate-900 rounded-xl p-6 border border-purple-500/20">
-                  <p className="text-sm text-gray-400 mb-1">Balance Total</p>
-                  <p className="text-4xl font-bold text-white">12,500.00 <span className="text-purple-400">EUROe</span></p>
-                  <p className="text-sm text-gray-500 mt-2">≈ 12,500.00 EUR</p>
+                <div className="bg-gradient-to-br from-purple-900/40 to-muted dark:to-slate-900 rounded-xl p-6 border border-purple-500/20">
+                  <p className="text-sm text-muted-foreground mb-1">Balance Total</p>
+                  <p className="text-4xl font-bold text-foreground">12,500.00 <span className="text-purple-400">EUROe</span></p>
+                  <p className="text-sm text-muted-foreground/70 mt-2">≈ 12,500.00 EUR</p>
                 </div>
 
                 {/* Network Info */}
-                <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                <div className="flex items-center justify-between p-4 bg-muted dark:bg-white/5 rounded-lg">
                   <div>
-                    <p className="text-sm text-gray-400">Red</p>
-                    <p className="font-medium text-white">Pontus-X (Gaia-X)</p>
+                    <p className="text-sm text-muted-foreground">Red</p>
+                    <p className="font-medium text-foreground">Pontus-X (Gaia-X)</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-400">Chain ID</p>
-                    <p className="font-mono text-white">32456</p>
+                    <p className="text-sm text-muted-foreground">Chain ID</p>
+                    <p className="font-mono text-foreground">32456</p>
                   </div>
                 </div>
 
                 {/* Recent Transactions */}
                 <div>
-                  <p className="text-sm text-gray-400 mb-3">Transacciones Recientes</p>
+                  <p className="text-sm text-muted-foreground mb-3">Transacciones Recientes</p>
                   <div className="space-y-2">
                     {[
                       { type: "Pago Servicio", amount: "-500.00", hash: "0x7ecc...a4b2" },
                       { type: "Recepción Datos", amount: "+1,200.00", hash: "0x3df1...c8e9" },
                       { type: "Homologación", amount: "-150.00", hash: "0x9ab2...f123" }
                     ].map((tx, i) => (
-                      <div key={i} className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
+                      <div key={i} className="flex items-center justify-between p-3 bg-muted dark:bg-white/5 rounded-lg hover:bg-accent dark:hover:bg-white/10 transition-colors cursor-pointer">
                         <div>
-                          <p className="text-sm text-white">{tx.type}</p>
-                          <p className="text-xs text-gray-500 font-mono">{tx.hash}</p>
+                          <p className="text-sm text-foreground">{tx.type}</p>
+                          <p className="text-xs text-muted-foreground font-mono">{tx.hash}</p>
                         </div>
                         <p className={`font-medium ${tx.amount.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
                           {tx.amount} EUROe
@@ -117,21 +117,21 @@ export default function WalletWeb3() {
             {/* Description */}
             <div>
               <h2 className="text-2xl font-bold mb-4">Tu Puerta de Acceso Soberana</h2>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 El motor de ProcureData está diseñado para no ser intrusivo. La Wallet Web3 permite a las empresas 
                 firmar transacciones con su llave privada, garantizando que nadie más pueda mover sus fondos o 
                 autorizar datos. No hay usuario/contraseña tradicional.
               </p>
-              <p className="text-gray-400 leading-relaxed mt-4">
+              <p className="text-muted-foreground leading-relaxed mt-4">
                 A través de la firma EIP-712, las empresas pueden firmar contratos legales digitales con la certeza 
                 criptográfica de que su identidad es verificable y no repudiable.
               </p>
             </div>
 
             {/* Technical Specs */}
-            <Card className="bg-gradient-to-br from-purple-900/20 to-slate-900 border-purple-500/20">
+            <Card className="bg-gradient-to-br from-purple-900/20 to-muted dark:to-slate-900 border-purple-500/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg flex items-center gap-2">
+                <CardTitle className="text-foreground text-lg flex items-center gap-2">
                   <Shield className="h-5 w-5 text-purple-400" />
                   Especificaciones Técnicas
                 </CardTitle>
@@ -145,8 +145,8 @@ export default function WalletWeb3() {
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-purple-400 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-white">{spec.label}</p>
-                      <p className="text-sm text-gray-400">{spec.value}</p>
+                      <p className="font-medium text-foreground">{spec.label}</p>
+                      <p className="text-sm text-muted-foreground">{spec.value}</p>
                     </div>
                   </div>
                 ))}
@@ -161,8 +161,8 @@ export default function WalletWeb3() {
                     <Zap className="h-6 w-6 text-orange-400" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white mb-2">Beneficio de Negocio</h3>
-                    <p className="text-gray-300">
+                    <h3 className="font-bold text-foreground mb-2">Beneficio de Negocio</h3>
+                    <p className="text-muted-foreground">
                       <strong className="text-orange-400">Elimina la dependencia de intermediarios bancarios</strong> para 
                       la validación de transacciones internacionales. Liquidación instantánea sin comisiones SWIFT.
                     </p>
@@ -173,7 +173,7 @@ export default function WalletWeb3() {
 
             {/* CTA */}
             <div className="flex gap-4">
-              <Button asChild variant="outline" className="flex-1 border-white/20 hover:bg-white/10">
+              <Button asChild variant="outline" className="flex-1">
                 <Link to="/auth">Probar Demo</Link>
               </Button>
               <Button asChild className="flex-1 bg-primary hover:bg-primary/90">
