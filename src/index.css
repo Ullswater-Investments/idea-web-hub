@@ -11,7 +11,7 @@ All colors MUST be HSL.
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
-    --card: 0 0% 100%;
+    --card: 210 20% 98%;
     --card-foreground: 222.2 84% 4.9%;
 
     --popover: 0 0% 100%;
@@ -20,11 +20,11 @@ All colors MUST be HSL.
     --primary: 32 94% 44%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 90%;
-    --secondary-foreground: 0 0% 24%;
+    --secondary: 214 32% 91%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 0 0% 94%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
     --accent: 32 80% 92%;
     --accent-foreground: 32 94% 35%;
@@ -32,58 +32,59 @@ All colors MUST be HSL.
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
     --ring: 32 94% 54%;
 
     --radius: 0.5rem;
 
     /* Chart colors - PROCUREDATA palette */
     --chart-1: 32 94% 54%;
-    --chart-2: 0 0% 40%;
+    --chart-2: 215 16% 47%;
     --chart-3: 32 80% 70%;
-    --chart-4: 0 0% 55%;
+    --chart-4: 215 20% 65%;
     --chart-5: 32 60% 45%;
-    --chart-6: 0 0% 30%;
+    --chart-6: 215 25% 27%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(0 0% 24%) 0%, hsl(32 94% 54%) 100%);
-    --gradient-primary-hover: linear-gradient(135deg, hsl(0 0% 20%) 0%, hsl(32 94% 48%) 100%);
+    /* Code block colors - Light mode (GitHub style) */
+    --code-bg: 210 40% 96%;
+    --code-border: 214.3 31.8% 91.4%;
+    --code-text: 215 25% 27%;
+    --code-keyword: 271 81% 56%;
+    --code-string: 142 71% 29%;
+    --code-property: 32 94% 44%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(32 94% 54%) 100%);
+    --gradient-primary-hover: linear-gradient(135deg, hsl(222 47% 15%) 0%, hsl(32 94% 48%) 100%);
 
     --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 0 0% 25%;
-
+    --sidebar-foreground: 222 47% 11%;
     --sidebar-primary: 32 94% 44%;
-
     --sidebar-primary-foreground: 0 0% 100%;
-
-    --sidebar-accent: 32 40% 94%;
-
+    --sidebar-accent: 210 40% 96%;
     --sidebar-accent-foreground: 32 94% 35%;
-
-    --sidebar-border: 0 0% 88%;
-
+    --sidebar-border: 214.3 31.8% 91.4%;
     --sidebar-ring: 32 94% 54%;
   }
 
   .dark {
-    --background: 0 0% 7%;
-    --foreground: 0 0% 98%;
+    --background: 222 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
+    --card: 217 33% 7%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 222 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
     --primary: 32 90% 55%;
-    --primary-foreground: 0 0% 10%;
+    --primary-foreground: 222 47% 11%;
 
-    --secondary: 0 0% 18%;
+    --secondary: 217 33% 17%;
     --secondary-foreground: 32 90% 60%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 217 33% 12%;
+    --muted-foreground: 215 20% 65%;
 
     --accent: 32 50% 20%;
     --accent-foreground: 32 90% 65%;
@@ -91,24 +92,36 @@ All colors MUST be HSL.
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
     --ring: 32 90% 55%;
 
     /* Chart colors - PROCUREDATA palette (dark mode) */
     --chart-1: 32 90% 60%;
-    --chart-2: 0 0% 60%;
+    --chart-2: 215 20% 65%;
     --chart-3: 32 85% 75%;
-    --chart-4: 0 0% 70%;
+    --chart-4: 215 25% 75%;
     --chart-5: 32 70% 55%;
-    --chart-6: 0 0% 50%;
-    --sidebar-background: 0 0% 10%;
-    --sidebar-foreground: 0 0% 85%;
+    --chart-6: 215 20% 55%;
+
+    /* Code block colors - Dark mode (VSCode style) */
+    --code-bg: 217 33% 7%;
+    --code-border: 217 33% 17%;
+    --code-text: 215 20% 65%;
+    --code-keyword: 271 91% 65%;
+    --code-string: 142 71% 45%;
+    --code-property: 32 90% 60%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(217 33% 12%) 0%, hsl(32 90% 55%) 100%);
+    --gradient-primary-hover: linear-gradient(135deg, hsl(217 33% 17%) 0%, hsl(32 90% 50%) 100%);
+
+    --sidebar-background: 217 33% 7%;
+    --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 32 90% 55%;
-    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-primary-foreground: 222 47% 11%;
     --sidebar-accent: 32 30% 18%;
     --sidebar-accent-foreground: 32 90% 60%;
-    --sidebar-border: 0 0% 18%;
+    --sidebar-border: 217 33% 17%;
     --sidebar-ring: 32 90% 55%;
   }
 }
