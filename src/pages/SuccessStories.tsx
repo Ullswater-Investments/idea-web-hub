@@ -433,15 +433,36 @@ const SuccessStories = () => {
 
         {filteredCases.length === 0 && (
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-16 max-w-md mx-auto"
           >
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-              <TrendingUp className="w-8 h-8 text-primary" />
+            {/* ARIA Avatar */}
+            <div className="relative w-20 h-20 mx-auto mb-6">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-full animate-pulse opacity-20" />
+              <div className="relative w-full h-full rounded-full bg-gradient-to-br from-primary/20 to-accent/20 border-2 border-primary/30 flex items-center justify-center">
+                <span className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  ARIA
+                </span>
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center border-2 border-background">
+                <TrendingUp className="w-3 h-3 text-primary-foreground" />
+              </div>
             </div>
-            <h3 className="text-lg font-semibold mb-2">Todavía estamos escribiendo historias aquí</h3>
-            <p className="text-muted-foreground">¿Quieres ser el primero en tu sector?</p>
+            
+            <h3 className="text-xl font-bold mb-2">
+              Todavía estamos escribiendo historias en este sector
+            </h3>
+            <p className="text-muted-foreground mb-6">
+              ¿Quieres ser la primera empresa en transformar tu industria con ProcureData?
+            </p>
+            <Link 
+              to="/servicios" 
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+            >
+              Empieza tu historia
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </motion.div>
         )}
       </div>
