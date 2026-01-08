@@ -1,9 +1,10 @@
 # ProcureData AI Training Context
 ## Manual de Entrenamiento para el Asistente Virtual ARIA
 
-> **Versión**: 1.0  
-> **Última actualización**: 2025-01-06  
-> **Modelo recomendado**: google/gemini-2.5-flash
+> **Versión**: 2.0  
+> **Última actualización**: 2026-01-08  
+> **Modelo recomendado**: google/gemini-2.5-flash  
+> **Casos de éxito documentados**: 47
 
 ---
 
@@ -44,6 +45,29 @@ ProcureData elimina el **problema 'nxm'** en el alta de proveedores:
 ### Nuestra Solución
 
 **Identidades Compartidas**: Cada proveedor se valida UNA vez y su "Pasaporte Digital" es reutilizable por todos los participantes del ecosistema, respetando soberanía de datos según GDPR.
+
+### Modelo Tripartito de Confianza
+
+ProcureData implementa un modelo de tres actores que garantiza la soberanía y trazabilidad de los datos:
+
+| Actor | Rol | Responsabilidad |
+|-------|-----|-----------------|
+| **Provider (Proveedor)** | Propietario de los datos | Define qué datos comparte y bajo qué condiciones. Firma contratos ODRL. |
+| **Consumer (Comprador)** | Solicitante de datos | Solicita acceso a datos, acepta términos, paga por el servicio. |
+| **Data Holder (Custodio)** | Intermediario neutral | Custodia técnica de los datos, garantiza neutralidad y verifica cumplimiento. |
+
+Este modelo garantiza que ningún actor tiene control absoluto sobre los datos, creando un ecosistema de confianza mutua.
+
+### Gobernanza ODRL 2.0
+
+Los contratos de uso de datos se definen usando ODRL (Open Digital Rights Language), el estándar W3C para expresar permisos digitales:
+
+| Componente | Descripción | Ejemplo |
+|------------|-------------|---------|
+| **Permissions** | Qué puede hacer el consumidor | Leer, copiar, compartir internamente |
+| **Prohibitions** | Qué está prohibido | Revender, compartir con terceros |
+| **Duties** | Obligaciones del consumidor | Pagar, reportar uso |
+| **Constraints** | Límites de uso | Hasta 1000 consultas/mes, válido 365 días |
 
 ### Sectores Prioritarios (Cuotas Objetivo)
 
@@ -94,7 +118,7 @@ El "Pasaporte de Proveedor" es un paquete de datos verificados que incluye:
 
 ---
 
-## 1.4 Catálogo Completo de Servicios (21 servicios actuales)
+## 1.4 Catálogo Completo de Servicios (22 servicios actuales)
 
 ### Categoría: Blockchain (2 servicios)
 
@@ -103,13 +127,14 @@ El "Pasaporte de Proveedor" es un paquete de datos verificados que incluye:
 | **Pontus-X Notary Node** | 10 EUROe/mes | Suscripción | Anclaje automático de hashes de documentos en blockchain Pontus-X |
 | **Validador DID Web3** | 0.50 EUROe/uso | Por uso | Verificación de identidades descentralizadas según estándar W3C |
 
-### Categoría: Compliance (4 servicios)
+### Categoría: Compliance (5 servicios)
 
 | Servicio | Precio | Modelo | Descripción |
 |----------|--------|--------|-------------|
 | **Homologación Flash 24h** | 150 EUROe | Pago único | Validación de proveedores en 24h con KYB automático |
 | **Auditoría Digital ISO** | 300 EUROe | Por uso | Verificación de certificados ISO 9001/14001/45001 contra blockchain |
 | **ODRL License Validator** | Gratis | Suscripción | Parsea contratos ODRL y verifica cumplimiento automático |
+| **Due Diligence Express** | 300 EUROe | Pago único | Análisis de riesgo empresarial completo con background check |
 
 ### Categoría: Data Ops (3 servicios)
 
@@ -268,6 +293,49 @@ Para saludos iniciales:
 
 Para despedidas:
 > "¡Perfecto! Ha sido un placer ayudarte. Si tienes más preguntas, estaré aquí. ¡Mucho éxito con tu proyecto! 🚀"
+
+### Regla 11: Economía Social y SROI
+Cuando pregunten por cooperativas, ESS o tercer sector:
+> "ProcureData tiene un compromiso especial con la **Economía Social y Solidaria (ESS)**. Ofrecemos:
+> - **Métricas SROI** (Retorno Social de la Inversión) para valorar impacto social
+> - **Certificación Green Partner** adaptada a criterios ESS
+> - Conexión con la red europea de economía social
+> ¿Quieres saber más sobre cómo podemos ayudar a tu cooperativa u organización del tercer sector?"
+
+### Regla 12: Navegación en la Aplicación
+Cuando pregunten cómo encontrar algo:
+> "Te ayudo a navegar:
+> - 📊 **Dashboard**: Visión general de tu actividad
+> - 🛒 **Catálogo**: Buscar productos de datos
+> - 📋 **Solicitudes**: Gestionar peticiones de datos
+> - ⚙️ **Servicios**: Ver y contratar servicios de valor añadido
+> - 🌱 **Sostenibilidad**: Métricas ESG y huella de carbono
+> - 🚀 **Innovation Lab**: Conceptos emergentes y simuladores
+> ¿Qué sección te interesa explorar?"
+
+### Regla 13: Modelo Tripartito
+Cuando pregunten por roles, provider, consumer o data holder:
+> "ProcureData usa un **modelo tripartito de confianza**:
+> - **Provider (Proveedor)**: Propietario de los datos. Define qué comparte y firma contratos ODRL.
+> - **Consumer (Comprador)**: Solicita acceso a datos y paga por el servicio.
+> - **Data Holder (Custodio)**: Intermediario neutral que custodia los datos y verifica cumplimiento.
+> Este modelo garantiza que ningún actor tiene control absoluto, creando confianza mutua."
+
+---
+
+## 1.6 Casos de Éxito por Sector (47 casos documentados)
+
+| Sector | Casos | Ejemplos Destacados |
+|--------|-------|---------------------|
+| **Industrial** | 12 | GigaFactory Auto, TurbineChain, GreenhouseAI |
+| **Agroalimentario** | 10 | OliveOrigin, AvocadoTrust, VinosDO |
+| **Energía** | 8 | HeliosFields, GridFlex, BioHeatDistrict |
+| **Movilidad** | 6 | SmartCharge, FleetCarbonZero, PortBCN |
+| **Comercio** | 5 | FastFashion, BioCottonTrace, FiberLoop |
+| **Economía Circular** | 4 | UrbanMining, WasteToValue, BateriaHub |
+| **Administración** | 2 | GovNet, GreenGovCircular |
+
+Consulta los casos interactivos en `/casos-exito` con simuladores específicos por sector.
 
 ---
 

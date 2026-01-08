@@ -1,8 +1,8 @@
 # Catálogo de Servicios - ProcureData
 
-> **Total**: 21 servicios activos  
+> **Total**: 22 servicios activos  
 > **Moneda**: EUROe (euro tokenizado)  
-> **Actualizado**: 2026-01-06
+> **Actualizado**: 2026-01-08
 
 ---
 
@@ -11,7 +11,7 @@
 | Categoría | Servicios | Rango de Precios |
 |-----------|-----------|------------------|
 | Blockchain | 2 | 0.50 - 10 EUROe |
-| Compliance | 4 | Gratis - 300 EUROe |
+| Compliance | 5 | Gratis - 300 EUROe |
 | Data Ops | 3 | 25 - 200 EUROe |
 | Financiación | 2 | 50 - 200 EUROe |
 | IA & Analytics | 3 | 150 - 300 EUROe |
