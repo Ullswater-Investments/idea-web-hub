@@ -20,10 +20,10 @@ const useCases = [
     color: "text-[hsl(var(--itbid-lime))]",
     bgColor: "bg-[hsl(var(--itbid-lime)/0.1)]",
     borderColor: "border-[hsl(var(--itbid-lime)/0.3)]",
-    description: "La Directiva CS3D exige auditar la sostenibilidad de proveedores. ITBID-X transforma PDFs por email en credenciales criptográficamente verificables.",
+    description: "La Directiva CS3D exige auditar la sostenibilidad de proveedores. itbid-x transforma PDFs por email en credenciales criptográficamente verificables.",
     flow: [
       { step: "Emisión", desc: "Certificadora emite VC a la Wallet del Proveedor", icon: FileCheck },
-      { step: "Solicitud", desc: "ITBID detecta dato faltante y solicita automáticamente", icon: Network },
+      { step: "Solicitud", desc: "itbid detecta dato faltante y solicita automáticamente", icon: Network },
       { step: "Verificación", desc: "Proveedor presenta prueba criptográfica", icon: ShieldCheck },
       { step: "Resultado", desc: "Scoring ESG actualizado en tiempo real", icon: Leaf },
     ],
@@ -38,7 +38,7 @@ const useCases = [
     color: "text-[hsl(var(--itbid-magenta))]",
     bgColor: "bg-[hsl(var(--itbid-magenta)/0.1)]",
     borderColor: "border-[hsl(var(--itbid-magenta)/0.3)]",
-    description: "En un modelo federado, ITBID puede anonimizar y agregar señales de riesgo de miles de transacciones sin exponer quién compra a quién.",
+    description: "En un modelo federado, itbid puede anonimizar y agregar señales de riesgo de miles de transacciones sin exponer quién compra a quién.",
     flow: [
       { step: "Evento", desc: "Proveedor Tier-2 notifica retraso de 4 semanas", icon: AlertTriangle },
       { step: "Propagación", desc: "Señal viaja a clientes directos (Tier 1)", icon: Network },
@@ -74,7 +74,7 @@ const useCases = [
     color: "text-[hsl(var(--itbid-cyan))]",
     bgColor: "bg-[hsl(var(--itbid-cyan)/0.1)]",
     borderColor: "border-[hsl(var(--itbid-cyan)/0.3)]",
-    description: "Múltiples compradores comparan precios y condiciones sin revelar sus proveedores. ITBID-X agrega datos de mercado real para optimizar negociaciones.",
+    description: "Múltiples compradores comparan precios y condiciones sin revelar sus proveedores. itbid-x agrega datos de mercado real para optimizar negociaciones.",
     flow: [
       { step: "Consulta", desc: "Comprador solicita benchmark de categoría", icon: Search },
       { step: "Agregación", desc: "Red federada agrega datos anónimos", icon: Network },
@@ -110,7 +110,7 @@ const useCases = [
     color: "text-[hsl(var(--itbid-purple))]",
     bgColor: "bg-[hsl(var(--itbid-purple)/0.1)]",
     borderColor: "border-[hsl(var(--itbid-purple)/0.3)]",
-    description: "Un proveedor acumula reputación de todos sus clientes ITBID. Nuevo cliente puede consultar score agregado sin ver datos individuales.",
+    description: "Un proveedor acumula reputación de todos sus clientes itbid. Nuevo cliente puede consultar score agregado sin ver datos individuales.",
     flow: [
       { step: "Evaluación", desc: "Clientes califican entregas y calidad", icon: Star },
       { step: "Agregación", desc: "Puntuaciones se promedian anónimamente", icon: Network },

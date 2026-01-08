@@ -38,7 +38,7 @@ export const SolutionSection = () => {
             </div>
             <h2 className="text-4xl md:text-5xl font-light mb-4 itbid-gradient-gray">Espacio de Datos Federado</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              ITBID-X no "posee" todos los datos, sino que facilita un intercambio seguro, 
+              itbid-x no "posee" todos los datos, sino que facilita un intercambio seguro, 
               soberano y auditable entre participantes.
             </p>
           </div>

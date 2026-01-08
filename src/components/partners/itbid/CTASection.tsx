@@ -14,7 +14,7 @@ const actions = [
   {
     icon: Presentation,
     title: "Solicitar Demo Técnica",
-    description: "Demostración en vivo del Gateway ITBID-X",
+    description: "Demostración en vivo del Gateway itbid-x",
     primary: true,
   },
   {
@@ -54,14 +54,14 @@ export const CTASection = () => {
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-xl font-bold procuredata-gradient">PROCUREDATA</span>
               <span className="text-2xl text-muted-foreground">×</span>
-              <img src={itbidLogo} alt="ITBID" className="h-8 object-contain" />
+              <img src={itbidLogo} alt="itbid" className="h-8 object-contain" />
             </div>
 
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               ¿Listo para liderar la <span className="procuredata-gradient">ECONOMÍA del DATO</span>?
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-2">
-              ITBID-X es la apuesta estratégica para liderar la transición hacia 
+              itbid-x es la apuesta estratégica para liderar la transición hacia 
               el ecosistema industrial digital europeo.
             </p>
             <p className="text-lg text-muted-foreground/80 max-w-2xl mx-auto">

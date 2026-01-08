@@ -34,7 +34,7 @@ const operationalCases = [
     color: "hsl(var(--itbid-cyan))",
     bgColor: "hsl(var(--itbid-cyan) / 0.1)",
     challenge: "Las PYMEs sufren tensiones de tesorería. Los bancos tardan semanas en aprobar factoring.",
-    solution: "Smart Factoring: el banco consulta la Reputación de Cumplimiento en ITBID y libera financiación automática.",
+    solution: "Smart Factoring: el banco consulta la Reputación de Cumplimiento en itbid y libera financiación automática.",
     metrics: [
       { label: "Tasa de interés", value: "-2.5%" },
       { label: "Quiebras evitadas", value: "-15%" },
@@ -130,7 +130,7 @@ const jointValueCases = [
     color: "hsl(var(--itbid-magenta))",
     bgColor: "hsl(var(--itbid-magenta) / 0.1)",
     complementsModule: "Gestión de Riesgos",
-    challenge: "ITBID gestiona Tier 1, pero los problemas graves ocurren en Tier 2/3. El Tier 1 no revela su cadena.",
+    challenge: "itbid gestiona Tier 1, pero los problemas graves ocurren en Tier 2/3. El Tier 1 no revela su cadena.",
     solution: "Consultas Federadas Ciegas: las preguntas viajan a Tier N y vuelven con respuestas verificadas sin revelar identidades.",
     metrics: [
       { label: "Visibilidad", value: "Tier 2-3-N" },
@@ -187,7 +187,7 @@ export const SuccessCasesSection = () => {
             El valor de la Inteligencia Federada
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            La plataforma ITBID optimiza tu gestión interna. <span className="itbid-gradient font-semibold">itbid-x</span> conecta 
+            La plataforma itbid optimiza tu gestión interna. <span className="itbid-gradient font-semibold">itbid-x</span> conecta 
             tu empresa con la inteligencia de la industria europea. Descubre cómo la federación de datos 
             desbloquea valor que ninguna empresa puede generar por sí sola.
           </p>
@@ -208,7 +208,7 @@ export const SuccessCasesSection = () => {
               <div className="bg-background px-6 py-2 rounded-full border-2 border-dashed border-[hsl(var(--itbid-cyan)/0.5)]">
                 <div className="flex items-center gap-2">
                   <Handshake className="h-5 w-5 text-[hsl(var(--itbid-cyan))]" />
-                  <span className="text-sm font-semibold itbid-gradient">ITBID + ProcureData</span>
+                  <span className="text-sm font-semibold itbid-gradient">itbid + ProcureData</span>
                 </div>
               </div>
             </div>
@@ -220,13 +220,13 @@ export const SuccessCasesSection = () => {
               Propuesta de Valor Conjunta
             </Badge>
             <h3 className="text-2xl md:text-3xl font-bold itbid-font mb-3">
-              Cómo convertir ITBID en el Primer 
+              Cómo convertir itbid en el Primer 
               <span className="itbid-gradient"> Hub de Compras Federado</span> de Europa
             </h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              El objetivo no es cambiar la plataforma ITBID, sino <span className="font-semibold">conectarla al mundo</span>. 
+              El objetivo no es cambiar la plataforma itbid, sino <span className="font-semibold">conectarla al mundo</span>. 
               ProcureData aporta la infraestructura de Espacio de Datos (Connectors, Wallets, Identidad SSI) 
-              e ITBID aporta el negocio (Clientes, Proveedores, Lógica de Compras).
+              e itbid aporta el negocio (Clientes, Proveedores, Lógica de Compras).
             </p>
           </div>
         </motion.div>

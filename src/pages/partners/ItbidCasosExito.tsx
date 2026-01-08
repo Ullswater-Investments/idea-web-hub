@@ -46,8 +46,8 @@ const operationalCases = [
     sector: "Automoción",
     color: "hsl(var(--itbid-lime))",
     bgColor: "hsl(var(--itbid-lime) / 0.1)",
-    challenge: "Un fabricante de componentes debe cumplir con el Pasaporte Digital de Baterías de la UE. ITBID gestiona la compra al proveedor directo (Tier 1), pero el proveedor se niega a enviar el Excel con el origen del Litio (Tier 3) por secreto comercial.",
-    solution: "Se establece un túnel de datos federado. El proveedor Tier 1 conecta su sistema a ITBID-X y permite una consulta de 'Verificación de Origen' sin revelar su cadena de suministro completa. ITBID-X recibe un 'Token de Cumplimiento' validado criptográficamente.",
+    challenge: "Un fabricante de componentes debe cumplir con el Pasaporte Digital de Baterías de la UE. itbid gestiona la compra al proveedor directo (Tier 1), pero el proveedor se niega a enviar el Excel con el origen del Litio (Tier 3) por secreto comercial.",
+    solution: "Se establece un túnel de datos federado. El proveedor Tier 1 conecta su sistema a itbid-x y permite una consulta de 'Verificación de Origen' sin revelar su cadena de suministro completa. itbid-x recibe un 'Token de Cumplimiento' validado criptográficamente.",
     metrics: [
       { label: "Cumplimiento normativa UE", value: "100%", icon: CheckCircle2 },
       { label: "Fugas de información", value: "0", icon: ShieldCheck },
@@ -63,7 +63,7 @@ const operationalCases = [
     color: "hsl(var(--itbid-cyan))",
     bgColor: "hsl(var(--itbid-cyan) / 0.1)",
     challenge: "Los proveedores PYME sufren tensiones de tesorería. Los bancos tradicionales tardan semanas en aprobar líneas de factoring porque no tienen datos fiables en tiempo real.",
-    solution: "ITBID, como plataforma de compras, tiene el historial de pedidos y recepciones correctas. A través del espacio de datos, el proveedor autoriza a un Banco Federado a consultar su 'Reputación de Cumplimiento' en ITBID. El banco libera financiación automática ('Smart Factoring') al ver que la factura está aprobada en ITBID.",
+    solution: "itbid, como plataforma de compras, tiene el historial de pedidos y recepciones correctas. A través del espacio de datos, el proveedor autoriza a un Banco Federado a consultar su 'Reputación de Cumplimiento' en itbid. El banco libera financiación automática ('Smart Factoring') al ver que la factura está aprobada en itbid.",
     metrics: [
       { label: "Reducción tasa de interés", value: "-2.5%", icon: Euro },
       { label: "Reducción quiebras proveedores", value: "-15%", icon: Shield },
@@ -79,7 +79,7 @@ const operationalCases = [
     color: "hsl(var(--itbid-lime))",
     bgColor: "hsl(var(--itbid-lime) / 0.1)",
     challenge: "El reporte de emisiones de Alcance 3 (cadena de suministro) se basa en estimaciones teóricas imprecisas. Los proveedores envían PDFs con datos obsoletos.",
-    solution: "Conectores IoT seguros. ITBID-X se conecta directamente al 'Pod de Datos' de la planta del proveedor para leer el consumo energético real del lote fabricado, bajo una política de uso estricta (solo lectura, sin guardar histórico).",
+    solution: "Conectores IoT seguros. itbid-x se conecta directamente al 'Pod de Datos' de la planta del proveedor para leer el consumo energético real del lote fabricado, bajo una política de uso estricta (solo lectura, sin guardar histórico).",
     metrics: [
       { label: "Mejora precisión huella CO₂", value: "+35%", icon: TreePine },
       { label: "Green Premium justificable", value: "✓", icon: Sparkles },
@@ -95,7 +95,7 @@ const operationalCases = [
     color: "hsl(var(--itbid-magenta))",
     bgColor: "hsl(var(--itbid-magenta) / 0.1)",
     challenge: "Una interrupción en un puerto asiático afecta a múltiples empresas, pero cada una se entera tarde y por separado.",
-    solution: "'Inteligencia de Enjambre'. Varios clientes de ITBID comparten de forma anónima y federada alertas de disrupción logística. Si 50 pedidos en la red ITBID sufren retraso en el puerto de Ningbo, el sistema genera una alerta temprana para todos los usuarios de ITBID-X, incluso antes de que sus propios proveedores les avisen.",
+    solution: "'Inteligencia de Enjambre'. Varios clientes de itbid comparten de forma anónima y federada alertas de disrupción logística. Si 50 pedidos en la red itbid sufren retraso en el puerto de Ningbo, el sistema genera una alerta temprana para todos los usuarios de itbid-x, incluso antes de que sus propios proveedores les avisen.",
     metrics: [
       { label: "Ventaja tiempo de reacción", value: "72h", icon: Clock },
       { label: "Ahorro en fletes urgentes", value: "Millones €", icon: Euro },
@@ -111,7 +111,7 @@ const operationalCases = [
     color: "hsl(var(--itbid-purple))",
     bgColor: "hsl(var(--itbid-purple) / 0.1)",
     challenge: "Un proveedor de servicios debe subir los mismos documentos (Seguridad Social, Hacienda, ISOs) a 20 portales de clientes diferentes cada mes.",
-    solution: "Identidad Digital Soberana. El proveedor mantiene sus documentos en su 'Wallet'. Al licitar en ITBID, la plataforma 'pregunta' a la Wallet si los documentos están al día. La Wallet responde 'SÍ/NO' validado.",
+    solution: "Identidad Digital Soberana. El proveedor mantiene sus documentos en su 'Wallet'. Al licitar en itbid, la plataforma 'pregunta' a la Wallet si los documentos están al día. La Wallet responde 'SÍ/NO' validado.",
     metrics: [
       { label: "Reducción carga administrativa", value: "-90%", icon: Clock },
       { label: "Time-to-Contract", value: "Días", icon: Zap },
@@ -131,14 +131,14 @@ const jointValueCases = [
     color: "hsl(var(--itbid-cyan))",
     bgColor: "hsl(var(--itbid-cyan) / 0.1)",
     complementsModule: "Portal de Proveedores",
-    challenge: "ITBID tiene un portal excelente, pero cada vez que un proveedor trabaja con un cliente nuevo de ITBID, tiene que actualizar sus datos. Además, los proveedores están cansados de mantener perfiles en 20 portales diferentes.",
-    solution: "Implementamos la Identidad Digital Soberana (SSI). El proveedor tiene una 'Wallet Corporativa' (gestionada en el estándar Gaia-X). Cuando un cliente de ITBID le invita, el proveedor no 'rellena formularios'; simplemente 'conecta su Wallet'. ITBID verifica automáticamente contra el Espacio de Datos que esa empresa existe, es solvente y sus certificados están vigentes.",
+    challenge: "itbid tiene un portal excelente, pero cada vez que un proveedor trabaja con un cliente nuevo de itbid, tiene que actualizar sus datos. Además, los proveedores están cansados de mantener perfiles en 20 portales diferentes.",
+    solution: "Implementamos la Identidad Digital Soberana (SSI). El proveedor tiene una 'Wallet Corporativa' (gestionada en el estándar Gaia-X). Cuando un cliente de itbid le invita, el proveedor no 'rellena formularios'; simplemente 'conecta su Wallet'. itbid verifica automáticamente contra el Espacio de Datos que esa empresa existe, es solvente y sus certificados están vigentes.",
     metrics: [
       { label: "Reducción soporte onboarding", value: "-90%", icon: Clock },
       { label: "Perfil válido ecosistema EU", value: "✓", icon: Network },
       { label: "Formularios eliminados", value: "100%", icon: CheckCircle2 }
     ],
-    quote: "Señor Proveedor, si te registras en ITBID, tu perfil es válido para todo el ecosistema industrial europeo (Catena-X, Manufacturing-X)."
+    quote: "Señor Proveedor, si te registras en itbid, tu perfil es válido para todo el ecosistema industrial europeo (Catena-X, Manufacturing-X)."
   },
   {
     id: "esg-realtime",
@@ -148,14 +148,14 @@ const jointValueCases = [
     color: "hsl(var(--itbid-lime))",
     bgColor: "hsl(var(--itbid-lime) / 0.1)",
     complementsModule: "Módulo ESG y CS3D",
-    challenge: "El módulo ESG de ITBID es potente, pero depende de la veracidad de lo que sube el proveedor (PDFs, Excel). Hay riesgo de 'Greenwashing' o documentos falsos/caducados.",
-    solution: "Uso de Credenciales Verificables (Verifiable Credentials). En lugar de pedirle al proveedor que suba el PDF de su ISO 14001, el conector de ProcureData permite a ITBID 'preguntar' directamente al nodo de la certificadora (ej. AENOR, SGS o Bureau Veritas dentro del espacio de datos). El sistema valida criptográficamente que el certificado es real y no ha sido revocado, sin intervención humana.",
+    challenge: "El módulo ESG de itbid es potente, pero depende de la veracidad de lo que sube el proveedor (PDFs, Excel). Hay riesgo de 'Greenwashing' o documentos falsos/caducados.",
+    solution: "Uso de Credenciales Verificables (Verifiable Credentials). En lugar de pedirle al proveedor que suba el PDF de su ISO 14001, el conector de ProcureData permite a itbid 'preguntar' directamente al nodo de la certificadora (ej. AENOR, SGS o Bureau Veritas dentro del espacio de datos). El sistema valida criptográficamente que el certificado es real y no ha sido revocado, sin intervención humana.",
     metrics: [
       { label: "Verificación certificados", value: "Real-time", icon: Zap },
       { label: "Riesgo Greenwashing", value: "0%", icon: ShieldCheck },
       { label: "Seguridad jurídica CS3D", value: "100%", icon: Shield }
     ],
-    quote: "Servicio Premium 'Compliance Zero-Risk': ITBID puede cobrar un extra a sus clientes corporativos por garantizar una cadena de suministro 100% verificada en tiempo real."
+    quote: "Servicio Premium 'Compliance Zero-Risk': itbid puede cobrar un extra a sus clientes corporativos por garantizar una cadena de suministro 100% verificada en tiempo real."
   },
   {
     id: "tier-n-visibility",
@@ -165,14 +165,14 @@ const jointValueCases = [
     color: "hsl(var(--itbid-magenta))",
     bgColor: "hsl(var(--itbid-magenta) / 0.1)",
     complementsModule: "Gestión de Riesgos",
-    challenge: "ITBID gestiona la relación Cliente -> Proveedor (Tier 1). Pero los grandes problemas de suministro (falta de chips, materias primas) ocurren en el Tier 2 o Tier 3. El Tier 1 se niega a decir quién es su proveedor (Tier 2) por miedo a que el cliente lo salte (disintermediación).",
-    solution: "Uso de Consultas Federadas Ciegas. ITBID lanza una consulta a través de ProcureData: '¿El lote de acero que me vendes viene de una zona de conflicto?'. La pregunta viaja del Tier 1 al Tier 2 y al Tier 3. La respuesta vuelve ('SÍ/NO') verificada, pero sin revelar la identidad comercial de los proveedores intermedios.",
+    challenge: "itbid gestiona la relación Cliente -> Proveedor (Tier 1). Pero los grandes problemas de suministro (falta de chips, materias primas) ocurren en el Tier 2 o Tier 3. El Tier 1 se niega a decir quién es su proveedor (Tier 2) por miedo a que el cliente lo salte (disintermediación).",
+    solution: "Uso de Consultas Federadas Ciegas. itbid lanza una consulta a través de ProcureData: '¿El lote de acero que me vendes viene de una zona de conflicto?'. La pregunta viaja del Tier 1 al Tier 2 y al Tier 3. La respuesta vuelve ('SÍ/NO') verificada, pero sin revelar la identidad comercial de los proveedores intermedios.",
     metrics: [
       { label: "Visibilidad profunda", value: "Tier 2-3-N", icon: Layers },
       { label: "Secreto comercial", value: "Protegido", icon: ShieldCheck },
       { label: "Acceso grandes cuentas", value: "✓", icon: Target }
     ],
-    quote: "Estas industrias (Automoción, Defensa) EXIGEN esta funcionalidad. ITBID se posiciona por encima de competidores que no pueden ofrecerla."
+    quote: "Estas industrias (Automoción, Defensa) EXIGEN esta funcionalidad. itbid se posiciona por encima de competidores que no pueden ofrecerla."
   },
   {
     id: "avi-a-industrial",
@@ -182,7 +182,7 @@ const jointValueCases = [
     color: "hsl(var(--itbid-purple))",
     bgColor: "hsl(var(--itbid-purple) / 0.1)",
     complementsModule: "AVI-A (Asistente IA)",
-    challenge: "AVI-A (el asistente de ITBID) es genial, pero solo aprende de los datos que tiene ITBID. Muchos clientes grandes (Bancos, Energéticas) no quieren que sus contratos confidenciales se usen para entrenar a la IA.",
+    challenge: "AVI-A (el asistente de itbid) es genial, pero solo aprende de los datos que tiene itbid. Muchos clientes grandes (Bancos, Energéticas) no quieren que sus contratos confidenciales se usen para entrenar a la IA.",
     solution: "Uso de Compute-to-Data (Federated Learning). Gracias a la infraestructura de ProcureData, el algoritmo de AVI-A viaja al servidor del cliente, aprende patrones (ej. 'cláusulas de riesgo más comunes en 2024') y vuelve solo con el aprendizaje matemático, sin haber leído ni extraído los contratos.",
     metrics: [
       { label: "Datos leídos por IA", value: "0", icon: ShieldCheck },
@@ -252,7 +252,7 @@ const ItbidCasosExito = () => {
           <Button variant="ghost" size="sm" asChild>
             <Link to="/partners/itbid/proyecto" className="flex items-center gap-2">
               <ArrowLeft className="h-4 w-4" />
-              Volver a ITBID-X
+              Volver a itbid-x
             </Link>
           </Button>
         </div>
@@ -279,7 +279,7 @@ const ItbidCasosExito = () => {
               El valor de la Inteligencia Federada
             </h1>
             <p className="text-xl text-muted-foreground">
-              La plataforma ITBID optimiza tu gestión interna. <span className="itbid-gradient font-semibold">itbid-x</span> conecta 
+              La plataforma itbid optimiza tu gestión interna. <span className="itbid-gradient font-semibold">itbid-x</span> conecta 
               tu empresa con la inteligencia de la industria europea. Descubre cómo la federación de datos 
               desbloquea valor que ninguna empresa puede generar por sí sola.
             </p>

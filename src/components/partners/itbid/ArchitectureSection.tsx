@@ -35,7 +35,7 @@ export const ArchitectureSection = () => {
               El Gateway itbid
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Un conector IDS/Gaia-X integrado en la infraestructura de ITBID
+              Un conector IDS/Gaia-X integrado en la infraestructura de itbid
             </p>
           </div>
         </FadeIn>
@@ -122,14 +122,14 @@ export const ArchitectureSection = () => {
               <CardContent className="p-0 space-y-4">
                 <p className="text-muted-foreground">
                   Muchos proveedores PYME no tienen capacidad tecnológica para gestionar 
-                  su propio servidor Gaia-X. ITBID ofrece:
+                  su propio servidor Gaia-X. itbid ofrece:
                 </p>
                 <ul className="space-y-3">
                   {[
                     { text: "Custodia de datos en contenedor seguro y aislado (Sandbox)", color: "bg-[hsl(var(--itbid-cyan))]" },
                     { text: "El proveedor mantiene las llaves criptográficas", color: "bg-[hsl(var(--itbid-lime))]" },
                     { text: "Control total sobre políticas de acceso", color: "bg-[hsl(var(--itbid-magenta))]" },
-                    { text: "ITBID provee la infraestructura técnica", color: "bg-[hsl(var(--itbid-purple))]" },
+                    { text: "itbid provee la infraestructura técnica", color: "bg-[hsl(var(--itbid-purple))]" },
                   ].map((item, i) => (
                     <motion.li
                       key={i}

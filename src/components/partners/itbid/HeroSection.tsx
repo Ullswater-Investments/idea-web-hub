@@ -30,7 +30,7 @@ export const HeroSection = () => {
         >
           <span className="text-2xl font-bold procuredata-gradient">PROCUREDATA</span>
           <span className="text-3xl text-muted-foreground">×</span>
-          <img src={itbidLogo} alt="ITBID" className="h-10 object-contain" />
+          <img src={itbidLogo} alt="itbid" className="h-10 object-contain" />
         </motion.div>
 
         {/* Badge */}
