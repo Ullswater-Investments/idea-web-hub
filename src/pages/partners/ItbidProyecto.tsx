@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Home } from "lucide-react";
 import { HeroSection } from "@/components/partners/itbid/HeroSection";
 import { ProblemSection } from "@/components/partners/itbid/ProblemSection";
 import { SolutionSection } from "@/components/partners/itbid/SolutionSection";
@@ -15,7 +15,13 @@ const ItbidProyecto = () => {
     <div className="min-h-screen bg-background">
       {/* Sticky Back Navigation */}
       <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b">
-        <div className="container mx-auto px-4 py-3">
+        <div className="container mx-auto px-4 py-3 flex items-center gap-2">
+          <Button variant="ghost" size="sm" asChild>
+            <Link to="/" className="flex items-center gap-2">
+              <Home className="h-4 w-4" />
+              Inicio
+            </Link>
+          </Button>
           <Button variant="ghost" size="sm" asChild>
             <Link to="/partners" className="flex items-center gap-2">
               <ArrowLeft className="h-4 w-4" />
