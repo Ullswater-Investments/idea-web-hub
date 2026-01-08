@@ -7,7 +7,8 @@ import { FadeIn } from "@/components/AnimatedSection";
 import { ScoreRing } from "@/components/gamification/ScoreRing";
 import { 
   Leaf, AlertTriangle, Brain, ChevronLeft, ChevronRight, 
-  FileCheck, ShieldCheck, Banknote, Network, Cpu
+  FileCheck, ShieldCheck, Banknote, Network, Cpu,
+  ShoppingCart, Recycle, Star, BarChart3, Search, Handshake, Award, Package
 } from "lucide-react";
 
 const useCases = [
@@ -65,6 +66,60 @@ const useCases = [
     metric: { label: "Privacidad", value: 100 },
     impact: "AVI-A: la IA más inteligente, entrenada sin leer secretos industriales",
   },
+  {
+    id: 4,
+    icon: ShoppingCart,
+    title: "Smart Procurement Network",
+    subtitle: "Benchmarking Anónimo entre Compradores",
+    color: "text-[hsl(var(--itbid-cyan))]",
+    bgColor: "bg-[hsl(var(--itbid-cyan)/0.1)]",
+    borderColor: "border-[hsl(var(--itbid-cyan)/0.3)]",
+    description: "Múltiples compradores comparan precios y condiciones sin revelar sus proveedores. ITBID-X agrega datos de mercado real para optimizar negociaciones.",
+    flow: [
+      { step: "Consulta", desc: "Comprador solicita benchmark de categoría", icon: Search },
+      { step: "Agregación", desc: "Red federada agrega datos anónimos", icon: Network },
+      { step: "Análisis", desc: "IA calcula posición competitiva", icon: BarChart3 },
+      { step: "Acción", desc: "Recomendaciones de negociación", icon: Handshake },
+    ],
+    metric: { label: "Ahorro Negociación", value: 85 },
+    impact: "Hasta 15% de ahorro en categorías estratégicas con datos de mercado real",
+  },
+  {
+    id: 5,
+    icon: Recycle,
+    title: "Circular Supply Loop",
+    subtitle: "Pasaporte de Materiales Reciclados",
+    color: "text-[hsl(var(--itbid-lime))]",
+    bgColor: "bg-[hsl(var(--itbid-lime)/0.1)]",
+    borderColor: "border-[hsl(var(--itbid-lime)/0.3)]",
+    description: "Verifica el contenido reciclado de materias primas sin exponer la fórmula del proveedor. Cumple con la Directiva de Ecodiseño UE.",
+    flow: [
+      { step: "Registro", desc: "Material entra con hash de composición", icon: Package },
+      { step: "Verificación", desc: "Certificadora valida % reciclado", icon: ShieldCheck },
+      { step: "Trazabilidad", desc: "Token acompaña al lote en fabricación", icon: Network },
+      { step: "Cumplimiento", desc: "Informe automático para auditoría", icon: FileCheck },
+    ],
+    metric: { label: "Trazabilidad Circular", value: 100 },
+    impact: "Cumplimiento Directiva Ecodiseño sin revelar secretos industriales",
+  },
+  {
+    id: 6,
+    icon: Star,
+    title: "Supplier Trust Score",
+    subtitle: "Score de Confianza Colaborativo",
+    color: "text-[hsl(var(--itbid-purple))]",
+    bgColor: "bg-[hsl(var(--itbid-purple)/0.1)]",
+    borderColor: "border-[hsl(var(--itbid-purple)/0.3)]",
+    description: "Un proveedor acumula reputación de todos sus clientes ITBID. Nuevo cliente puede consultar score agregado sin ver datos individuales.",
+    flow: [
+      { step: "Evaluación", desc: "Clientes califican entregas y calidad", icon: Star },
+      { step: "Agregación", desc: "Puntuaciones se promedian anónimamente", icon: Network },
+      { step: "Consulta", desc: "Nuevo cliente solicita Trust Score", icon: Search },
+      { step: "Decisión", desc: "Adjudicación basada en datos reales", icon: Award },
+    ],
+    metric: { label: "Confianza Colectiva", value: 92 },
+    impact: "Reducción del 60% en auditorías presenciales gracias a reputación federada",
+  },
 ];
 
 export const UseCasesSection = () => {
@@ -80,9 +135,9 @@ export const UseCasesSection = () => {
               <Network className="h-4 w-4" />
               <span className="text-sm font-medium itbid-font">Casos de Uso</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 itbid-font">Impacto Real</h2>
+            <h2 className="text-4xl md:text-5xl font-light itbid-gradient-gray mb-4">Impacto Real</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Tres escenarios que transforman la cadena de suministro
+              Seis escenarios que transforman la cadena de suministro
             </p>
           </div>
         </FadeIn>
@@ -182,17 +237,27 @@ export const UseCasesSection = () => {
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <div className="flex gap-2 items-center">
-            {useCases.map((uc, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveCase(index)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  activeCase === index 
-                    ? `w-6 ${index === 0 ? "bg-[hsl(var(--itbid-lime))]" : index === 1 ? "bg-[hsl(var(--itbid-magenta))]" : "bg-[hsl(var(--itbid-purple))]"}`
-                    : "bg-muted-foreground/30"
-                }`}
-              />
-            ))}
+            {useCases.map((uc, index) => {
+              const dotColors = [
+                "bg-[hsl(var(--itbid-lime))]",
+                "bg-[hsl(var(--itbid-magenta))]",
+                "bg-[hsl(var(--itbid-purple))]",
+                "bg-[hsl(var(--itbid-cyan))]",
+                "bg-[hsl(var(--itbid-lime))]",
+                "bg-[hsl(var(--itbid-purple))]",
+              ];
+              return (
+                <button
+                  key={index}
+                  onClick={() => setActiveCase(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    activeCase === index 
+                      ? `w-6 ${dotColors[index]}`
+                      : "bg-muted-foreground/30"
+                  }`}
+                />
+              );
+            })}
           </div>
           <Button
             variant="outline"
