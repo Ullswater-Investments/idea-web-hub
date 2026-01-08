@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Globe, Key, Link2, FolderOpen, Check, X, Sparkles } from "lucide-react";
+import { Globe, Key, Link2, FolderOpen, Check, X } from "lucide-react";
 
 const pillars = [
   {
@@ -38,47 +38,18 @@ const comparison = [
 
 export const GaiaXContext = () => {
   return (
-    <div className="py-20 px-4 bg-muted/30 border-b relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-[hsl(var(--itbid-lime)/0.08)] to-transparent rounded-full blur-3xl" />
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-gradient-to-l from-[hsl(var(--itbid-purple)/0.08)] to-transparent rounded-full blur-3xl" />
-      
-      {/* Floating particles */}
-      {[...Array(6)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2 h-2 rounded-full bg-[hsl(var(--itbid-cyan)/0.3)]"
-          style={{
-            top: `${20 + i * 15}%`,
-            left: `${10 + i * 12}%`,
-          }}
-          animate={{
-            y: [-10, 10, -10],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{
-            duration: 3 + i,
-            repeat: Infinity,
-            delay: i * 0.5,
-          }}
-        />
-      ))}
-      
-      <div className="max-w-4xl mx-auto relative">
+    <div className="py-16 px-4 bg-muted/30 border-b">
+      <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="mb-12"
         >
-          <motion.span 
-            className="inline-flex items-center gap-2 text-sm font-medium text-[hsl(var(--itbid-lime))] uppercase tracking-wider px-3 py-1 rounded-full bg-[hsl(var(--itbid-lime)/0.1)] border border-[hsl(var(--itbid-lime)/0.2)]"
-            whileHover={{ scale: 1.02 }}
-          >
-            <Sparkles className="w-3 h-3" />
+          <span className="text-sm font-medium text-[hsl(var(--itbid-lime))] uppercase tracking-wider">
             02 — Contexto Tecnológico
-          </motion.span>
-          <h2 className="text-3xl md:text-5xl font-light mt-4 itbid-gradient-gray">
+          </span>
+          <h2 className="text-3xl md:text-4xl font-light mt-2 itbid-gradient-gray">
             ¿Qué es Gaia-X?
           </h2>
           <p className="text-lg text-muted-foreground mt-4 max-w-3xl">
@@ -88,129 +59,86 @@ export const GaiaXContext = () => {
           </p>
         </motion.div>
 
-        {/* Three Pillars with enhanced design */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
+        {/* Three Pillars */}
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
           {pillars.map((pillar, index) => (
             <motion.div
               key={pillar.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.15 }}
+              transition={{ delay: index * 0.1 }}
             >
-              <motion.div
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <Card className={`h-full border-2 border-[hsl(var(--${pillar.color})/0.2)] hover:border-[hsl(var(--${pillar.color})/0.5)] transition-all duration-300 hover:shadow-xl hover:shadow-[hsl(var(--${pillar.color})/0.1)] overflow-hidden group`}>
-                  {/* Top gradient bar */}
-                  <div className={`h-1 bg-gradient-to-r from-[hsl(var(--${pillar.color}))] to-[hsl(var(--${pillar.color})/0.5)]`} />
-                  
-                  <CardHeader className="relative">
-                    {/* Background glow on hover */}
-                    <div className={`absolute inset-0 bg-[hsl(var(--${pillar.color})/0.03)] opacity-0 group-hover:opacity-100 transition-opacity`} />
-                    
-                    <motion.div 
-                      className={`p-4 rounded-2xl bg-[hsl(var(--${pillar.color})/0.1)] w-fit relative`}
-                      whileHover={{ rotate: 5, scale: 1.1 }}
-                    >
-                      <pillar.icon className={`h-7 w-7 text-[hsl(var(--${pillar.color}))]`} />
-                    </motion.div>
-                    <CardTitle className="text-lg mt-2">{pillar.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">{pillar.description}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {pillar.features.map((feature) => (
-                        <Badge 
-                          key={feature} 
-                          variant="outline" 
-                          className={`text-xs border-[hsl(var(--${pillar.color})/0.3)] bg-[hsl(var(--${pillar.color})/0.05)] hover:bg-[hsl(var(--${pillar.color})/0.1)] transition-colors`}
-                        >
-                          {feature}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <Card className={`h-full border-[hsl(var(--${pillar.color})/0.3)] hover:border-[hsl(var(--${pillar.color}))] transition-colors`}>
+                <CardHeader>
+                  <div className={`p-3 rounded-xl bg-[hsl(var(--${pillar.color})/0.1)] w-fit`}>
+                    <pillar.icon className={`h-6 w-6 text-[hsl(var(--${pillar.color}))]`} />
+                  </div>
+                  <CardTitle className="text-lg">{pillar.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">{pillar.description}</p>
+                  <div className="space-y-1.5">
+                    {pillar.features.map((feature) => (
+                      <Badge 
+                        key={feature} 
+                        variant="outline" 
+                        className={`text-xs border-[hsl(var(--${pillar.color})/0.3)]`}
+                      >
+                        {feature}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
           ))}
         </div>
 
-        {/* Comparison Table with enhanced design */}
+        {/* Comparison Table */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <Card className="overflow-hidden border-2 border-[hsl(var(--itbid-cyan)/0.2)]">
-            <CardHeader className="bg-gradient-to-r from-[hsl(var(--itbid-cyan)/0.05)] to-[hsl(var(--itbid-purple)/0.05)]">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-[hsl(var(--itbid-cyan)/0.1)]">
-                  <Globe className="h-5 w-5 text-[hsl(var(--itbid-cyan))]" />
-                </div>
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Globe className="h-5 w-5 text-[hsl(var(--itbid-cyan))]" />
                 <CardTitle>Data Lake Tradicional vs Espacio Federado</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="p-0">
+            <CardContent>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b bg-muted/30">
-                      <th className="text-left py-4 px-6 font-semibold">Característica</th>
-                      <th className="text-center py-4 px-6 font-semibold text-muted-foreground">
-                        <div className="flex flex-col items-center gap-1">
-                          <span>Data Lake</span>
-                          <span className="text-xs font-normal text-muted-foreground/60">Tradicional</span>
-                        </div>
-                      </th>
-                      <th className="text-center py-4 px-6 font-semibold text-[hsl(var(--itbid-lime))]">
-                        <div className="flex flex-col items-center gap-1">
-                          <span>Espacio Federado</span>
-                          <span className="text-xs font-normal text-[hsl(var(--itbid-lime))]">Gaia-X</span>
-                        </div>
-                      </th>
+                    <tr className="border-b">
+                      <th className="text-left py-3 px-4 font-medium">Característica</th>
+                      <th className="text-center py-3 px-4 font-medium text-muted-foreground">Data Lake</th>
+                      <th className="text-center py-3 px-4 font-medium text-[hsl(var(--itbid-lime))]">Espacio Federado</th>
                     </tr>
                   </thead>
                   <tbody>
                     {comparison.map((row, i) => (
-                      <motion.tr 
-                        key={row.feature} 
-                        className={`border-b last:border-b-0 ${i % 2 === 0 ? "bg-muted/20" : ""} hover:bg-muted/40 transition-colors`}
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.05 }}
-                      >
-                        <td className="py-4 px-6 font-medium">{row.feature}</td>
-                        <td className="py-4 px-6 text-center">
+                      <tr key={row.feature} className={i % 2 === 0 ? "bg-muted/30" : ""}>
+                        <td className="py-3 px-4">{row.feature}</td>
+                        <td className="py-3 px-4 text-center">
                           {row.traditional === true ? (
-                            <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-500/10">
-                              <Check className="h-4 w-4 text-amber-500" />
-                            </div>
+                            <Check className="h-4 w-4 text-amber-500 mx-auto" />
                           ) : row.traditional === false ? (
-                            <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-destructive/10">
-                              <X className="h-4 w-4 text-destructive" />
-                            </div>
+                            <X className="h-4 w-4 text-destructive mx-auto" />
                           ) : (
-                            <Badge variant="outline" className="bg-amber-500/10 text-amber-500 border-amber-500/30">
-                              {row.traditional}
-                            </Badge>
+                            <span className="text-amber-500">{row.traditional}</span>
                           )}
                         </td>
-                        <td className="py-4 px-6 text-center">
+                        <td className="py-3 px-4 text-center">
                           {row.federated === true ? (
-                            <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[hsl(var(--itbid-lime)/0.1)]">
-                              <Check className="h-4 w-4 text-[hsl(var(--itbid-lime))]" />
-                            </div>
+                            <Check className="h-4 w-4 text-[hsl(var(--itbid-lime))] mx-auto" />
                           ) : (
-                            <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted">
-                              <X className="h-4 w-4 text-muted-foreground" />
-                            </div>
+                            <X className="h-4 w-4 text-muted-foreground mx-auto" />
                           )}
                         </td>
-                      </motion.tr>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
