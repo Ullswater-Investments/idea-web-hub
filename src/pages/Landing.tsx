@@ -147,28 +147,28 @@ export default function Landing() {
               <div className="flex flex-wrap justify-center gap-3 md:gap-4">
                 {[
                   // Primera fila - 10 iconos
-                  { id: 'industrial', label: 'INDUSTRIAL', icon: BarChart3, color: 'text-rose-400', bgColor: 'bg-rose-50 dark:bg-rose-950/30' },
-                  { id: 'agroalimentario', label: 'AGRO', icon: Wheat, color: 'text-emerald-500', bgColor: 'bg-emerald-50 dark:bg-emerald-950/30' },
-                  { id: 'movilidad', label: 'MOVILIDAD', icon: Truck, color: 'text-teal-500', bgColor: 'bg-teal-50 dark:bg-teal-950/30' },
-                  { id: 'social', label: 'SOCIAL', icon: Heart, color: 'text-violet-500', bgColor: 'bg-violet-50 dark:bg-violet-950/30' },
-                  { id: 'salud', label: 'SALUD', icon: HeartPulse, color: 'text-rose-500', bgColor: 'bg-rose-50 dark:bg-rose-950/30' },
-                  { id: 'comercio', label: 'RETAIL', icon: ShoppingBag, color: 'text-blue-500', bgColor: 'bg-blue-50 dark:bg-blue-950/30' },
-                  { id: 'energia', label: 'ENERGÍA', icon: Zap, color: 'text-yellow-500', bgColor: 'bg-yellow-50 dark:bg-yellow-950/30' },
-                  { id: 'aeronautica', label: 'AERO', icon: Send, color: 'text-cyan-500', bgColor: 'bg-cyan-50 dark:bg-cyan-950/30' },
-                  { id: 'vinos', label: 'VINOS', icon: Wine, color: 'text-purple-600', bgColor: 'bg-purple-50 dark:bg-purple-950/30' },
-                  { id: 'pharma', label: 'PHARMA', icon: Pill, color: 'text-pink-400', bgColor: 'bg-pink-50 dark:bg-pink-950/30' },
+                  { label: 'INDUSTRIAL', icon: BarChart3, color: 'text-rose-400', bgColor: 'bg-rose-50 dark:bg-rose-950/30', caseId: 'gigafactory-north' },
+                  { label: 'AGRO', icon: Wheat, color: 'text-emerald-500', bgColor: 'bg-emerald-50 dark:bg-emerald-950/30', caseId: 'olivetrust-coop' },
+                  { label: 'MOVILIDAD', icon: Truck, color: 'text-teal-500', bgColor: 'bg-teal-50 dark:bg-teal-950/30', caseId: 'urbandeliver-bcn' },
+                  { label: 'SOCIAL', icon: Heart, color: 'text-violet-500', bgColor: 'bg-violet-50 dark:bg-violet-950/30', caseId: 'alianza-social-hub' },
+                  { label: 'SALUD', icon: HeartPulse, color: 'text-rose-500', bgColor: 'bg-rose-50 dark:bg-rose-950/30', caseId: 'biomed-hospital' },
+                  { label: 'RETAIL', icon: ShoppingBag, color: 'text-blue-500', bgColor: 'bg-blue-50 dark:bg-blue-950/30', caseId: 'globalretail-prime' },
+                  { label: 'ENERGÍA', icon: Zap, color: 'text-yellow-500', bgColor: 'bg-yellow-50 dark:bg-yellow-950/30', caseId: 'helios-fields' },
+                  { label: 'AERO', icon: Send, color: 'text-cyan-500', bgColor: 'bg-cyan-50 dark:bg-cyan-950/30', caseId: 'turbine-chain' },
+                  { label: 'VINOS', icon: Wine, color: 'text-purple-600', bgColor: 'bg-purple-50 dark:bg-purple-950/30', caseId: 'vinos-do' },
+                  { label: 'PHARMA', icon: Pill, color: 'text-pink-400', bgColor: 'bg-pink-50 dark:bg-pink-950/30', caseId: 'pharmacold-logistix' },
                   // Segunda fila - 7 iconos adicionales
-                  { id: 'puerto', label: 'PUERTO', icon: Ship, color: 'text-sky-500', bgColor: 'bg-sky-50 dark:bg-sky-950/30' },
-                  { id: 'gobierno', label: 'GOV', icon: Landmark, color: 'text-amber-600', bgColor: 'bg-amber-50 dark:bg-amber-950/30' },
-                  { id: 'mineria', label: 'MINERÍA', icon: Mountain, color: 'text-slate-500', bgColor: 'bg-slate-100 dark:bg-slate-950/30' },
-                  { id: 'moda', label: 'MODA', icon: Shirt, color: 'text-orange-500', bgColor: 'bg-orange-50 dark:bg-orange-950/30' },
-                  { id: 'finanzas', label: 'FINANZAS', icon: DollarSign, color: 'text-green-500', bgColor: 'bg-green-50 dark:bg-green-950/30' },
-                  { id: 'grid', label: 'GRID', icon: LayoutGrid, color: 'text-emerald-500', bgColor: 'bg-emerald-50 dark:bg-emerald-950/30' },
-                  { id: 'ia', label: 'IA', icon: Brain, color: 'text-violet-600', bgColor: 'bg-violet-50 dark:bg-violet-950/30' },
+                  { label: 'PUERTO', icon: Ship, color: 'text-sky-500', bgColor: 'bg-sky-50 dark:bg-sky-950/30', caseId: 'portbcn-smart-trade' },
+                  { label: 'GOV', icon: Landmark, color: 'text-amber-600', bgColor: 'bg-amber-50 dark:bg-amber-950/30', caseId: 'ayuntamiento-etico' },
+                  { label: 'MINERÍA', icon: Mountain, color: 'text-slate-500', bgColor: 'bg-slate-100 dark:bg-slate-950/30', caseId: 'purelithium-sourcing' },
+                  { label: 'MODA', icon: Shirt, color: 'text-orange-500', bgColor: 'bg-orange-50 dark:bg-orange-950/30', caseId: 'fastfashion-trace' },
+                  { label: 'FINANZAS', icon: DollarSign, color: 'text-green-500', bgColor: 'bg-green-50 dark:bg-green-950/30', caseId: 'greenfinance-esg' },
+                  { label: 'GRID', icon: LayoutGrid, color: 'text-emerald-500', bgColor: 'bg-emerald-50 dark:bg-emerald-950/30', caseId: 'gridflex-power' },
+                  { label: 'IA', icon: Brain, color: 'text-violet-600', bgColor: 'bg-violet-50 dark:bg-violet-950/30', caseId: 'uni-synth' },
                 ].map((sector) => (
                   <Link 
                     key={sector.label} 
-                    to={`/success-stories?sector=${sector.id}`}
+                    to={`/success-stories/${sector.caseId}`}
                     className="group"
                   >
                     <div className={cn(
