@@ -11,7 +11,7 @@ const partners = [
     name: "ITBID",
     description: "Plataforma líder de licitaciones y contratación pública. Colaboración estratégica para proyectos de datos en el sector público.",
     logo: itbidLogo,
-    link: "/partners/itbid",
+    link: "/partners/itbid/proyecto",
     status: "activo",
     projects: 3,
   },
