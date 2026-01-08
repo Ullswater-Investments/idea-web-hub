@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/AnimatedSection";
 import { 
   Presentation, FileText, Phone, Sparkles, 
-  ArrowRight, CheckCircle2
+  ArrowRight, CheckCircle2, Download
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import itbidLogo from "@/assets/itbid-logo.png";
@@ -16,18 +17,21 @@ const actions = [
     title: "Solicitar Demo Técnica",
     description: "Demostración en vivo del Gateway itbid-x",
     primary: true,
+    link: null,
   },
   {
     icon: FileText,
     title: "Descargar Whitepaper",
     description: "Documento técnico completo en PDF",
     primary: false,
+    link: "/partners/itbid/whitepaper",
   },
   {
     icon: Phone,
     title: "Contactar Partner Manager",
     description: "Conversación directa con nuestro equipo",
     primary: false,
+    link: null,
   },
 ];
 
@@ -111,6 +115,14 @@ export const CTASection = () => {
                             <ArrowRight className="h-4 w-4" />
                           </>
                         )}
+                      </Button>
+                    )}
+                    {action.link && (
+                      <Button asChild variant="outline" className="mt-4 w-full gap-2">
+                        <Link to={action.link}>
+                          <Download className="h-4 w-4" />
+                          Acceder al Whitepaper
+                        </Link>
                       </Button>
                     )}
                   </CardContent>
