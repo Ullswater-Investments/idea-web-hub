@@ -154,7 +154,7 @@ const PricingComparisonBlock = () => {
 
   const optionB = {
     title: "Opción B: Early Adopter",
-    value: "hasta 30.000€",
+    value: "30.000€",
     color: "purple",
     featured: true,
     features: [
@@ -228,7 +228,7 @@ const PricingComparisonBlock = () => {
           </div>
           <CardHeader className="text-center pb-4">
             <Badge className="w-fit mx-auto mb-2 bg-purple-100 text-purple-700 border-purple-200">
-              Valorado en {optionB.value}
+              SUBVENCIÓN DE {optionB.value}
             </Badge>
             <CardTitle className="text-xl text-slate-900">{optionB.title}</CardTitle>
           </CardHeader>
