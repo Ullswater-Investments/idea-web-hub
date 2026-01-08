@@ -144,7 +144,16 @@ export default function Landing() {
             <div className="mt-16">
               <h2 className="text-2xl md:text-3xl font-bold mb-8">CASOS DE ÉXITO</h2>
               
-              <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+              <motion.div 
+                className="flex flex-wrap justify-center gap-3 md:gap-4"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                variants={{
+                  hidden: {},
+                  visible: { transition: { staggerChildren: 0.05 } }
+                }}
+              >
                 {[
                   // Primera fila - 10 iconos
                   { label: 'INDUSTRIAL', icon: BarChart3, color: 'text-rose-400', bgColor: 'bg-rose-50 dark:bg-rose-950/30', caseId: 'gigafactory-north' },
@@ -166,26 +175,33 @@ export default function Landing() {
                   { label: 'GRID', icon: LayoutGrid, color: 'text-emerald-500', bgColor: 'bg-emerald-50 dark:bg-emerald-950/30', caseId: 'gridflex-power' },
                   { label: 'IA', icon: Brain, color: 'text-violet-600', bgColor: 'bg-violet-50 dark:bg-violet-950/30', caseId: 'uni-synth' },
                 ].map((sector) => (
-                  <Link 
-                    key={sector.label} 
-                    to={`/success-stories/${sector.caseId}`}
-                    className="group"
+                  <motion.div
+                    key={sector.label}
+                    variants={{
+                      hidden: { opacity: 0, y: 20, scale: 0.9 },
+                      visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 300, damping: 20 } }
+                    }}
                   >
-                    <div className={cn(
-                      "flex flex-col items-center p-3 md:p-4 rounded-xl transition-all duration-300",
-                      "border border-border/50 shadow-sm hover:shadow-md hover:-translate-y-1",
-                      sector.bgColor
-                    )}>
-                      <div className="p-3 rounded-lg bg-white dark:bg-slate-800 shadow-sm mb-2 transition-transform group-hover:scale-110">
-                        <sector.icon className={cn("w-6 h-6", sector.color)} />
+                    <Link 
+                      to={`/success-stories/${sector.caseId}`}
+                      className="group block"
+                    >
+                      <div className={cn(
+                        "flex flex-col items-center p-3 md:p-4 rounded-xl transition-all duration-300",
+                        "border border-border/50 shadow-sm hover:shadow-md hover:-translate-y-1",
+                        sector.bgColor
+                      )}>
+                        <div className="p-3 rounded-lg bg-white dark:bg-slate-800 shadow-sm mb-2 transition-transform group-hover:scale-110">
+                          <sector.icon className={cn("w-6 h-6", sector.color)} />
+                        </div>
+                        <span className="text-[10px] md:text-xs font-semibold tracking-wide text-muted-foreground group-hover:text-foreground">
+                          {sector.label}
+                        </span>
                       </div>
-                      <span className="text-[10px] md:text-xs font-semibold tracking-wide text-muted-foreground group-hover:text-foreground">
-                        {sector.label}
-                      </span>
-                    </div>
-                  </Link>
+                    </Link>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
