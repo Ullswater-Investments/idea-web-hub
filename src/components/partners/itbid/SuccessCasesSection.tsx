@@ -215,7 +215,7 @@ export const SuccessCasesSection = () => {
           </div>
           
           <div className="text-center mt-8">
-            <Badge className="mb-4 bg-gradient-to-r from-[hsl(var(--itbid-cyan)/0.1)] to-[hsl(var(--itbid-magenta)/0.1)] text-[hsl(var(--itbid-cyan))] border-[hsl(var(--itbid-cyan)/0.3)]">
+            <Badge className="mb-4 bg-gradient-to-r from-[hsl(var(--itbid-cyan)/0.1)] to-[hsl(var(--itbid-magenta)/0.1)] text-white border-[hsl(var(--itbid-cyan)/0.3)]">
               <Rocket className="h-3 w-3 mr-1" />
               Propuesta de Valor Conjunta
             </Badge>
