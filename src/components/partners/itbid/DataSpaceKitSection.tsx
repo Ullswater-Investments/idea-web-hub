@@ -484,22 +484,6 @@ export const DataSpaceKitSection = () => {
           variants={containerVariants}
           className="space-y-16 md:space-y-24"
         >
-          {/* Header */}
-          <motion.div variants={itemVariants} className="text-center max-w-3xl mx-auto">
-            <Badge className="mb-6 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 border-blue-200 px-4 py-1">
-              <Globe className="h-4 w-4 mr-2" />
-              🇪🇺 Fondos Europeos para la Innovación
-            </Badge>
-            <img 
-              src={kitEspaciosDatosLogo} 
-              alt="Kit Espacios de Datos" 
-              className="h-32 md:h-40 mx-auto mb-6 object-contain"
-            />
-            <p className="text-lg text-slate-600">
-              La Unión Europea financia tu entrada a la nueva era de datos fiables, 
-              gobernanza transparente e inteligencia artificial de calidad
-            </p>
-          </motion.div>
 
           {/* Bloque 1: Hero Economía del Dato */}
           <DataEconomyHeroBlock />
