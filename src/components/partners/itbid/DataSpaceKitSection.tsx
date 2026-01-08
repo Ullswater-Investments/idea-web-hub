@@ -195,7 +195,7 @@ const PricingComparisonBlock = () => {
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 to-cyan-400" />
           <CardHeader className="text-center pb-4">
             <Badge className="w-fit mx-auto mb-2 bg-cyan-100 text-cyan-700 border-cyan-200">
-              Valorado en {optionA.value}
+              SUBVENCIÓN DE {optionA.value}
             </Badge>
             <CardTitle className="text-xl text-slate-900">{optionA.title}</CardTitle>
           </CardHeader>
