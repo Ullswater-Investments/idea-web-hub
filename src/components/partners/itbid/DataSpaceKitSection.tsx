@@ -194,7 +194,7 @@ const PricingComparisonBlock = () => {
         <Card className="relative overflow-hidden bg-white border-slate-200 hover:border-cyan-300 transition-colors shadow-lg hover:shadow-xl">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 to-cyan-400" />
           <CardHeader className="text-center pb-4">
-            <Badge className="w-fit mx-auto mb-2 bg-cyan-100 text-cyan-700 border-cyan-200">
+            <Badge className="w-fit mx-auto mb-2 bg-cyan-100 text-cyan-700 border-cyan-200 text-lg px-4 py-2">
               SUBVENCIÓN DE {optionA.value}
             </Badge>
             <CardTitle className="text-xl text-slate-900">{optionA.title}</CardTitle>
@@ -227,7 +227,7 @@ const PricingComparisonBlock = () => {
             </Badge>
           </div>
           <CardHeader className="text-center pb-4">
-            <Badge className="w-fit mx-auto mb-2 bg-purple-100 text-purple-700 border-purple-200">
+            <Badge className="w-fit mx-auto mb-2 bg-purple-100 text-purple-700 border-purple-200 text-lg px-4 py-2">
               SUBVENCIÓN DE {optionB.value}
             </Badge>
             <CardTitle className="text-xl text-slate-900">{optionB.title}</CardTitle>
