@@ -36,7 +36,7 @@ export const SolutionSection = () => {
               <CheckCircle2 className="h-4 w-4" />
               <span className="text-sm font-medium">La Solución</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Espacio de Datos Federado</h2>
+            <h2 className="text-4xl md:text-5xl font-light mb-4 itbid-gradient-gray">Espacio de Datos Federado</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               ITBID-X no "posee" todos los datos, sino que facilita un intercambio seguro, 
               soberano y auditable entre participantes.
