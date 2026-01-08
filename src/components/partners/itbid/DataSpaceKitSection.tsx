@@ -64,7 +64,7 @@ const DataEconomyHeroBlock = () => {
         <div className="text-center mb-10">
           <Badge className="mb-4 bg-blue-100 text-blue-700 border-blue-200">
             <Euro className="h-3 w-3 mr-1" />
-            Programa Red.es + Kit Digital
+            SUBVENCIÓN KIT ESPACIO DE DATOS
           </Badge>
           <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
             La Unión Europea impulsa tu acceso a la{" "}
