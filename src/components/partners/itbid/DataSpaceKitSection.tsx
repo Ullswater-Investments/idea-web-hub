@@ -67,7 +67,7 @@ const DataEconomyHeroBlock = () => {
             SUBVENCIÓN KIT ESPACIO DE DATOS
           </Badge>
           <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-            La Unión Europea impulsa tu acceso a la{" "}
+            La UE impulsa tu acceso a la{" "}
             <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
               ECONOMÍA DEL DATO
             </span>
