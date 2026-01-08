@@ -8,7 +8,7 @@ import { ArchitectureSection } from "@/components/partners/itbid/ArchitectureSec
 import { UseCasesSection } from "@/components/partners/itbid/UseCasesSection";
 import { SuccessCasesSection } from "@/components/partners/itbid/SuccessCasesSection";
 import { BenefitsSection } from "@/components/partners/itbid/BenefitsSection";
-import { RoadmapSection } from "@/components/partners/itbid/RoadmapSection";
+import { DataSpaceKitSection } from "@/components/partners/itbid/DataSpaceKitSection";
 import { CTASection } from "@/components/partners/itbid/CTASection";
 
 const ItbidProyecto = () => {
@@ -35,7 +35,7 @@ const ItbidProyecto = () => {
         <UseCasesSection />
         <SuccessCasesSection />
         <BenefitsSection />
-        <RoadmapSection />
+        <DataSpaceKitSection />
         <CTASection />
       </div>
     </div>
