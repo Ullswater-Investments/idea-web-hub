@@ -142,7 +142,7 @@ const DataEconomyHeroBlock = () => {
 // Bloque 2: Las Dos Vías a Coste Cero
 const PricingComparisonBlock = () => {
   const optionA = {
-    title: "Opción A: Estándar",
+    title: "Adhesión Espacio de datos PROCUREDATA",
     value: "15.000€",
     color: "cyan",
     features: [
