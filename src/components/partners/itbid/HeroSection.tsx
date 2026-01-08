@@ -5,18 +5,19 @@ import { Zap, Shield, Clock } from "lucide-react";
 import itbidLogo from "@/assets/itbid-logo.png";
 
 const metrics = [
-  { value: "-85%", label: "Fricción en intercambio", icon: Zap },
-  { value: "100%", label: "Soberanía de datos", icon: Shield },
-  { value: "10x", label: "Velocidad validación", icon: Clock },
+  { value: "-85%", label: "Fricción en intercambio", icon: Zap, color: "text-[hsl(var(--itbid-cyan))]" },
+  { value: "100%", label: "Soberanía de datos", icon: Shield, color: "text-[hsl(var(--itbid-magenta))]" },
+  { value: "10x", label: "Velocidad validación", icon: Clock, color: "text-[hsl(var(--itbid-purple))]" },
 ];
 
 export const HeroSection = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-[hsl(var(--itbid-cyan)/0.05)]">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-[hsl(var(--itbid-cyan)/0.2)] rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[hsl(var(--itbid-purple)/0.15)] rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[hsl(var(--itbid-magenta)/0.1)] rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 py-20 relative z-10">
@@ -39,7 +40,7 @@ export const HeroSection = () => {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="flex justify-center mb-6"
         >
-        <Badge variant="outline" className="px-4 py-2 text-sm bg-primary/10 border-primary/30">
+          <Badge variant="outline" className="px-4 py-2 text-sm bg-[hsl(var(--itbid-cyan)/0.1)] border-[hsl(var(--itbid-cyan)/0.3)] itbid-font">
             🚀 Proyecto Estratégico 2026
           </Badge>
         </motion.div>
@@ -52,9 +53,9 @@ export const HeroSection = () => {
           className="text-center space-y-4 mb-12"
         >
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-            <span className="procuredata-gradient">ITBID-X</span>
+            <span className="itbid-gradient">itbid-x</span>
           </h1>
-          <p className="text-2xl md:text-3xl text-muted-foreground font-light max-w-4xl mx-auto">
+          <p className="text-2xl md:text-3xl text-muted-foreground font-light max-w-4xl mx-auto itbid-font">
             Hacia la Cadena de Suministro Soberana
           </p>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -76,10 +77,10 @@ export const HeroSection = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6 + index * 0.1, duration: 0.4 }}
             >
-              <Card className="bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
+              <Card className="bg-card/50 backdrop-blur-sm border-[hsl(var(--itbid-purple)/0.2)] hover:border-[hsl(var(--itbid-cyan)/0.5)] transition-all duration-300 hover:shadow-lg hover:shadow-[hsl(var(--itbid-cyan)/0.1)]">
                 <CardContent className="pt-6 text-center">
-                  <metric.icon className="h-8 w-8 mx-auto mb-3 text-primary" />
-                  <p className="text-4xl font-bold text-primary mb-1">{metric.value}</p>
+                  <metric.icon className={`h-8 w-8 mx-auto mb-3 ${metric.color}`} />
+                  <p className={`text-4xl font-bold mb-1 itbid-font ${metric.color}`}>{metric.value}</p>
                   <p className="text-sm text-muted-foreground">{metric.label}</p>
                 </CardContent>
               </Card>
@@ -97,9 +98,9 @@ export const HeroSection = () => {
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
-            className="w-6 h-10 border-2 border-primary/50 rounded-full flex items-start justify-center p-2"
+            className="w-6 h-10 border-2 border-[hsl(var(--itbid-cyan)/0.5)] rounded-full flex items-start justify-center p-2"
           >
-            <motion.div className="w-1.5 h-1.5 bg-primary rounded-full" />
+            <motion.div className="w-1.5 h-1.5 bg-[hsl(var(--itbid-cyan))] rounded-full" />
           </motion.div>
         </motion.div>
       </div>

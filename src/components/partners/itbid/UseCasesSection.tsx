@@ -16,8 +16,9 @@ const useCases = [
     icon: Leaf,
     title: "Pasaporte Digital de Producto (ESG)",
     subtitle: "Credenciales Verificables para Sostenibilidad",
-    color: "text-green-500",
-    bgColor: "bg-green-500/10",
+    color: "text-[hsl(var(--itbid-lime))]",
+    bgColor: "bg-[hsl(var(--itbid-lime)/0.1)]",
+    borderColor: "border-[hsl(var(--itbid-lime)/0.3)]",
     description: "La Directiva CS3D exige auditar la sostenibilidad de proveedores. ITBID-X transforma PDFs por email en credenciales criptográficamente verificables.",
     flow: [
       { step: "Emisión", desc: "Certificadora emite VC a la Wallet del Proveedor", icon: FileCheck },
@@ -33,8 +34,9 @@ const useCases = [
     icon: AlertTriangle,
     title: "Gestión de Riesgos Colaborativa",
     subtitle: "Inteligencia de Enjambre (Swarm Intelligence)",
-    color: "text-orange-500",
-    bgColor: "bg-orange-500/10",
+    color: "text-[hsl(var(--itbid-magenta))]",
+    bgColor: "bg-[hsl(var(--itbid-magenta)/0.1)]",
+    borderColor: "border-[hsl(var(--itbid-magenta)/0.3)]",
     description: "En un modelo federado, ITBID puede anonimizar y agregar señales de riesgo de miles de transacciones sin exponer quién compra a quién.",
     flow: [
       { step: "Evento", desc: "Proveedor Tier-2 notifica retraso de 4 semanas", icon: AlertTriangle },
@@ -50,8 +52,9 @@ const useCases = [
     icon: Brain,
     title: "AVI-A y Federated Learning",
     subtitle: "Compute-to-Data: La IA viaja al Dato",
-    color: "text-purple-500",
-    bgColor: "bg-purple-500/10",
+    color: "text-[hsl(var(--itbid-purple))]",
+    bgColor: "bg-[hsl(var(--itbid-purple)/0.1)]",
+    borderColor: "border-[hsl(var(--itbid-purple)/0.3)]",
     description: "En lugar de mover datos a la nube, enviamos el algoritmo al entorno seguro del cliente. Ningún texto de contrato sale jamás del perímetro del cliente.",
     flow: [
       { step: "Envío", desc: "Instancia de algoritmo viaja al cliente", icon: Cpu },
@@ -73,11 +76,11 @@ export const UseCasesSection = () => {
       <div className="container mx-auto px-4">
         <FadeIn>
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--itbid-cyan)/0.1)] text-[hsl(var(--itbid-cyan))] mb-4">
               <Network className="h-4 w-4" />
-              <span className="text-sm font-medium">Casos de Uso</span>
+              <span className="text-sm font-medium itbid-font">Casos de Uso</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Impacto Real</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 itbid-font">Impacto Real</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Tres escenarios que transforman la cadena de suministro
             </p>
@@ -91,10 +94,10 @@ export const UseCasesSection = () => {
               key={uc.id}
               variant={activeCase === index ? "default" : "outline"}
               onClick={() => setActiveCase(index)}
-              className="gap-2"
+              className={`gap-2 ${activeCase === index ? "bg-gradient-to-r from-[hsl(var(--itbid-cyan))] to-[hsl(var(--itbid-purple))]" : ""}`}
             >
               <uc.icon className="h-4 w-4" />
-              <span className="hidden md:inline">{uc.title.split(" ")[0]}</span>
+              <span className="hidden md:inline itbid-font">{uc.title.split(" ")[0]}</span>
             </Button>
           ))}
         </div>
@@ -108,7 +111,7 @@ export const UseCasesSection = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className={`max-w-5xl mx-auto border-2 ${currentCase.bgColor} border-opacity-50`}>
+            <Card className={`max-w-5xl mx-auto border-2 ${currentCase.bgColor} ${currentCase.borderColor}`}>
               <CardHeader>
                 <div className="flex items-start justify-between flex-wrap gap-4">
                   <div className="flex items-center gap-4">
@@ -116,7 +119,7 @@ export const UseCasesSection = () => {
                       <currentCase.icon className={`h-8 w-8 ${currentCase.color}`} />
                     </div>
                     <div>
-                      <CardTitle className="text-2xl">{currentCase.title}</CardTitle>
+                      <CardTitle className="text-2xl itbid-font">{currentCase.title}</CardTitle>
                       <p className="text-muted-foreground">{currentCase.subtitle}</p>
                     </div>
                   </div>
@@ -145,12 +148,12 @@ export const UseCasesSection = () => {
                         <div className={`w-10 h-10 rounded-full ${currentCase.bgColor} flex items-center justify-center mx-auto mb-3`}>
                           <step.icon className={`h-5 w-5 ${currentCase.color}`} />
                         </div>
-                        <p className="font-semibold text-sm mb-1">{step.step}</p>
+                        <p className="font-semibold text-sm mb-1 itbid-font">{step.step}</p>
                         <p className="text-xs text-muted-foreground">{step.desc}</p>
                       </Card>
                       {index < currentCase.flow.length - 1 && (
                         <div className="hidden md:block absolute top-1/2 -right-2 transform -translate-y-1/2">
-                          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                          <ChevronRight className={`h-4 w-4 ${currentCase.color}`} />
                         </div>
                       )}
                     </motion.div>
@@ -158,8 +161,8 @@ export const UseCasesSection = () => {
                 </div>
 
                 {/* Impact */}
-                <div className={`p-4 rounded-lg ${currentCase.bgColor} border border-opacity-30`}>
-                  <p className="font-semibold">
+                <div className={`p-4 rounded-lg ${currentCase.bgColor} ${currentCase.borderColor} border`}>
+                  <p className="font-semibold itbid-font">
                     💡 Impacto: <span className="font-normal">{currentCase.impact}</span>
                   </p>
                 </div>
@@ -174,16 +177,19 @@ export const UseCasesSection = () => {
             variant="outline"
             size="icon"
             onClick={() => setActiveCase((prev) => (prev === 0 ? useCases.length - 1 : prev - 1))}
+            className="border-[hsl(var(--itbid-cyan)/0.3)]"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <div className="flex gap-2 items-center">
-            {useCases.map((_, index) => (
+            {useCases.map((uc, index) => (
               <button
                 key={index}
                 onClick={() => setActiveCase(index)}
                 className={`w-2 h-2 rounded-full transition-all ${
-                  activeCase === index ? "bg-primary w-6" : "bg-muted-foreground/30"
+                  activeCase === index 
+                    ? `w-6 ${index === 0 ? "bg-[hsl(var(--itbid-lime))]" : index === 1 ? "bg-[hsl(var(--itbid-magenta))]" : "bg-[hsl(var(--itbid-purple))]"}`
+                    : "bg-muted-foreground/30"
                 }`}
               />
             ))}
@@ -192,6 +198,7 @@ export const UseCasesSection = () => {
             variant="outline"
             size="icon"
             onClick={() => setActiveCase((prev) => (prev === useCases.length - 1 ? 0 : prev + 1))}
+            className="border-[hsl(var(--itbid-purple)/0.3)]"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>

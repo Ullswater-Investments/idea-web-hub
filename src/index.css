@@ -38,6 +38,13 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
+    /* ITBID Brand Colors - from logo */
+    --itbid-cyan: 187 100% 42%;
+    --itbid-lime: 66 68% 54%;
+    --itbid-magenta: 340 82% 52%;
+    --itbid-purple: 262 52% 47%;
+    --itbid-navy: 210 50% 24%;
+
     /* Chart colors - PROCUREDATA palette */
     --chart-1: 32 94% 54%;
     --chart-2: 215 16% 47%;
@@ -144,6 +151,32 @@ All colors MUST be HSL.
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 700;
+}
+
+/* ITBID Brand Typography and Gradient */
+.itbid-gradient {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--itbid-cyan)) 0%,
+    hsl(var(--itbid-lime)) 33%,
+    hsl(var(--itbid-magenta)) 66%,
+    hsl(var(--itbid-purple)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.itbid-title {
+  color: hsl(var(--itbid-navy));
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.itbid-font {
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Chart skeleton shimmer animation */

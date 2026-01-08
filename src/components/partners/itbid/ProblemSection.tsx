@@ -9,19 +9,25 @@ const problems = [
     icon: Copy,
     title: "Fricción",
     description: "El proveedor debe duplicar datos en múltiples portales de cada cliente.",
-    color: "text-orange-500",
+    color: "text-[hsl(var(--itbid-magenta))]",
+    bgColor: "bg-[hsl(var(--itbid-magenta)/0.1)]",
+    borderColor: "border-l-[hsl(var(--itbid-magenta)/0.5)]",
   },
   {
     icon: Eye,
     title: "Opacidad",
     description: "No hay visibilidad más allá del Tier-1 (proveedor directo).",
-    color: "text-red-500",
+    color: "text-[hsl(var(--itbid-purple))]",
+    bgColor: "bg-[hsl(var(--itbid-purple)/0.1)]",
+    borderColor: "border-l-[hsl(var(--itbid-purple)/0.5)]",
   },
   {
     icon: ShieldAlert,
     title: "Riesgo",
     description: "Información sensible replicada, aumentando la superficie de ataque.",
     color: "text-destructive",
+    bgColor: "bg-destructive/10",
+    borderColor: "border-l-destructive/50",
   },
 ];
 
@@ -31,11 +37,11 @@ export const ProblemSection = () => {
       <div className="container mx-auto px-4">
         <FadeIn>
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-destructive/10 text-destructive mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--itbid-magenta)/0.1)] text-[hsl(var(--itbid-magenta))] mb-4">
               <AlertTriangle className="h-4 w-4" />
-              <span className="text-sm font-medium">El Problema Actual</span>
+              <span className="text-sm font-medium itbid-font">El Problema Actual</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Los Silos de Datos</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 itbid-font">Los Silos de Datos</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               La gestión de proveedores se basa en modelos centralizados donde el cliente exige al proveedor 
               que suba sus datos a la nube del cliente.
@@ -48,10 +54,10 @@ export const ProblemSection = () => {
           <StaggerContainer className="space-y-4">
             {problems.map((problem) => (
               <StaggerItem key={problem.title}>
-                <Card className="border-l-4 border-l-destructive/50 hover:shadow-md transition-shadow">
+                <Card className={`border-l-4 ${problem.borderColor} hover:shadow-md transition-shadow`}>
                   <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center gap-3 text-lg">
-                      <div className={`p-2 rounded-lg bg-destructive/10 ${problem.color}`}>
+                    <CardTitle className="flex items-center gap-3 text-lg itbid-font">
+                      <div className={`p-2 rounded-lg ${problem.bgColor} ${problem.color}`}>
                         <problem.icon className="h-5 w-5" />
                       </div>
                       {problem.title}
@@ -70,15 +76,19 @@ export const ProblemSection = () => {
             <div className="relative">
               {/* Animated Silos */}
               <div className="flex gap-4 mb-8">
-                {[1, 2, 3].map((i) => (
+                {[
+                  { color: "from-[hsl(var(--itbid-cyan)/0.3)]", border: "border-[hsl(var(--itbid-cyan)/0.3)]" },
+                  { color: "from-[hsl(var(--itbid-magenta)/0.3)]", border: "border-[hsl(var(--itbid-magenta)/0.3)]" },
+                  { color: "from-[hsl(var(--itbid-purple)/0.3)]", border: "border-[hsl(var(--itbid-purple)/0.3)]" },
+                ].map((silo, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.2 }}
-                    className="w-20 h-32 bg-gradient-to-t from-muted to-muted/50 rounded-t-lg border-2 border-dashed border-muted-foreground/30 flex items-end justify-center pb-2"
+                    className={`w-20 h-32 bg-gradient-to-t ${silo.color} to-muted/50 rounded-t-lg border-2 border-dashed ${silo.border} flex items-end justify-center pb-2`}
                   >
-                    <span className="text-xs text-muted-foreground">Silo {i}</span>
+                    <span className="text-xs text-muted-foreground">Silo {i + 1}</span>
                   </motion.div>
                 ))}
               </div>
@@ -88,14 +98,14 @@ export const ProblemSection = () => {
                 <motion.div
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
-                  className="h-0.5 w-full bg-gradient-to-r from-destructive/50 via-destructive/20 to-destructive/50"
-                  style={{ backgroundSize: "10px 2px", backgroundImage: "repeating-linear-gradient(90deg, hsl(var(--destructive)) 0, hsl(var(--destructive)) 5px, transparent 5px, transparent 10px)" }}
+                  className="h-0.5 w-full bg-gradient-to-r from-[hsl(var(--itbid-magenta)/0.5)] via-[hsl(var(--itbid-magenta)/0.2)] to-[hsl(var(--itbid-magenta)/0.5)]"
+                  style={{ backgroundSize: "10px 2px", backgroundImage: "repeating-linear-gradient(90deg, hsl(var(--itbid-magenta)) 0, hsl(var(--itbid-magenta)) 5px, transparent 5px, transparent 10px)" }}
                 />
               </div>
             </div>
 
             {/* Efficiency Score */}
-            <Card className="p-6 bg-card/50 backdrop-blur-sm mt-8">
+            <Card className="p-6 bg-card/50 backdrop-blur-sm mt-8 border-[hsl(var(--itbid-magenta)/0.2)]">
               <div className="flex items-center gap-6">
                 <ScoreRing 
                   score={35} 
@@ -105,7 +115,7 @@ export const ProblemSection = () => {
                   glowOnHigh={false}
                 />
                 <div>
-                  <p className="text-lg font-semibold text-destructive">Modelo Actual</p>
+                  <p className="text-lg font-semibold text-[hsl(var(--itbid-magenta))] itbid-font">Modelo Actual</p>
                   <p className="text-sm text-muted-foreground">
                     Solo el 35% de eficiencia en intercambio de datos
                   </p>

@@ -12,9 +12,9 @@ const stakeholders = [
   {
     title: "Para el Comprador",
     icon: ShoppingCart,
-    color: "text-blue-500",
-    bgColor: "bg-blue-500/10",
-    borderColor: "border-blue-500/30",
+    color: "text-[hsl(var(--itbid-cyan))]",
+    bgColor: "bg-[hsl(var(--itbid-cyan)/0.1)]",
+    borderColor: "border-[hsl(var(--itbid-cyan)/0.3)]",
     score: 95,
     benefits: [
       { icon: Shield, label: "Resiliencia", desc: "Anticipar disrupciones en Tier 2-3" },
@@ -25,9 +25,9 @@ const stakeholders = [
   {
     title: "Para el Proveedor",
     icon: Users,
-    color: "text-green-500",
-    bgColor: "bg-green-500/10",
-    borderColor: "border-green-500/30",
+    color: "text-[hsl(var(--itbid-lime))]",
+    bgColor: "bg-[hsl(var(--itbid-lime)/0.1)]",
+    borderColor: "border-[hsl(var(--itbid-lime)/0.3)]",
     score: 90,
     benefits: [
       { icon: Clock, label: "Once-Only", desc: "Certificarse una vez, servir a todos" },
@@ -38,9 +38,9 @@ const stakeholders = [
   {
     title: "Para ITBID (Negocio)",
     icon: TrendingUp,
-    color: "text-primary",
-    bgColor: "bg-primary/10",
-    borderColor: "border-primary/30",
+    color: "text-[hsl(var(--itbid-magenta))]",
+    bgColor: "bg-[hsl(var(--itbid-magenta)/0.1)]",
+    borderColor: "border-[hsl(var(--itbid-magenta)/0.3)]",
     score: 100,
     benefits: [
       { icon: Award, label: "Diferenciación", desc: "Única SRM integrada con Catena-X" },
@@ -56,11 +56,11 @@ export const BenefitsSection = () => {
       <div className="container mx-auto px-4">
         <FadeIn>
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--itbid-purple)/0.1)] text-[hsl(var(--itbid-purple))] mb-4">
               <Award className="h-4 w-4" />
-              <span className="text-sm font-medium">Ventajas Competitivas</span>
+              <span className="text-sm font-medium itbid-font">Ventajas Competitivas</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Beneficios por Stakeholder</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 itbid-font">Beneficios por Stakeholder</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Valor diferenciado para cada participante del ecosistema
             </p>
@@ -75,7 +75,7 @@ export const BenefitsSection = () => {
                   <div className={`w-16 h-16 rounded-2xl ${stakeholder.bgColor} flex items-center justify-center mx-auto mb-4`}>
                     <stakeholder.icon className={`h-8 w-8 ${stakeholder.color}`} />
                   </div>
-                  <CardTitle className="text-xl">{stakeholder.title}</CardTitle>
+                  <CardTitle className="text-xl itbid-font">{stakeholder.title}</CardTitle>
                   <div className="flex justify-center mt-4">
                     <ScoreRing
                       score={stakeholder.score}
@@ -98,7 +98,7 @@ export const BenefitsSection = () => {
                         <benefit.icon className={`h-4 w-4 ${stakeholder.color}`} />
                       </div>
                       <div>
-                        <p className="font-medium text-sm">{benefit.label}</p>
+                        <p className="font-medium text-sm itbid-font">{benefit.label}</p>
                         <p className="text-xs text-muted-foreground">{benefit.desc}</p>
                       </div>
                     </motion.div>
@@ -111,9 +111,9 @@ export const BenefitsSection = () => {
 
         {/* Quote */}
         <FadeIn delay={0.4}>
-          <Card className="max-w-4xl mx-auto mt-16 bg-gradient-to-r from-primary/5 to-orange-500/5 border-primary/20">
+          <Card className="max-w-4xl mx-auto mt-16 bg-gradient-to-r from-[hsl(var(--itbid-cyan)/0.05)] via-[hsl(var(--itbid-magenta)/0.05)] to-[hsl(var(--itbid-purple)/0.05)] border-[hsl(var(--itbid-cyan)/0.2)]">
             <CardContent className="py-8 text-center">
-              <blockquote className="text-xl md:text-2xl font-medium italic text-foreground/90">
+              <blockquote className="text-xl md:text-2xl font-medium italic text-foreground/90 itbid-font">
                 "La próxima ventaja competitiva no es tener los mejores datos, 
                 sino tener las mejores conexiones seguras a los datos de los demás."
               </blockquote>
