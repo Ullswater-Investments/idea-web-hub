@@ -69,7 +69,7 @@ const DataEconomyHeroBlock = () => {
           <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
             La Unión Europea impulsa tu acceso a la{" "}
             <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Economía del Dato
+              ECONOMÍA DEL DATO
             </span>
           </h3>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
