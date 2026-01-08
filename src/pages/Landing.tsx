@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { 
   ArrowRight, Database, Shield, Zap, Globe, Layers, CheckCircle, Sparkles,
-  Wallet, ShieldCheck, Coins, Radio, Bell, Users, FileText, Plug, HelpCircle, BookOpen, Triangle
+  Wallet, ShieldCheck, Coins, Radio, Bell, Users, FileText, Plug, HelpCircle, BookOpen, Triangle,
+  Factory, Wheat, Truck, HeartPulse, ShoppingBag, Plane, Wine, Thermometer
 } from "lucide-react";
 import { FundingFooter } from "@/components/FundingFooter";
 import { AIConcierge } from "@/components/AIConcierge";
@@ -13,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import UseCasesCarousel from "@/components/UseCasesCarousel";
+import { cn } from "@/lib/utils";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -135,6 +137,45 @@ export default function Landing() {
               <Button size="lg" variant="outline" className="h-12 px-8 text-lg" asChild>
                 <Link to="/docs/tecnico">Ver Memoria Técnica</Link>
               </Button>
+            </div>
+
+            {/* CASOS DE ÉXITO - Menú de iconos por sector */}
+            <div className="mt-16">
+              <h2 className="text-2xl md:text-3xl font-bold mb-8">CASOS DE ÉXITO</h2>
+              
+              <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+                {[
+                  { id: 'industrial', label: 'INDUSTRIAL', icon: Factory, color: 'text-orange-500', bgColor: 'bg-orange-50 dark:bg-orange-950/30' },
+                  { id: 'agroalimentario', label: 'AGRO', icon: Wheat, color: 'text-emerald-500', bgColor: 'bg-emerald-50 dark:bg-emerald-950/30' },
+                  { id: 'movilidad', label: 'MOVILIDAD', icon: Truck, color: 'text-teal-500', bgColor: 'bg-teal-50 dark:bg-teal-950/30' },
+                  { id: 'social', label: 'SOCIAL', icon: Users, color: 'text-violet-500', bgColor: 'bg-violet-50 dark:bg-violet-950/30' },
+                  { id: 'salud', label: 'SALUD', icon: HeartPulse, color: 'text-rose-500', bgColor: 'bg-rose-50 dark:bg-rose-950/30' },
+                  { id: 'comercio', label: 'RETAIL', icon: ShoppingBag, color: 'text-blue-500', bgColor: 'bg-blue-50 dark:bg-blue-950/30' },
+                  { id: 'energia', label: 'ENERGÍA', icon: Zap, color: 'text-yellow-500', bgColor: 'bg-yellow-50 dark:bg-yellow-950/30' },
+                  { id: 'aeronautica', label: 'AERO', icon: Plane, color: 'text-indigo-500', bgColor: 'bg-indigo-50 dark:bg-indigo-950/30' },
+                  { id: 'vinos', label: 'VINOS', icon: Wine, color: 'text-purple-600', bgColor: 'bg-purple-50 dark:bg-purple-950/30' },
+                  { id: 'pharma', label: 'PHARMA', icon: Thermometer, color: 'text-pink-500', bgColor: 'bg-pink-50 dark:bg-pink-950/30' },
+                ].map((sector) => (
+                  <Link 
+                    key={sector.label} 
+                    to={`/success-stories?sector=${sector.id}`}
+                    className="group"
+                  >
+                    <div className={cn(
+                      "flex flex-col items-center p-3 md:p-4 rounded-xl transition-all duration-300",
+                      "border border-border/50 shadow-sm hover:shadow-md hover:-translate-y-1",
+                      sector.bgColor
+                    )}>
+                      <div className="p-3 rounded-lg bg-white dark:bg-slate-800 shadow-sm mb-2 transition-transform group-hover:scale-110">
+                        <sector.icon className={cn("w-6 h-6", sector.color)} />
+                      </div>
+                      <span className="text-[10px] md:text-xs font-semibold tracking-wide text-muted-foreground group-hover:text-foreground">
+                        {sector.label}
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </section>
