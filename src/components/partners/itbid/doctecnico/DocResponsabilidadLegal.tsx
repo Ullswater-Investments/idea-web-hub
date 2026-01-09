@@ -113,8 +113,8 @@ export const DocResponsabilidadLegal = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-center overflow-x-auto">
-                <MermaidDiagram chart={legalFlowDiagram} />
+              <div className="w-full overflow-x-auto">
+                <MermaidDiagram chart={legalFlowDiagram} className="w-full min-w-full [&_svg]:w-full [&_svg]:max-w-full [&_svg]:min-h-[400px]" />
               </div>
             </CardContent>
           </Card>
