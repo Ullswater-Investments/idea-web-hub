@@ -7,10 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/AnimatedSection";
 import { 
   Presentation, Phone, FileText, ArrowRight, 
-  CheckCircle2, Sparkles, Mail, Download 
+  CheckCircle2, Sparkles
 } from "lucide-react";
-import confetti from "canvas-confetti";
 import itbidLogo from "@/assets/itbid-logo.png";
+import { DemoSchedulerDialog } from "./DemoSchedulerDialog";
 
 const actions = [
   {
@@ -38,15 +38,14 @@ const actions = [
 
 export const DocCTA = () => {
   const [clicked, setClicked] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handlePrimaryClick = () => {
+    setDialogOpen(true);
+  };
+
+  const handleSuccess = () => {
     setClicked(true);
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ["#0891b2", "#d946ef", "#84cc16"],
-    });
     setTimeout(() => setClicked(false), 3000);
   };
 
@@ -194,6 +193,12 @@ export const DocCTA = () => {
           </div>
         </FadeIn>
       </div>
+
+      <DemoSchedulerDialog 
+        open={dialogOpen} 
+        onOpenChange={setDialogOpen}
+        onSuccess={handleSuccess}
+      />
     </section>
   );
 };
