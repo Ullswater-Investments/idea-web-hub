@@ -1,5 +1,6 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
@@ -87,11 +88,12 @@ const queryClient = new QueryClient();
 const App = () => (
   <ErrorBoundary>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-      <QueryClientProvider client={queryClient}>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <ScrollToTop />
+      <TooltipProvider>
+        <QueryClientProvider client={queryClient}>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <ScrollToTop />
           <AuthProvider>
             <OrganizationProvider>
             <Routes>
@@ -190,8 +192,9 @@ const App = () => (
             </Routes>
           </OrganizationProvider>
         </AuthProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </TooltipProvider>
     </ThemeProvider>
   </ErrorBoundary>
 );
