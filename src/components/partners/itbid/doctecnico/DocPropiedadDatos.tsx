@@ -2,24 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/AnimatedSection";
 import { Lock, KeyRound, Eye, RefreshCcw, Shield, Database } from "lucide-react";
-import { MermaidDiagram } from "@/components/MermaidDiagram";
-
-const triangleDiagram = `
-graph TB
-    subgraph TRIANGLE["Triángulo de Confianza"]
-        CONSUMER["🏢 Consumer<br/>(Comprador - ITBID Client)"]
-        SUBJECT["📦 Subject<br/>(Proveedor - Propietario del Dato)"]
-        HOLDER["🔐 Data Holder<br/>(Custodio Técnico)"]
-    end
-    
-    CONSUMER -->|"1. Solicita Acceso"| SUBJECT
-    SUBJECT -->|"2. Autoriza"| HOLDER
-    HOLDER -->|"3. Entrega Controlada"| CONSUMER
-    
-    style CONSUMER fill:#0891b2,stroke:#06b6d4,color:#fff
-    style SUBJECT fill:#d946ef,stroke:#e879f9,color:#fff
-    style HOLDER fill:#84cc16,stroke:#a3e635,color:#000
-`;
 
 const sovereigntyPrinciples = [
   {
@@ -68,39 +50,6 @@ export const DocPropiedadDatos = () => {
           </div>
         </FadeIn>
 
-        {/* Triangle of Trust Diagram */}
-        <FadeIn delay={0.1}>
-          <Card className="mb-12 border-[hsl(var(--itbid-cyan)/0.3)]">
-            <CardHeader>
-              <CardTitle className="text-center text-xl">
-                <Shield className="inline-block h-5 w-5 mr-2 text-[hsl(var(--itbid-cyan))]" />
-                El Triángulo de Confianza
-              </CardTitle>
-              <p className="text-center text-muted-foreground">
-                Modelo tripartito donde cada actor tiene un rol definido y ninguno concentra todo el poder
-              </p>
-            </CardHeader>
-            <CardContent>
-              <div className="flex justify-center mb-6 w-full overflow-x-auto min-h-[400px]">
-                <MermaidDiagram chart={triangleDiagram} scale={1.28} className="w-full min-w-[600px]" />
-              </div>
-              <div className="grid md:grid-cols-3 gap-4 text-center">
-                <div className="p-4 rounded-lg bg-[hsl(var(--itbid-cyan)/0.1)]">
-                  <p className="font-semibold text-[hsl(var(--itbid-cyan))]">Consumer</p>
-                  <p className="text-sm text-muted-foreground">Cliente de ITBID que necesita datos de proveedores</p>
-                </div>
-                <div className="p-4 rounded-lg bg-[hsl(var(--itbid-magenta)/0.1)]">
-                  <p className="font-semibold text-[hsl(var(--itbid-magenta))]">Subject</p>
-                  <p className="text-sm text-muted-foreground">Proveedor propietario legal del dato</p>
-                </div>
-                <div className="p-4 rounded-lg bg-[hsl(var(--itbid-lime)/0.1)]">
-                  <p className="font-semibold text-[hsl(var(--itbid-lime))]">Holder</p>
-                  <p className="text-sm text-muted-foreground">Custodio técnico (puede ser el propio Subject)</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </FadeIn>
 
         {/* Sovereignty Principles */}
         <FadeIn delay={0.2}>
