@@ -6,7 +6,8 @@ import { AIConcierge } from "@/components/AIConcierge";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { LogIn, Home } from "lucide-react";
+import { LogIn } from "lucide-react";
+import { GlobalNavigation } from "@/components/GlobalNavigation";
 
 interface PublicDemoLayoutProps {
   children?: React.ReactNode;
@@ -22,17 +23,12 @@ export const PublicDemoLayout = ({ children }: PublicDemoLayoutProps) => {
           <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="flex h-16 items-center gap-4 px-4">
               <SidebarTrigger />
+              <GlobalNavigation />
               <Link to="/" className="text-xl font-bold hover:opacity-80 transition-opacity">
                 <span className="procuredata-gradient">PROCUREDATA</span>
               </Link>
               
               <div className="ml-auto flex items-center gap-2">
-                <Link to="/">
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <Home className="h-4 w-4" />
-                    <span className="hidden sm:inline">Inicio</span>
-                  </Button>
-                </Link>
                 <ThemeToggle />
                 <Link to="/auth">
                   <Button variant="outline" size="sm" className="gap-2">

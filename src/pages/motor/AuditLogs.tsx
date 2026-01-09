@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { Home, History, Shield, Zap, CheckCircle, ExternalLink, Hash } from "lucide-react";
+import { History, Shield, Zap, CheckCircle, ExternalLink, Hash } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { GlobalNavigation } from "@/components/GlobalNavigation";
 
 export default function AuditLogs() {
   const logs = [
@@ -20,10 +21,12 @@ export default function AuditLogs() {
       {/* Header */}
       <header className="border-b border-border sticky top-0 bg-background/95 backdrop-blur z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Home className="h-4 w-4 text-muted-foreground" />
-            <span className="procuredata-gradient font-bold text-xl">PROCUREDATA</span>
-          </Link>
+          <div className="flex items-center gap-2">
+            <GlobalNavigation />
+            <Link to="/" className="hover:opacity-80 transition-opacity">
+              <span className="procuredata-gradient font-bold text-xl">PROCUREDATA</span>
+            </Link>
+          </div>
           <Badge variant="outline" className="border-green-500 text-green-400">Seguridad</Badge>
         </div>
       </header>
