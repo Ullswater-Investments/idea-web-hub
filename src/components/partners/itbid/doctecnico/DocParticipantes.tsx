@@ -11,22 +11,22 @@ graph TB
     end
     
     subgraph PROVIDERS["Proveedores"]
-        P1["🏭 Fabricante A"]
-        P2["🔧 Proveedor B"]
-        P3["📦 Distribuidor C"]
+        P1["Fabricante A"]
+        P2["Proveedor B"]
+        P3["Distribuidor C"]
     end
     
     subgraph CONSUMERS["Clientes Compradores"]
-        C1["🏢 Empresa 1"]
-        C2["🏢 Empresa 2"]
-        C3["🏢 Empresa 3"]
+        C1["Empresa 1"]
+        C2["Empresa 2"]
+        C3["Empresa 3"]
     end
     
     subgraph TRUSTED["Terceros de Confianza"]
-        T1["🏆 SGS / AENOR"]
-        T2["🏦 Bancos"]
-        T3["📊 Rating Agencies"]
-        T4["🏛️ Admin. Pública"]
+        T1["SGS / AENOR"]
+        T2["Bancos"]
+        T3["Rating Agencies"]
+        T4["Admin. Pública"]
     end
     
     PROVIDERS <--> GW

@@ -7,7 +7,7 @@ import { MermaidDiagram } from "@/components/MermaidDiagram";
 
 const federationDiagram = `
 graph TB
-    subgraph EU["🇪🇺 Estrategia Digital UE"]
+    subgraph EU["Estrategia Digital UE"]
         SEDIA["SEDIA"]
         GAIAX["Gaia-X"]
     end
