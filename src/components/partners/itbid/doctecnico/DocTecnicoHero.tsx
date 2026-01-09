@@ -133,21 +133,24 @@ export const DocTecnicoHero = () => {
           </div>
         </FadeIn>
 
-        {/* Federation Diagram */}
-        <FadeIn delay={0.3}>
-          <div className="bg-card/50 backdrop-blur-sm border rounded-2xl p-6 md:p-8 w-full">
+      </div>
+
+      {/* Federation Diagram - Full Width */}
+      <FadeIn delay={0.3}>
+        <div className="w-full px-4 md:px-8 lg:px-12 relative z-10">
+          <div className="bg-card/50 backdrop-blur-sm border rounded-2xl p-6 md:p-8">
             <h3 className="text-xl font-semibold text-center mb-6">
               Arquitectura de Federación de Ecosistemas
             </h3>
-            <div className="flex justify-center overflow-x-auto">
-              <MermaidDiagram chart={federationDiagram} scale={1.0} />
+            <div className="flex justify-center w-full overflow-x-auto">
+              <MermaidDiagram chart={federationDiagram} scale={1.6} className="w-full" />
             </div>
             <p className="text-center text-sm text-muted-foreground mt-4">
               itbid-x opera como un nodo autónomo dentro de la red federada PROCUREDATA
             </p>
           </div>
-        </FadeIn>
-      </div>
+        </div>
+      </FadeIn>
     </section>
   );
 };

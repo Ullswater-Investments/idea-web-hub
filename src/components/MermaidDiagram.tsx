@@ -53,10 +53,10 @@ export function MermaidDiagram({ chart, className = '', scale = 1.4 }: MermaidDi
   }
 
   return (
-    <Card className={`overflow-x-auto p-4 bg-card ${className}`}>
+    <Card className={`overflow-x-auto p-4 bg-card w-full ${className}`}>
       <div 
         ref={containerRef}
-        className="mermaid-container flex justify-center [&_svg]:origin-center [&_svg]:my-8"
+        className="mermaid-container flex justify-center w-full [&_svg]:origin-center [&_svg]:my-8 [&_svg]:max-w-full"
         style={{ '--diagram-scale': scale } as React.CSSProperties}
         dangerouslySetInnerHTML={{ __html: svg }}
       />
