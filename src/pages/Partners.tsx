@@ -75,8 +75,8 @@ const Partners = () => {
                 </div>
               </CardHeader>
               <CardContent />
-              <CardFooter className="flex gap-2">
-                <Button asChild className="flex-1 group-hover:bg-primary/90">
+              <CardFooter className="flex flex-col gap-2">
+                <Button asChild className="w-full group-hover:bg-primary/90">
                   <Link to={partner.link} className="flex items-center gap-2">
                     Acceder a proyectos
                     <ExternalLink className="h-4 w-4" />
@@ -86,7 +86,7 @@ const Partners = () => {
                   <Button 
                     asChild 
                     variant="outline"
-                    className="flex-1 border-slate-300 text-slate-600 hover:bg-slate-100 hover:text-blue-600 hover:border-blue-400"
+                    className="w-full border-slate-300 text-slate-600 hover:bg-slate-100 hover:text-blue-600 hover:border-blue-400"
                   >
                     <Link to="/partners/itbid/doc-tecnico" className="flex items-center gap-2">
                       Doc Técnico
