@@ -517,6 +517,7 @@ sequenceDiagram
           </div>
           
           <MermaidDiagram
+            scale={1.12}
             chart={`
 sequenceDiagram
     participant DO as 🏭 Data Owner<br/>(Datos Sensibles)
