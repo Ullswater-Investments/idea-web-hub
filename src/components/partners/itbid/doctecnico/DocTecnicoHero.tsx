@@ -143,7 +143,7 @@ export const DocTecnicoHero = () => {
               Arquitectura de Federación de Ecosistemas
             </h3>
             <div className="flex justify-center w-full overflow-x-auto">
-              <MermaidDiagram chart={federationDiagram} scale={1.6} className="w-full" />
+              <MermaidDiagram chart={federationDiagram} scale={1.1} className="w-full" />
             </div>
             <p className="text-center text-sm text-muted-foreground mt-4">
               itbid-x opera como un nodo autónomo dentro de la red federada PROCUREDATA
