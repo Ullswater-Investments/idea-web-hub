@@ -79,7 +79,7 @@ const phases = [
   {
     phase: 3,
     title: "Capas de Valor y Expansión",
-    period: "Meses 7-12",
+    period: "Mes 3-4-5",
     icon: TrendingUp,
     color: "itbid-lime",
     objective: "Re-inversión de excedentes y escalado de servicios.",
