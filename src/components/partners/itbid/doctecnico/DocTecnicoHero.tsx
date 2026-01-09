@@ -6,25 +6,29 @@ import itbidLogo from "@/assets/itbid-logo.png";
 import { MermaidDiagram } from "@/components/MermaidDiagram";
 
 const federationDiagram = `
-graph TB
+graph LR
     subgraph EU["Estrategia Digital UE"]
+        direction TB
         SEDIA["SEDIA"]
         GAIAX["Gaia-X"]
     end
     
     subgraph PROCUREDATA["PROCUREDATA - Ecosistema Madre"]
+        direction TB
         CORE["Trust Framework"]
-        ODRL["Políticas ODRL"]
+        ODRL["Politicas ODRL"]
         EDC["Conectores EDC"]
     end
     
     subgraph ITBIDX["itbid-x - Espacio Asociado"]
+        direction TB
         GOV["Gobernanza Propia"]
         RULES["Reglas de Negocio"]
         CLIENTS["Clientes itbid"]
     end
     
     subgraph PROVIDERS["Proveedores Federados"]
+        direction TB
         P1["Proveedor A"]
         P2["Proveedor B"]
         P3["Proveedor C"]
@@ -131,12 +135,12 @@ export const DocTecnicoHero = () => {
 
         {/* Federation Diagram */}
         <FadeIn delay={0.3}>
-          <div className="bg-card/50 backdrop-blur-sm border rounded-2xl p-6 md:p-8">
+          <div className="bg-card/50 backdrop-blur-sm border rounded-2xl p-6 md:p-8 w-full">
             <h3 className="text-xl font-semibold text-center mb-6">
               Arquitectura de Federación de Ecosistemas
             </h3>
-            <div className="flex justify-center">
-              <MermaidDiagram chart={federationDiagram} />
+            <div className="flex justify-center overflow-x-auto">
+              <MermaidDiagram chart={federationDiagram} scale={1.0} />
             </div>
             <p className="text-center text-sm text-muted-foreground mt-4">
               itbid-x opera como un nodo autónomo dentro de la red federada PROCUREDATA
