@@ -2,472 +2,12 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Handshake, ExternalLink, FileText, Building2, Globe, Car, Zap, Building, Database, Target, Factory, Bolt, ShoppingCart, Wheat, Tractor, FlaskConical, Cog } from "lucide-react";
-import itbidLogo from "@/assets/itbid-logo.png";
-
-interface Partner {
-  id: string;
-  name: string;
-  fullName?: string;
-  description: string;
-  logo: string | null;
-  link: string;
-  status: "activo" | "próximamente" | "en desarrollo";
-  sector: string;
-  hasDocTecnico?: boolean;
-  keyInitiative?: string;
-  priority?: "inmediato" | "masa_critica" | "quick_win";
-}
-
-interface CountryData {
-  name: string;
-  flag: string;
-  partners: Partner[];
-}
-
-const partnersByCountry: CountryData[] = [
-  {
-    name: "España",
-    flag: "🇪🇸",
-    partners: [
-      {
-        id: "itbid",
-        name: "ITBID",
-        description: "Plataforma líder de licitaciones y contratación pública. Colaboración estratégica para proyectos de datos en el sector público.",
-        logo: itbidLogo,
-        link: "/partners/itbid/proyecto",
-        status: "activo",
-        sector: "Sector Público",
-        hasDocTecnico: true,
-      },
-      {
-        id: "aerce",
-        name: "AERCE",
-        fullName: "Asociación Española de Profesionales de Compras, Contratación y Aprovisionamientos",
-        description: "Principal asociación de profesionales de compras en España. +2.000 miembros activos en empresas líderes. Referente en formación, certificación y mejores prácticas de procurement.",
-        logo: null,
-        link: "/partners/aerce/proyecto",
-        status: "en desarrollo",
-        sector: "Compras Profesionales",
-        keyInitiative: "Certificación CPO, Foro de Compras",
-        priority: "masa_critica",
-      },
-      {
-        id: "bme-espana",
-        name: "BME España",
-        fullName: "Bundesverband Materialwirtschaft, Einkauf und Logistik (Delegación España)",
-        description: "Delegación española de la mayor asociación europea de compras y logística. Conexión directa con el ecosistema de procurement alemán y estándares europeos.",
-        logo: null,
-        link: "/partners/bme-espana/proyecto",
-        status: "próximamente",
-        sector: "Compras y Logística",
-        keyInitiative: "BME Symposium, Estándares EU",
-        priority: "quick_win",
-      },
-      {
-        id: "asaja",
-        name: "ASAJA",
-        fullName: "Asociación Agraria de Jóvenes Agricultores",
-        description: "Ejecutando oficinas técnicas para Kit Digital, digitalizando explotaciones activamente. Necesitan herramientas sencillas para cumplir con la nueva PAC digital.",
-        logo: null,
-        link: "/partners/asaja/proyecto",
-        status: "próximamente",
-        sector: "Agricultura",
-        keyInitiative: "Kit Digital, PAC digital",
-        priority: "quick_win",
-      },
-      {
-        id: "feique",
-        name: "FEIQUE",
-        fullName: "Federación Empresarial de la Industria Química Española",
-        description: "Representan +3.000 empresas químicas. Enfoque en competitividad internacional e I+D. Vía rápida para agregar toda la industria química española al catálogo.",
-        logo: null,
-        link: "/partners/feique/proyecto",
-        status: "próximamente",
-        sector: "Química",
-        keyInitiative: "Competitividad internacional, I+D",
-        priority: "quick_win",
-      },
-    ],
-  },
-  {
-    name: "Alemania",
-    flag: "🇩🇪",
-    partners: [
-      {
-        id: "vda",
-        name: "VDA",
-        fullName: "Verband der Automobilindustrie",
-        description: "Creadores de estándares globales como TISAX para seguridad de datos. Enfoque obsesivo en cadena de suministro conectada para proveedores Tier-2 y Tier-3.",
-        logo: null,
-        link: "/partners/vda/proyecto",
-        status: "en desarrollo",
-        sector: "Automoción",
-        keyInitiative: "TISAX, Catena-X",
-        priority: "masa_critica",
-      },
-      {
-        id: "bdew",
-        name: "BDEW",
-        fullName: "Bundesverband der Energie- und Wasserwirtschaft",
-        description: "Gestionan el estándar MaKo, protocolo oficial de intercambio de datos energéticos en Alemania. Ventaja competitiva técnica para validación energética.",
-        logo: null,
-        link: "/partners/bdew/proyecto",
-        status: "en desarrollo",
-        sector: "Energía",
-        keyInitiative: "MaKo (Marktkommunikation)",
-        priority: "inmediato",
-      },
-      {
-        id: "hdb",
-        name: "HDB",
-        fullName: "Hauptverband der Deutschen Bauindustrie",
-        description: "Lideran el road map federal de BIM (Building Information Modeling). Socio natural para compras de materiales con soporte BIM.",
-        logo: null,
-        link: "/partners/hdb/proyecto",
-        status: "próximamente",
-        sector: "Construcción",
-        keyInitiative: "BIM Federal Roadmap",
-      },
-      {
-        id: "vdma-landtechnik",
-        name: "VDMA Landtechnik",
-        fullName: "Verband Deutscher Maschinen- und Anlagenbau (Landtechnik)",
-        description: "Los dueños de la maquinaria europea. Impulsan el estándar agrifood data space. Puerta de entrada para datos de tractores y maquinaria conectada.",
-        logo: null,
-        link: "/partners/vdma-landtechnik/proyecto",
-        status: "en desarrollo",
-        sector: "Maquinaria Agrícola",
-        keyInitiative: "agrifood data space",
-        priority: "inmediato",
-      },
-      {
-        id: "bauforumstahl",
-        name: "Bauforumstahl",
-        fullName: "Bauforumstahl e.V.",
-        description: "Asociación del acero para construcción. Promueven activamente BIM para estructuras de acero. Nicho perfecto para datos técnicos de vigas, soportes y estructuras.",
-        logo: null,
-        link: "/partners/bauforumstahl/proyecto",
-        status: "en desarrollo",
-        sector: "Construcción Metálica",
-        keyInitiative: "BIM para acero",
-        priority: "inmediato",
-      },
-      {
-        id: "vci",
-        name: "VCI",
-        fullName: "Verband der Chemischen Industrie",
-        description: "Promueven 'Chemistry 4.0', modelos de negocio digitales. La química alemana es el motor de Europa; sus estándares de datos de sostenibilidad son los que todos seguirán.",
-        logo: null,
-        link: "/partners/vci/proyecto",
-        status: "en desarrollo",
-        sector: "Química",
-        keyInitiative: "Chemistry 4.0",
-        priority: "masa_critica",
-      },
-      {
-        id: "wsm",
-        name: "WSM",
-        fullName: "Wirtschaftsverband Stahl- und Metallverarbeitung",
-        description: "Representan a las PYMEs que transforman metal (forja, estampado, componentes). Son la base oculta de la industria alemana.",
-        logo: null,
-        link: "/partners/wsm/proyecto",
-        status: "en desarrollo",
-        sector: "Metalurgia",
-        keyInitiative: "PYMEs transformación metal",
-        priority: "masa_critica",
-      },
-    ],
-  },
-  {
-    name: "Italia",
-    flag: "🇮🇹",
-    partners: [
-      {
-        id: "ance",
-        name: "ANCE",
-        fullName: "Associazione Nazionale Costruttori Edili",
-        description: "Han creado DIHCUBE (Digital Italian Hub for Construction), hub de innovación digital específico para construcción italiana.",
-        logo: null,
-        link: "/partners/ance/proyecto",
-        status: "en desarrollo",
-        sector: "Construcción",
-        keyInitiative: "DIHCUBE",
-        priority: "inmediato",
-      },
-      {
-        id: "anfia",
-        name: "ANFIA",
-        fullName: "Filiera Industria Automobilistica",
-        description: "División específica de Car Design & Engineering y componentes. Perfectos para datos de propiedad intelectual y diseño industrial.",
-        logo: null,
-        link: "/partners/anfia/proyecto",
-        status: "próximamente",
-        sector: "Automoción",
-        keyInitiative: "Car Design & Engineering",
-        priority: "masa_critica",
-      },
-      {
-        id: "elettricita-futura",
-        name: "Elettricità Futura",
-        description: "Representan el 70% del mercado eléctrico italiano. Puerta de entrada para datos de transición energética y renovables en el sur de Europa.",
-        logo: null,
-        link: "/partners/elettricita-futura/proyecto",
-        status: "próximamente",
-        sector: "Energía",
-      },
-      {
-        id: "coldiretti",
-        name: "Coldiretti",
-        fullName: "Confederazione Nazionale Coltivatori Diretti",
-        description: "Han lanzado el manifiesto 'Agricoltura 4.0' con empresas tecnológicas. Buscan trazabilidad 'dal campo alla tavola' (del campo a la mesa).",
-        logo: null,
-        link: "/partners/coldiretti/proyecto",
-        status: "próximamente",
-        sector: "Agricultura",
-        keyInitiative: "Agricoltura 4.0",
-        priority: "masa_critica",
-      },
-      {
-        id: "federmeccanica",
-        name: "Federmeccanica",
-        fullName: "Federazione Sindacale dell'Industria Metalmeccanica Italiana",
-        description: "La asociación de la industria metalmecánica por excelencia. Muy enfocados en transición hacia Mecatrónica y fábrica digital.",
-        logo: null,
-        link: "/partners/federmeccanica/proyecto",
-        status: "en desarrollo",
-        sector: "Metalurgia",
-        keyInitiative: "Mecatrónica, fábrica digital",
-        priority: "masa_critica",
-      },
-    ],
-  },
-  {
-    name: "Francia",
-    flag: "🇫🇷",
-    partners: [
-      {
-        id: "pfa",
-        name: "PFA",
-        fullName: "Plateforme Automobile",
-        description: "No es solo asociación, es plataforma estratégica que une fabricantes y estado. Foco en innovación y competitividad nacional.",
-        logo: null,
-        link: "/partners/pfa/proyecto",
-        status: "en desarrollo",
-        sector: "Automoción",
-        keyInitiative: "Soberanía del Dato",
-        priority: "masa_critica",
-      },
-      {
-        id: "ufe",
-        name: "UFE",
-        fullName: "Union Française de l'Électricité",
-        description: "Plan de Acción de Electrificación masivo. Buscan herramientas digitales para gestión de huella energética empresarial.",
-        logo: null,
-        link: "/partners/ufe/proyecto",
-        status: "próximamente",
-        sector: "Energía",
-        keyInitiative: "Plan de Electrificación",
-      },
-      {
-        id: "ffb",
-        name: "FFB",
-        fullName: "Fédération Française du Bâtiment",
-        description: "50.000 miembros, incluyendo 35.000 artesanos/PYMEs. Plan de Transición Digital (PTNB) activo, buscan herramientas sencillas.",
-        logo: null,
-        link: "/partners/ffb/proyecto",
-        status: "próximamente",
-        sector: "Construcción",
-        keyInitiative: "PTNB",
-        priority: "quick_win",
-      },
-      {
-        id: "fnsea",
-        name: "FNSEA",
-        fullName: "Fédération Nationale des Syndicats d'Exploitants Agricoles",
-        description: "Lideran el proyecto Numagri para normalizar la data agrícola. Buscan estandarizar el intercambio de datos entre granjeros y proveedores.",
-        logo: null,
-        link: "/partners/fnsea/proyecto",
-        status: "en desarrollo",
-        sector: "Agricultura",
-        keyInitiative: "Numagri",
-        priority: "masa_critica",
-      },
-      {
-        id: "scmf",
-        name: "SCMF",
-        fullName: "Syndicat de la Construction Métallique de France",
-        description: "Impulsan 'Usine 4.0' (Fábrica 4.0) en el sector metalúrgico francés. Buscan competitividad mediante digitalización de la cadena de valor.",
-        logo: null,
-        link: "/partners/scmf/proyecto",
-        status: "próximamente",
-        sector: "Construcción Metálica",
-        keyInitiative: "Usine 4.0",
-        priority: "masa_critica",
-      },
-      {
-        id: "france-chimie",
-        name: "France Chimie",
-        fullName: "France Chimie",
-        description: "Programas de financiación para 'Transformation Numérique' hacia industria 4.0, incluyendo IA y mantenimiento predictivo.",
-        logo: null,
-        link: "/partners/france-chimie/proyecto",
-        status: "próximamente",
-        sector: "Química",
-        keyInitiative: "Transformation Numérique",
-        priority: "masa_critica",
-      },
-      {
-        id: "uimm",
-        name: "UIMM",
-        fullName: "Union des Industries et Métiers de la Métallurgie",
-        description: "Red territorial masiva y enfoque total en 'Industrie du Futur'. Líderes de la transformación industrial francesa.",
-        logo: null,
-        link: "/partners/uimm/proyecto",
-        status: "en desarrollo",
-        sector: "Metalurgia",
-        keyInitiative: "Industrie du Futur",
-        priority: "masa_critica",
-      },
-    ],
-  },
-  {
-    name: "Países Bajos",
-    flag: "🇳🇱",
-    partners: [
-      {
-        id: "edsn",
-        name: "EDSN",
-        fullName: "Energie Data Services Nederland",
-        description: "No es asociación clásica, es LA ENTIDAD que gestiona el hub central de datos de energía de Holanda. Conexión directa = validación energética automática.",
-        logo: null,
-        link: "/partners/edsn/proyecto",
-        status: "en desarrollo",
-        sector: "Data Hub",
-        keyInitiative: "Hub Central de Datos",
-        priority: "inmediato",
-      },
-      {
-        id: "rai-vereniging",
-        name: "RAI Vereniging",
-        fullName: "RAI Automotive Industry NL",
-        description: "Muy enfocados en movilidad inteligente y datos de vehículos conectados. Líderes en innovación de transporte.",
-        logo: null,
-        link: "/partners/rai/proyecto",
-        status: "próximamente",
-        sector: "Automoción",
-        keyInitiative: "Movilidad Inteligente",
-      },
-      {
-        id: "lto-nederland",
-        name: "LTO Nederland",
-        fullName: "Land- en Tuinbouworganisatie Nederland",
-        description: "LA JOYA DE LA CORONA. Socios fundadores de JoinData, autopista de datos segura para granjeros. Integración = acceso a datos reales de miles de explotaciones holandesas.",
-        logo: null,
-        link: "/partners/lto-nederland/proyecto",
-        status: "en desarrollo",
-        sector: "Agricultura",
-        keyInitiative: "JoinData",
-        priority: "inmediato",
-      },
-      {
-        id: "bouwend-nederland",
-        name: "Bouwend Nederland",
-        fullName: "Bouwend Nederland",
-        description: "Programa de digitalización pragmático enfocado en reducir 'costes de fallo' (faalkosten) mediante datos compartidos antes de construir.",
-        logo: null,
-        link: "/partners/bouwend-nederland/proyecto",
-        status: "próximamente",
-        sector: "Construcción",
-        keyInitiative: "Reducción faalkosten",
-        priority: "quick_win",
-      },
-      {
-        id: "koninklijke-metaalunie",
-        name: "Koninklijke Metaalunie",
-        fullName: "Koninklijke Metaalunie",
-        description: "Representan +15.000 PYMEs del metal ('MKB-metaal'). Programa 'Smart Industry' busca conectar fábricas digitalmente. Socio ideal para proveedores de nicho de alta tecnología.",
-        logo: null,
-        link: "/partners/koninklijke-metaalunie/proyecto",
-        status: "en desarrollo",
-        sector: "Metalurgia",
-        keyInitiative: "Smart Industry",
-        priority: "inmediato",
-      },
-    ],
-  },
-  {
-    name: "Portugal",
-    flag: "🇵🇹",
-    partners: [
-      {
-        id: "aiccopn",
-        name: "AICCOPN",
-        fullName: "Associação dos Industriais da Construção Civil e Obras Públicas",
-        description: "Proyecto 'Construção Q+', enfocado en cualificar y digitalizar empresas del sector. Plataforma ideal para Cualificación de Proveedores.",
-        logo: null,
-        link: "/partners/aiccopn/proyecto",
-        status: "próximamente",
-        sector: "Construcción",
-        keyInitiative: "Construção Q+",
-        priority: "quick_win",
-      },
-      {
-        id: "mobinov",
-        name: "MOBINOV",
-        fullName: "Cluster Automóvel de Portugal",
-        description: "Cluster Automóvil de Portugal. Agilidad envidiable para proyectos piloto de Industria 4.0 y transformación digital.",
-        logo: null,
-        link: "/partners/mobinov/proyecto",
-        status: "próximamente",
-        sector: "Automoción",
-        keyInitiative: "Cluster Automóvil PT",
-        priority: "quick_win",
-      },
-      {
-        id: "aimmap",
-        name: "AIMMAP",
-        fullName: "Associação dos Industriais Metalúrgicos, Metalomecânicos e Afins de Portugal",
-        description: "Lideran la marca 'METAL PORTUGAL'. Ejecutando proyectos de descarbonización (CarbonFree_Guide4Metal) para internacionalizar el sector. Oportunidad de oro como escaparate digital.",
-        logo: null,
-        link: "/partners/aimmap/proyecto",
-        status: "en desarrollo",
-        sector: "Metalurgia",
-        keyInitiative: "CarbonFree_Guide4Metal",
-        priority: "inmediato",
-      },
-    ],
-  },
-  {
-    name: "Bélgica",
-    flag: "🇧🇪",
-    partners: [
-      {
-        id: "embuild",
-        name: "Embuild",
-        fullName: "ex-Confederación de la Construcción",
-        description: "Rebrand total hacia sostenibilidad y digitalización. Los más vocales en Bruselas sobre necesidad de digitalizar la construcción.",
-        logo: null,
-        link: "/partners/embuild/proyecto",
-        status: "próximamente",
-        sector: "Construcción",
-        keyInitiative: "Sostenibilidad Digital",
-      },
-      {
-        id: "essenscia",
-        name: "Essenscia",
-        fullName: "Essenscia - Belgian Federation of the Chemical Industry",
-        description: "El hub químico de Amberes es vital para Europa. Otorgan los 'Innovation Awards'. Alianza aquí = posicionamiento en el corazón de la innovación química europea.",
-        logo: null,
-        link: "/partners/essenscia/proyecto",
-        status: "en desarrollo",
-        sector: "Química",
-        keyInitiative: "Innovation Awards, Hub Amberes",
-        priority: "inmediato",
-      },
-    ],
-  },
-];
+import { 
+  Handshake, ExternalLink, FileText, Building2, Globe, Car, Zap, Building, Database, 
+  Target, Factory, Bolt, ShoppingCart, Wheat, Tractor, FlaskConical, Cog,
+  Cpu, Plane, HeartPulse, Ship, Network, Shield, Shirt, UtensilsCrossed, Boxes, Sparkles
+} from "lucide-react";
+import { partnersByCountry, Partner, CountryData } from "@/data/partnersData";
 
 const getStatusBadge = (status: Partner["status"]) => {
   switch (status) {
@@ -494,33 +34,88 @@ const getStatusBadge = (status: Partner["status"]) => {
 
 const getSectorIcon = (sector: string) => {
   const lowerSector = sector.toLowerCase();
-  if (lowerSector.includes("automó") || lowerSector.includes("auto")) {
+  
+  // Tecnología/Semiconductores
+  if (lowerSector.includes("semicon") || lowerSector.includes("electrón") || lowerSector.includes("electrónica")) {
+    return <Cpu className="h-3 w-3" />;
+  }
+  // Aeroespacial
+  if (lowerSector.includes("aero") || lowerSector.includes("aviación") || lowerSector.includes("espacio")) {
+    return <Plane className="h-3 w-3" />;
+  }
+  // Salud/Biotech
+  if (lowerSector.includes("salud") || lowerSector.includes("bio") || lowerSector.includes("médic") || lowerSector.includes("health")) {
+    return <HeartPulse className="h-3 w-3" />;
+  }
+  // Logística/Puerto
+  if (lowerSector.includes("logíst") || lowerSector.includes("puerto") || lowerSector.includes("port")) {
+    return <Ship className="h-3 w-3" />;
+  }
+  // Smart City/IoT/Deep Tech
+  if (lowerSector.includes("smart") || lowerSector.includes("iot") || lowerSector.includes("deep")) {
+    return <Network className="h-3 w-3" />;
+  }
+  // Seguridad
+  if (lowerSector.includes("segur") || lowerSector.includes("security")) {
+    return <Shield className="h-3 w-3" />;
+  }
+  // Textil
+  if (lowerSector.includes("textil") || lowerSector.includes("moda")) {
+    return <Shirt className="h-3 w-3" />;
+  }
+  // Alimentación
+  if (lowerSector.includes("aliment") || lowerSector.includes("food")) {
+    return <UtensilsCrossed className="h-3 w-3" />;
+  }
+  // Materiales/Cerámica
+  if (lowerSector.includes("material") || lowerSector.includes("cerámica")) {
+    return <Boxes className="h-3 w-3" />;
+  }
+  // Industria 4.0/Packaging/Maquinaria Industrial
+  if (lowerSector.includes("industria 4") || lowerSector.includes("packaging") || lowerSector.includes("maquinaria industrial")) {
+    return <Factory className="h-3 w-3" />;
+  }
+  // Tecnología general
+  if (lowerSector.includes("tecnología") || lowerSector.includes("tech") || lowerSector.includes("tic")) {
+    return <Cpu className="h-3 w-3" />;
+  }
+  // Automoción
+  if (lowerSector.includes("automó") || lowerSector.includes("auto") || lowerSector.includes("lujo")) {
     return <Car className="h-3 w-3" />;
   }
+  // Energía
   if (lowerSector.includes("energ")) {
     return <Zap className="h-3 w-3" />;
   }
+  // Construcción
   if (lowerSector.includes("constru")) {
     return <Building className="h-3 w-3" />;
   }
+  // Data Hub
   if (lowerSector.includes("data") || lowerSector.includes("hub")) {
     return <Database className="h-3 w-3" />;
   }
+  // Compras/Logística
   if (lowerSector.includes("compra") || lowerSector.includes("procurement") || lowerSector.includes("logística")) {
     return <ShoppingCart className="h-3 w-3" />;
   }
+  // Agricultura
   if (lowerSector.includes("agri") || lowerSector.includes("agro")) {
     return <Wheat className="h-3 w-3" />;
   }
+  // Maquinaria Agrícola
   if (lowerSector.includes("maquin") || lowerSector.includes("tractor")) {
     return <Tractor className="h-3 w-3" />;
   }
+  // Química
   if (lowerSector.includes("quím") || lowerSector.includes("chem")) {
     return <FlaskConical className="h-3 w-3" />;
   }
+  // Metalurgia
   if (lowerSector.includes("metal")) {
     return <Cog className="h-3 w-3" />;
   }
+  
   return <Building2 className="h-3 w-3" />;
 };
 
@@ -552,6 +147,18 @@ const getPriorityBadge = (priority?: Partner["priority"]) => {
   }
 };
 
+const getTypeBadge = (type?: Partner["type"]) => {
+  if (type === "clúster") {
+    return (
+      <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600 border-purple-500/30">
+        <Sparkles className="h-3 w-3 mr-1" />
+        Clúster
+      </Badge>
+    );
+  }
+  return null;
+};
+
 const PartnerCard = ({ partner }: { partner: Partner }) => (
   <Card className="group hover:shadow-lg transition-all duration-300 hover:border-primary/50 flex flex-col">
     <CardHeader className="space-y-3 flex-1">
@@ -564,8 +171,16 @@ const PartnerCard = ({ partner }: { partner: Partner }) => (
               className="h-full w-auto object-contain"
             />
           ) : (
-            <div className="h-16 w-16 rounded-xl bg-gradient-to-br from-muted to-muted/50 border border-border flex items-center justify-center">
-              <Building2 className="h-8 w-8 text-muted-foreground/60" />
+            <div className={`h-16 w-16 rounded-xl border border-border flex items-center justify-center ${
+              partner.type === "clúster" 
+                ? "bg-gradient-to-br from-purple-500/10 to-purple-500/5" 
+                : "bg-gradient-to-br from-muted to-muted/50"
+            }`}>
+              {partner.type === "clúster" ? (
+                <Sparkles className="h-8 w-8 text-purple-500/60" />
+              ) : (
+                <Building2 className="h-8 w-8 text-muted-foreground/60" />
+              )}
             </div>
           )}
         </div>
@@ -583,6 +198,7 @@ const PartnerCard = ({ partner }: { partner: Partner }) => (
             {getSectorIcon(partner.sector)}
             <span className="ml-1">{partner.sector}</span>
           </Badge>
+          {getTypeBadge(partner.type)}
           {getPriorityBadge(partner.priority)}
         </div>
         <CardDescription className="mt-2 line-clamp-3">
@@ -624,23 +240,60 @@ const PartnerCard = ({ partner }: { partner: Partner }) => (
   </Card>
 );
 
-const CountrySection = ({ country }: { country: CountryData }) => (
-  <div className="space-y-4">
-    <div className="flex items-center gap-3">
-      <span className="text-2xl">{country.flag}</span>
-      <h3 className="text-lg font-semibold">{country.name}</h3>
-      <div className="flex-1 h-px bg-border" />
-      <Badge variant="outline" className="text-xs">
-        {country.partners.length} {country.partners.length === 1 ? "partner" : "partners"}
-      </Badge>
+const CountrySection = ({ country }: { country: CountryData }) => {
+  const associations = country.partners.filter(p => p.type !== "clúster");
+  const clusters = country.partners.filter(p => p.type === "clúster");
+  
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-3">
+        <span className="text-2xl">{country.flag}</span>
+        <h3 className="text-lg font-semibold">{country.name}</h3>
+        <div className="flex-1 h-px bg-border" />
+        <div className="flex gap-2">
+          <Badge variant="outline" className="text-xs">
+            {associations.length} asociaciones
+          </Badge>
+          {clusters.length > 0 && (
+            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600 border-purple-500/30">
+              {clusters.length} clústeres
+            </Badge>
+          )}
+        </div>
+      </div>
+      
+      {/* Asociaciones */}
+      {associations.length > 0 && (
+        <div className="space-y-3">
+          <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+            <Building2 className="h-4 w-4" />
+            Asociaciones Sectoriales
+          </h4>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {associations.map((partner) => (
+              <PartnerCard key={partner.id} partner={partner} />
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* Clústeres */}
+      {clusters.length > 0 && (
+        <div className="space-y-3">
+          <h4 className="text-sm font-medium text-purple-600 flex items-center gap-2">
+            <Sparkles className="h-4 w-4" />
+            Clústeres Empresariales
+          </h4>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {clusters.map((partner) => (
+              <PartnerCard key={partner.id} partner={partner} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {country.partners.map((partner) => (
-        <PartnerCard key={partner.id} partner={partner} />
-      ))}
-    </div>
-  </div>
-);
+  );
+};
 
 const Partners = () => {
   const totalPartners = partnersByCountry.reduce((acc, country) => acc + country.partners.length, 0);
@@ -650,6 +303,16 @@ const Partners = () => {
   );
   const inDevelopment = partnersByCountry.reduce(
     (acc, country) => acc + country.partners.filter((p) => p.status === "en desarrollo").length,
+    0
+  );
+
+  // Count by type
+  const associationsCount = partnersByCountry.reduce(
+    (acc, country) => acc + country.partners.filter((p) => p.type !== "clúster").length,
+    0
+  );
+  const clustersCount = partnersByCountry.reduce(
+    (acc, country) => acc + country.partners.filter((p) => p.type === "clúster").length,
     0
   );
 
@@ -707,6 +370,21 @@ const Partners = () => {
                 <Badge variant="outline" className="text-sm">
                   {partnersByCountry.length} países
                 </Badge>
+              </div>
+              
+              {/* Tipos de Partner */}
+              <div className="pt-2 border-t border-border/50">
+                <p className="text-sm font-medium text-muted-foreground mb-2">Tipos de Partner:</p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline" className="text-xs">
+                    <Building2 className="h-3 w-3 mr-1" />
+                    {associationsCount} Asociaciones Sectoriales
+                  </Badge>
+                  <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600 border-purple-500/30">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    {clustersCount} Clústeres Empresariales
+                  </Badge>
+                </div>
               </div>
               
               {/* Prioridades Estratégicas */}
