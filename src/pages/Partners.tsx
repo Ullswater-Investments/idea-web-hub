@@ -2,18 +2,21 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Handshake, ExternalLink, FileText, Building2, Globe } from "lucide-react";
+import { Handshake, ExternalLink, FileText, Building2, Globe, Car, Zap, Building, Database, Target, Factory, Bolt } from "lucide-react";
 import itbidLogo from "@/assets/itbid-logo.png";
 
 interface Partner {
   id: string;
   name: string;
+  fullName?: string;
   description: string;
   logo: string | null;
   link: string;
   status: "activo" | "próximamente" | "en desarrollo";
-  sector?: string;
+  sector: string;
   hasDocTecnico?: boolean;
+  keyInitiative?: string;
+  priority?: "inmediato" | "masa_critica" | "quick_win";
 }
 
 interface CountryData {
@@ -58,47 +61,43 @@ const partnersByCountry: CountryData[] = [
     ],
   },
   {
-    name: "Portugal",
-    flag: "🇵🇹",
-    partners: [
-      {
-        id: "partner-pt-1",
-        name: "Partner Portugal 1",
-        description: "Líder en transformación digital en Portugal. Colaboración en proyectos de datos transfronterizos.",
-        logo: null,
-        link: "/partners/pt-1/proyecto",
-        status: "próximamente",
-        sector: "Tecnología",
-      },
-    ],
-  },
-  {
-    name: "Francia",
-    flag: "🇫🇷",
-    partners: [
-      {
-        id: "partner-fr-1",
-        name: "Partner Francia 1",
-        description: "Innovación en el mercado francés de datos. Especialización en cumplimiento RGPD y Gaia-X.",
-        logo: null,
-        link: "/partners/fr-1/proyecto",
-        status: "próximamente",
-        sector: "Data Governance",
-      },
-    ],
-  },
-  {
     name: "Alemania",
     flag: "🇩🇪",
     partners: [
       {
-        id: "partner-de-1",
-        name: "Partner Alemania 1",
-        description: "Referente en industria 4.0 y espacios de datos industriales. Conexión con el ecosistema Catena-X.",
+        id: "vda",
+        name: "VDA",
+        fullName: "Verband der Automobilindustrie",
+        description: "Creadores de estándares globales como TISAX para seguridad de datos. Enfoque obsesivo en cadena de suministro conectada para proveedores Tier-2 y Tier-3.",
         logo: null,
-        link: "/partners/de-1/proyecto",
+        link: "/partners/vda/proyecto",
         status: "en desarrollo",
-        sector: "Industria 4.0",
+        sector: "Automoción",
+        keyInitiative: "TISAX, Catena-X",
+        priority: "masa_critica",
+      },
+      {
+        id: "bdew",
+        name: "BDEW",
+        fullName: "Bundesverband der Energie- und Wasserwirtschaft",
+        description: "Gestionan el estándar MaKo, protocolo oficial de intercambio de datos energéticos en Alemania. Ventaja competitiva técnica para validación energética.",
+        logo: null,
+        link: "/partners/bdew/proyecto",
+        status: "en desarrollo",
+        sector: "Energía",
+        keyInitiative: "MaKo (Marktkommunikation)",
+        priority: "inmediato",
+      },
+      {
+        id: "hdb",
+        name: "HDB",
+        fullName: "Hauptverband der Deutschen Bauindustrie",
+        description: "Lideran el road map federal de BIM (Building Information Modeling). Socio natural para compras de materiales con soporte BIM.",
+        logo: null,
+        link: "/partners/hdb/proyecto",
+        status: "próximamente",
+        sector: "Construcción",
+        keyInitiative: "BIM Federal Roadmap",
       },
     ],
   },
@@ -107,13 +106,78 @@ const partnersByCountry: CountryData[] = [
     flag: "🇮🇹",
     partners: [
       {
-        id: "partner-it-1",
-        name: "Partner Italia 1",
-        description: "Especialización en sectores agroalimentario y manufacturero italiano. Proyectos de trazabilidad.",
+        id: "ance",
+        name: "ANCE",
+        fullName: "Associazione Nazionale Costruttori Edili",
+        description: "Han creado DIHCUBE (Digital Italian Hub for Construction), hub de innovación digital específico para construcción italiana.",
         logo: null,
-        link: "/partners/it-1/proyecto",
+        link: "/partners/ance/proyecto",
+        status: "en desarrollo",
+        sector: "Construcción",
+        keyInitiative: "DIHCUBE",
+        priority: "inmediato",
+      },
+      {
+        id: "anfia",
+        name: "ANFIA",
+        fullName: "Filiera Industria Automobilistica",
+        description: "División específica de Car Design & Engineering y componentes. Perfectos para datos de propiedad intelectual y diseño industrial.",
+        logo: null,
+        link: "/partners/anfia/proyecto",
         status: "próximamente",
-        sector: "Agroalimentario",
+        sector: "Automoción",
+        keyInitiative: "Car Design & Engineering",
+        priority: "masa_critica",
+      },
+      {
+        id: "elettricita-futura",
+        name: "Elettricità Futura",
+        description: "Representan el 70% del mercado eléctrico italiano. Puerta de entrada para datos de transición energética y renovables en el sur de Europa.",
+        logo: null,
+        link: "/partners/elettricita-futura/proyecto",
+        status: "próximamente",
+        sector: "Energía",
+      },
+    ],
+  },
+  {
+    name: "Francia",
+    flag: "🇫🇷",
+    partners: [
+      {
+        id: "pfa",
+        name: "PFA",
+        fullName: "Plateforme Automobile",
+        description: "No es solo asociación, es plataforma estratégica que une fabricantes y estado. Foco en innovación y competitividad nacional.",
+        logo: null,
+        link: "/partners/pfa/proyecto",
+        status: "en desarrollo",
+        sector: "Automoción",
+        keyInitiative: "Soberanía del Dato",
+        priority: "masa_critica",
+      },
+      {
+        id: "ufe",
+        name: "UFE",
+        fullName: "Union Française de l'Électricité",
+        description: "Plan de Acción de Electrificación masivo. Buscan herramientas digitales para gestión de huella energética empresarial.",
+        logo: null,
+        link: "/partners/ufe/proyecto",
+        status: "próximamente",
+        sector: "Energía",
+        keyInitiative: "Plan de Electrificación",
+      },
+      {
+        id: "ffb",
+        name: "FFB",
+        fullName: "Fédération Française du Bâtiment",
+        description: "50.000 miembros, incluyendo 35.000 artesanos/PYMEs. Plan de Transición Digital (PTNB) activo, buscan herramientas sencillas.",
+        logo: null,
+        link: "/partners/ffb/proyecto",
+        status: "próximamente",
+        sector: "Construcción",
+        keyInitiative: "PTNB",
+        priority: "quick_win",
       },
     ],
   },
@@ -122,13 +186,57 @@ const partnersByCountry: CountryData[] = [
     flag: "🇳🇱",
     partners: [
       {
-        id: "partner-nl-1",
-        name: "Partner Países Bajos 1",
-        description: "Hub europeo de innovación en datos. Especialización en logística y cadena de suministro.",
+        id: "edsn",
+        name: "EDSN",
+        fullName: "Energie Data Services Nederland",
+        description: "No es asociación clásica, es LA ENTIDAD que gestiona el hub central de datos de energía de Holanda. Conexión directa = validación energética automática.",
         logo: null,
-        link: "/partners/nl-1/proyecto",
+        link: "/partners/edsn/proyecto",
         status: "en desarrollo",
-        sector: "Logística",
+        sector: "Data Hub",
+        keyInitiative: "Hub Central de Datos",
+        priority: "inmediato",
+      },
+      {
+        id: "rai-vereniging",
+        name: "RAI Vereniging",
+        fullName: "RAI Automotive Industry NL",
+        description: "Muy enfocados en movilidad inteligente y datos de vehículos conectados. Líderes en innovación de transporte.",
+        logo: null,
+        link: "/partners/rai/proyecto",
+        status: "próximamente",
+        sector: "Automoción",
+        keyInitiative: "Movilidad Inteligente",
+      },
+    ],
+  },
+  {
+    name: "Portugal",
+    flag: "🇵🇹",
+    partners: [
+      {
+        id: "aiccopn",
+        name: "AICCOPN",
+        fullName: "Associação dos Industriais da Construção Civil e Obras Públicas",
+        description: "Proyecto 'Construção Q+', enfocado en cualificar y digitalizar empresas del sector. Plataforma ideal para Cualificación de Proveedores.",
+        logo: null,
+        link: "/partners/aiccopn/proyecto",
+        status: "próximamente",
+        sector: "Construcción",
+        keyInitiative: "Construção Q+",
+        priority: "quick_win",
+      },
+      {
+        id: "mobinov",
+        name: "MOBINOV",
+        fullName: "Cluster Automóvel de Portugal",
+        description: "Cluster Automóvil de Portugal. Agilidad envidiable para proyectos piloto de Industria 4.0 y transformación digital.",
+        logo: null,
+        link: "/partners/mobinov/proyecto",
+        status: "próximamente",
+        sector: "Automoción",
+        keyInitiative: "Cluster Automóvil PT",
+        priority: "quick_win",
       },
     ],
   },
@@ -137,13 +245,15 @@ const partnersByCountry: CountryData[] = [
     flag: "🇧🇪",
     partners: [
       {
-        id: "partner-be-1",
-        name: "Partner Bélgica 1",
-        description: "Conexión con instituciones europeas. Proyectos de interoperabilidad y estándares de datos.",
+        id: "embuild",
+        name: "Embuild",
+        fullName: "ex-Confederación de la Construcción",
+        description: "Rebrand total hacia sostenibilidad y digitalización. Los más vocales en Bruselas sobre necesidad de digitalizar la construcción.",
         logo: null,
-        link: "/partners/be-1/proyecto",
+        link: "/partners/embuild/proyecto",
         status: "próximamente",
-        sector: "Institucional",
+        sector: "Construcción",
+        keyInitiative: "Sostenibilidad Digital",
       },
     ],
   },
@@ -172,9 +282,54 @@ const getStatusBadge = (status: Partner["status"]) => {
   }
 };
 
+const getSectorIcon = (sector: string) => {
+  const lowerSector = sector.toLowerCase();
+  if (lowerSector.includes("automó") || lowerSector.includes("auto")) {
+    return <Car className="h-3 w-3" />;
+  }
+  if (lowerSector.includes("energ")) {
+    return <Zap className="h-3 w-3" />;
+  }
+  if (lowerSector.includes("constru")) {
+    return <Building className="h-3 w-3" />;
+  }
+  if (lowerSector.includes("data") || lowerSector.includes("hub")) {
+    return <Database className="h-3 w-3" />;
+  }
+  return <Building2 className="h-3 w-3" />;
+};
+
+const getPriorityBadge = (priority?: Partner["priority"]) => {
+  if (!priority) return null;
+  
+  switch (priority) {
+    case "inmediato":
+      return (
+        <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-600 border-emerald-500/30">
+          <Target className="h-3 w-3 mr-1" />
+          Objetivo Inmediato
+        </Badge>
+      );
+    case "masa_critica":
+      return (
+        <Badge variant="outline" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/30">
+          <Factory className="h-3 w-3 mr-1" />
+          Masa Crítica
+        </Badge>
+      );
+    case "quick_win":
+      return (
+        <Badge variant="outline" className="text-xs bg-orange-500/10 text-orange-600 border-orange-500/30">
+          <Bolt className="h-3 w-3 mr-1" />
+          Quick Win
+        </Badge>
+      );
+  }
+};
+
 const PartnerCard = ({ partner }: { partner: Partner }) => (
-  <Card className="group hover:shadow-lg transition-all duration-300 hover:border-primary/50">
-    <CardHeader className="space-y-4">
+  <Card className="group hover:shadow-lg transition-all duration-300 hover:border-primary/50 flex flex-col">
+    <CardHeader className="space-y-3 flex-1">
       <div className="flex items-center justify-between">
         <div className="h-16 flex items-center">
           {partner.logo ? (
@@ -191,20 +346,33 @@ const PartnerCard = ({ partner }: { partner: Partner }) => (
         </div>
         {getStatusBadge(partner.status)}
       </div>
-      <div>
+      <div className="space-y-2">
         <CardTitle className="text-xl">{partner.name}</CardTitle>
-        {partner.sector && (
-          <Badge variant="outline" className="mt-2 text-xs">
-            {partner.sector}
-          </Badge>
+        {partner.fullName && (
+          <p className="text-sm text-muted-foreground font-medium">
+            {partner.fullName}
+          </p>
         )}
-        <CardDescription className="mt-2">
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="outline" className="text-xs">
+            {getSectorIcon(partner.sector)}
+            <span className="ml-1">{partner.sector}</span>
+          </Badge>
+          {getPriorityBadge(partner.priority)}
+        </div>
+        <CardDescription className="mt-2 line-clamp-3">
           {partner.description}
         </CardDescription>
+        {partner.keyInitiative && (
+          <div className="pt-2">
+            <p className="text-xs text-muted-foreground">
+              <span className="font-semibold">💡 Iniciativa:</span> {partner.keyInitiative}
+            </p>
+          </div>
+        )}
       </div>
     </CardHeader>
-    <CardContent />
-    <CardFooter className="flex flex-col gap-2">
+    <CardFooter className="flex flex-col gap-2 pt-0">
       <Button 
         asChild 
         className="w-full group-hover:bg-primary/90"
@@ -219,7 +387,7 @@ const PartnerCard = ({ partner }: { partner: Partner }) => (
         <Button 
           asChild 
           variant="outline"
-          className="w-full border-slate-300 text-slate-600 hover:bg-slate-100 hover:text-blue-600 hover:border-blue-400"
+          className="w-full border-border text-muted-foreground hover:bg-muted hover:text-primary hover:border-primary/50"
         >
           <Link to="/partners/itbid/doc-tecnico" className="flex items-center gap-2">
             Doc Técnico
@@ -255,6 +423,24 @@ const Partners = () => {
     (acc, country) => acc + country.partners.filter((p) => p.status === "activo").length,
     0
   );
+  const inDevelopment = partnersByCountry.reduce(
+    (acc, country) => acc + country.partners.filter((p) => p.status === "en desarrollo").length,
+    0
+  );
+
+  // Count by priority
+  const inmediatoCount = partnersByCountry.reduce(
+    (acc, country) => acc + country.partners.filter((p) => p.priority === "inmediato").length,
+    0
+  );
+  const masaCriticaCount = partnersByCountry.reduce(
+    (acc, country) => acc + country.partners.filter((p) => p.priority === "masa_critica").length,
+    0
+  );
+  const quickWinCount = partnersByCountry.reduce(
+    (acc, country) => acc + country.partners.filter((p) => p.priority === "quick_win").length,
+    0
+  );
 
   return (
     <div className="container mx-auto p-6 space-y-8">
@@ -276,23 +462,45 @@ const Partners = () => {
         <CardContent className="pt-6">
           <div className="flex items-start gap-4">
             <Globe className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
-            <div className="space-y-2">
+            <div className="space-y-4">
               <p className="text-lg leading-relaxed">
                 La sección <span className="font-semibold text-primary">Partners</span> de PROCUREDATA está dirigida a 
                 proyectos desarrollados en colaboración con nuestros partners estratégicos en toda la Unión Europea. 
                 Cada partner dispone de un espacio dedicado con funcionalidades específicas, proyectos exclusivos y 
                 acceso a datos compartidos bajo estrictos protocolos de gobernanza.
               </p>
-              <div className="flex gap-4 pt-2">
+              <div className="flex flex-wrap gap-3">
                 <Badge variant="secondary" className="text-sm">
                   {totalPartners} partners totales
                 </Badge>
                 <Badge variant="default" className="text-sm bg-green-500/10 text-green-600 border-green-500/20">
                   {activePartners} activos
                 </Badge>
+                <Badge variant="default" className="text-sm bg-blue-500/10 text-blue-600 border-blue-500/20">
+                  {inDevelopment} en desarrollo
+                </Badge>
                 <Badge variant="outline" className="text-sm">
                   {partnersByCountry.length} países
                 </Badge>
+              </div>
+              
+              {/* Prioridades Estratégicas */}
+              <div className="pt-2 border-t border-border/50">
+                <p className="text-sm font-medium text-muted-foreground mb-2">Prioridades Estratégicas:</p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-600 border-emerald-500/30">
+                    <Target className="h-3 w-3 mr-1" />
+                    {inmediatoCount} Objetivo Inmediato
+                  </Badge>
+                  <Badge variant="outline" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/30">
+                    <Factory className="h-3 w-3 mr-1" />
+                    {masaCriticaCount} Masa Crítica
+                  </Badge>
+                  <Badge variant="outline" className="text-xs bg-orange-500/10 text-orange-600 border-orange-500/30">
+                    <Bolt className="h-3 w-3 mr-1" />
+                    {quickWinCount} Quick Win
+                  </Badge>
+                </div>
               </div>
             </div>
           </div>
