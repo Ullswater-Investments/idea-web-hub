@@ -16,7 +16,8 @@ import {
   Globe,
   Eye,
   Wallet,
-  Scale
+  Scale,
+  Bot
 } from "lucide-react";
 
 // UI Components
@@ -30,6 +31,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ArrayDataView } from "@/components/ArrayDataView";
 import { GovernancePanel } from "@/components/GovernancePanel";
+import { AssetChatInterface } from "@/components/AssetChatInterface";
 
 interface MarketplaceListing {
   asset_id: string;
@@ -227,7 +229,7 @@ export default function ProductDetail() {
 
           {/* Info Tabs */}
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
+            <TabsList className="grid w-full grid-cols-6">
               <TabsTrigger value="overview">Descripción</TabsTrigger>
               <TabsTrigger value="specs">Especificaciones</TabsTrigger>
               <TabsTrigger value="preview" className="gap-1">
@@ -237,6 +239,10 @@ export default function ProductDetail() {
               <TabsTrigger value="governance" className="gap-1">
                 <Scale className="h-3 w-3" />
                 Gobernanza
+              </TabsTrigger>
+              <TabsTrigger value="chat" className="gap-1">
+                <Bot className="h-3 w-3" />
+                Asistente IA
               </TabsTrigger>
               <TabsTrigger value="reviews">Reseñas</TabsTrigger>
             </TabsList>
@@ -318,6 +324,13 @@ export default function ProductDetail() {
                 nftAddress={`0x${product.asset_id?.slice(0, 40) || '1234567890abcdef1234567890abcdef12345678'}`}
                 datatokenAddress={`0x${product.provider_id?.slice(0, 40) || 'abcdef1234567890abcdef1234567890abcdef12'}`}
                 complianceLevel="Level 1"
+              />
+            </TabsContent>
+
+            <TabsContent value="chat" className="mt-6">
+              <AssetChatInterface 
+                did={`did:op:${product.asset_id}`}
+                assetName={product.asset_name || product.product_name || 'Dataset'}
               />
             </TabsContent>
 

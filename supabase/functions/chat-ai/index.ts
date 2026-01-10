@@ -5,6 +5,80 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Aquarius API for DDO metadata (PONTUS-X)
+const AQUARIUS_URL = "https://v4.aquarius.oceanprotocol.com/api/aquarius/assets/ddo";
+
+interface DDOMetadata {
+  name?: string;
+  description?: string;
+  type?: string;
+  tags?: string[];
+  author?: string;
+  license?: string;
+  additionalInformation?: {
+    gaiaXCompliance?: {
+      complianceLevel?: string;
+    };
+  };
+}
+
+interface DDOService {
+  type: string;
+  stats?: {
+    price?: {
+      value: string;
+      tokenSymbol: string;
+    };
+  };
+}
+
+interface DDO {
+  id: string;
+  metadata?: DDOMetadata;
+  services?: DDOService[];
+}
+
+async function fetchDDOContext(did: string): Promise<string | null> {
+  try {
+    console.log(`[chat-ai] Fetching DDO context for: ${did}`);
+    const response = await fetch(`${AQUARIUS_URL}/${did}`);
+    
+    if (!response.ok) {
+      console.warn(`[chat-ai] Aquarius returned ${response.status} for DID: ${did}`);
+      return null;
+    }
+    
+    const ddo: DDO = await response.json();
+    const metadata = ddo.metadata;
+    const service = ddo.services?.find(s => s.type === 'access');
+    const price = service?.stats?.price;
+    
+    const ddoContext = `
+## Contexto del Activo Actual (DDO PONTUS-X)
+
+El usuario está consultando sobre un activo específico del Data Space. Responde basándote en estos metadatos verificados en blockchain:
+
+- **DID**: ${ddo.id || did}
+- **Nombre**: ${metadata?.name || 'No disponible'}
+- **Descripción**: ${metadata?.description || 'Sin descripción disponible'}
+- **Tipo**: ${metadata?.type || 'dataset'}
+- **Tags**: ${metadata?.tags?.join(', ') || 'Sin tags'}
+- **Autor**: ${metadata?.author || 'Desconocido'}
+- **Licencia**: ${metadata?.license || 'No especificada'}
+- **Precio**: ${price ? `${price.value} ${price.tokenSymbol}` : 'Gratuito o no definido'}
+- **Compliance Gaia-X**: ${metadata?.additionalInformation?.gaiaXCompliance?.complianceLevel || 'No verificado'}
+
+Cuando el usuario pregunte sobre "este dataset", "este activo", "los datos" o similares, responde basándote en estos metadatos técnicos verificados en la red PONTUS-X. Si no tienes información suficiente en los metadatos, indica que el usuario puede consultar la documentación del proveedor o contactar directamente.
+`;
+    
+    console.log(`[chat-ai] DDO context loaded successfully for: ${did.substring(0, 30)}...`);
+    return ddoContext;
+  } catch (error) {
+    console.error('[chat-ai] Error fetching DDO from Aquarius:', error);
+    return null;
+  }
+}
+
 const SYSTEM_INSTRUCTIONS = `# System Instructions para ARIA - ProcureData v2.0
 
 ## 1. Identidad y Tono
@@ -647,7 +721,7 @@ serve(async (req) => {
   }
 
   try {
-    const { message, history = [], context = {} } = await req.json();
+    const { message, history = [], context = {}, did = null } = await req.json();
     
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
@@ -657,8 +731,17 @@ serve(async (req) => {
 
     // Enrich system instructions with context
     let enrichedInstructions = SYSTEM_INSTRUCTIONS;
+    
+    // If DID provided, fetch DDO context from Aquarius (PONTUS-X)
+    if (did) {
+      const ddoContext = await fetchDDOContext(did);
+      if (ddoContext) {
+        enrichedInstructions += ddoContext;
+      }
+    }
+    
     if (context.currentPage) {
-      enrichedInstructions += `\n\n## Contexto Actual\nEl usuario está navegando en la página "${context.currentPage}".`;
+      enrichedInstructions += `\n\n## Contexto de Navegación\nEl usuario está navegando en la página "${context.currentPage}".`;
     }
     if (context.userSector) {
       enrichedInstructions += ` Su organización pertenece al sector "${context.userSector}".`;
@@ -670,6 +753,7 @@ serve(async (req) => {
     console.log(`[chat-ai] Processing message: "${message.substring(0, 50)}..."`);
     console.log(`[chat-ai] History length: ${history.length}`);
     console.log(`[chat-ai] Context:`, context);
+    console.log(`[chat-ai] DID:`, did || 'none');
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",

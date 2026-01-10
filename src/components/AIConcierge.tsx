@@ -471,6 +471,10 @@ export function AIConcierge() {
       .map(m => ({ role: m.role, content: m.content }));
 
     try {
+      // Detect if user is on a product page and extract DID
+      const productMatch = location.pathname.match(/\/product\/(.+)/);
+      const currentDid = productMatch ? `did:op:${productMatch[1]}` : undefined;
+
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-ai`,
         {
@@ -482,6 +486,7 @@ export function AIConcierge() {
           body: JSON.stringify({
             message: currentInput,
             history,
+            did: currentDid, // Pass DID if on product page
             context: {
               currentPage: location.pathname,
               userSector: sector || undefined,
