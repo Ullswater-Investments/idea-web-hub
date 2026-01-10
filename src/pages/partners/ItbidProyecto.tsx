@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, FileText } from "lucide-react";
+import { ArrowLeft, FileText, Download } from "lucide-react";
+import { toast } from "sonner";
+import { generateItbidProyectoPDF } from "@/utils/generateItbidProyectoPDF";
 import { HeroSection } from "@/components/partners/itbid/HeroSection";
 import { ProblemSection } from "@/components/partners/itbid/ProblemSection";
 import { SolutionSection } from "@/components/partners/itbid/SolutionSection";
@@ -12,6 +14,14 @@ import { CTASection } from "@/components/partners/itbid/CTASection";
 import { GlobalNavigation } from "@/components/GlobalNavigation";
 
 const ItbidProyecto = () => {
+  const handleDownloadPDF = () => {
+    toast.info("Generando PDF del proyecto...");
+    setTimeout(() => {
+      generateItbidProyectoPDF();
+      toast.success("PDF generado correctamente");
+    }, 100);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Sticky Back Navigation */}
@@ -28,6 +38,11 @@ const ItbidProyecto = () => {
           </div>
           
           <div className="hidden sm:flex items-center gap-2">
+            <Button variant="default" size="sm" onClick={handleDownloadPDF} className="flex items-center gap-2">
+              <Download className="h-4 w-4" />
+              Descargar PDF
+            </Button>
+            <div className="h-4 w-px bg-border" />
             <Button variant="secondary" size="sm" disabled className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Doc Proyecto

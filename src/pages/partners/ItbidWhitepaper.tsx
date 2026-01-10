@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Download, ChevronUp, Menu, X } from "lucide-react";
+import { ArrowLeft, Download, ChevronUp, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { toast } from "sonner";
+import { generateWhitepaperPDF } from "@/utils/generateWhitepaperPDF";
 
 // Whitepaper Sections
 import { WhitepaperHero } from "@/components/partners/itbid/whitepaper/WhitepaperHero";
@@ -41,6 +43,14 @@ const ItbidWhitepaper = () => {
   const [activeSection, setActiveSection] = useState("hero");
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleDownloadPDF = () => {
+    toast.info("Generando PDF del whitepaper...");
+    setTimeout(() => {
+      generateWhitepaperPDF();
+      toast.success("PDF generado correctamente");
+    }, 100);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -109,39 +119,52 @@ const ItbidWhitepaper = () => {
       {/* Fixed Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/partners/itbid/proyecto">
-              <Button variant="ghost" size="sm" className="gap-2">
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/partners" className="flex items-center gap-2">
                 <ArrowLeft className="h-4 w-4" />
-                <span className="hidden sm:inline">Volver</span>
-              </Button>
-            </Link>
-            <div className="h-6 w-px bg-border hidden sm:block" />
-            <h1 className="text-sm font-semibold hidden sm:block">
-              <span className="itbid-gradient">itbid-x</span> Whitepaper Técnico
-            </h1>
+                <span className="hidden sm:inline">Volver a Partners</span>
+              </Link>
+            </Button>
           </div>
           
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="gap-2">
+          <div className="hidden sm:flex items-center gap-2">
+            <Button variant="default" size="sm" onClick={handleDownloadPDF} className="flex items-center gap-2">
               <Download className="h-4 w-4" />
-              <span className="hidden sm:inline">Descargar PDF</span>
+              Descargar PDF
             </Button>
-            
-            {/* Mobile Menu */}
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="lg:hidden">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-80">
-                <div className="mt-6">
-                  <TableOfContents isMobile />
-                </div>
-              </SheetContent>
-            </Sheet>
+            <div className="h-4 w-px bg-border" />
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/partners/itbid/proyecto" className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Doc Proyecto
+              </Link>
+            </Button>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/partners/itbid/doc-tecnico" className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Doc Técnico
+              </Link>
+            </Button>
+            <Button variant="secondary" size="sm" disabled className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              White Paper
+            </Button>
           </div>
+          
+          {/* Mobile Menu */}
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="sm" className="sm:hidden">
+                <Download className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-80">
+              <div className="mt-6">
+                <TableOfContents isMobile />
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </header>
 

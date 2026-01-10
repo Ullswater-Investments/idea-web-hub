@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Home, ChevronUp, Menu, X } from "lucide-react";
+import { ArrowLeft, ChevronUp, Menu, X, FileText, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
+import { generateItbidDocTecnicoPDF } from "@/utils/generateItbidDocTecnicoPDF";
 import {
   DocTecnicoHero,
   DocResumenEjecutivo,
@@ -39,6 +41,14 @@ const ItbidDocTecnico = () => {
   const [activeSection, setActiveSection] = useState("hero");
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleDownloadPDF = () => {
+    toast.info("Generando PDF del documento técnico...");
+    setTimeout(() => {
+      generateItbidDocTecnicoPDF();
+      toast.success("PDF generado correctamente");
+    }, 100);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,25 +103,41 @@ const ItbidDocTecnico = () => {
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild>
-              <Link to="/" className="flex items-center gap-2">
-                <Home className="h-4 w-4" />
-                <span className="hidden sm:inline">Inicio</span>
-              </Link>
-            </Button>
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/partners/itbid/proyecto" className="flex items-center gap-2">
+              <Link to="/partners" className="flex items-center gap-2">
                 <ArrowLeft className="h-4 w-4" />
-                <span className="hidden sm:inline">Proyecto ITBID</span>
+                <span className="hidden sm:inline">Volver a Partners</span>
               </Link>
             </Button>
           </div>
-          <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-            <span>Doc Técnico ITBID-X</span>
+          
+          <div className="hidden sm:flex items-center gap-2">
+            <Button variant="default" size="sm" onClick={handleDownloadPDF} className="flex items-center gap-2">
+              <Download className="h-4 w-4" />
+              Descargar PDF
+            </Button>
+            <div className="h-4 w-px bg-border" />
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/partners/itbid/proyecto" className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Doc Proyecto
+              </Link>
+            </Button>
+            <Button variant="secondary" size="sm" disabled className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Doc Técnico
+            </Button>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/partners/itbid/whitepaper" className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                White Paper
+              </Link>
+            </Button>
           </div>
+          
           <Button 
             variant="ghost" 
             size="sm" 
-            className="md:hidden"
+            className="sm:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
