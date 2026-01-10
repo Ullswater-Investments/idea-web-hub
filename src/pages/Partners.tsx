@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Handshake, ExternalLink, FileText, Building2, Globe, Car, Zap, Building, Database, Target, Factory, Bolt, ShoppingCart } from "lucide-react";
+import { Handshake, ExternalLink, FileText, Building2, Globe, Car, Zap, Building, Database, Target, Factory, Bolt, ShoppingCart, Wheat, Tractor, FlaskConical, Cog } from "lucide-react";
 import itbidLogo from "@/assets/itbid-logo.png";
 
 interface Partner {
@@ -64,6 +64,30 @@ const partnersByCountry: CountryData[] = [
         keyInitiative: "BME Symposium, Estándares EU",
         priority: "quick_win",
       },
+      {
+        id: "asaja",
+        name: "ASAJA",
+        fullName: "Asociación Agraria de Jóvenes Agricultores",
+        description: "Ejecutando oficinas técnicas para Kit Digital, digitalizando explotaciones activamente. Necesitan herramientas sencillas para cumplir con la nueva PAC digital.",
+        logo: null,
+        link: "/partners/asaja/proyecto",
+        status: "próximamente",
+        sector: "Agricultura",
+        keyInitiative: "Kit Digital, PAC digital",
+        priority: "quick_win",
+      },
+      {
+        id: "feique",
+        name: "FEIQUE",
+        fullName: "Federación Empresarial de la Industria Química Española",
+        description: "Representan +3.000 empresas químicas. Enfoque en competitividad internacional e I+D. Vía rápida para agregar toda la industria química española al catálogo.",
+        logo: null,
+        link: "/partners/feique/proyecto",
+        status: "próximamente",
+        sector: "Química",
+        keyInitiative: "Competitividad internacional, I+D",
+        priority: "quick_win",
+      },
     ],
   },
   {
@@ -105,6 +129,54 @@ const partnersByCountry: CountryData[] = [
         sector: "Construcción",
         keyInitiative: "BIM Federal Roadmap",
       },
+      {
+        id: "vdma-landtechnik",
+        name: "VDMA Landtechnik",
+        fullName: "Verband Deutscher Maschinen- und Anlagenbau (Landtechnik)",
+        description: "Los dueños de la maquinaria europea. Impulsan el estándar agrifood data space. Puerta de entrada para datos de tractores y maquinaria conectada.",
+        logo: null,
+        link: "/partners/vdma-landtechnik/proyecto",
+        status: "en desarrollo",
+        sector: "Maquinaria Agrícola",
+        keyInitiative: "agrifood data space",
+        priority: "inmediato",
+      },
+      {
+        id: "bauforumstahl",
+        name: "Bauforumstahl",
+        fullName: "Bauforumstahl e.V.",
+        description: "Asociación del acero para construcción. Promueven activamente BIM para estructuras de acero. Nicho perfecto para datos técnicos de vigas, soportes y estructuras.",
+        logo: null,
+        link: "/partners/bauforumstahl/proyecto",
+        status: "en desarrollo",
+        sector: "Construcción Metálica",
+        keyInitiative: "BIM para acero",
+        priority: "inmediato",
+      },
+      {
+        id: "vci",
+        name: "VCI",
+        fullName: "Verband der Chemischen Industrie",
+        description: "Promueven 'Chemistry 4.0', modelos de negocio digitales. La química alemana es el motor de Europa; sus estándares de datos de sostenibilidad son los que todos seguirán.",
+        logo: null,
+        link: "/partners/vci/proyecto",
+        status: "en desarrollo",
+        sector: "Química",
+        keyInitiative: "Chemistry 4.0",
+        priority: "masa_critica",
+      },
+      {
+        id: "wsm",
+        name: "WSM",
+        fullName: "Wirtschaftsverband Stahl- und Metallverarbeitung",
+        description: "Representan a las PYMEs que transforman metal (forja, estampado, componentes). Son la base oculta de la industria alemana.",
+        logo: null,
+        link: "/partners/wsm/proyecto",
+        status: "en desarrollo",
+        sector: "Metalurgia",
+        keyInitiative: "PYMEs transformación metal",
+        priority: "masa_critica",
+      },
     ],
   },
   {
@@ -143,6 +215,30 @@ const partnersByCountry: CountryData[] = [
         link: "/partners/elettricita-futura/proyecto",
         status: "próximamente",
         sector: "Energía",
+      },
+      {
+        id: "coldiretti",
+        name: "Coldiretti",
+        fullName: "Confederazione Nazionale Coltivatori Diretti",
+        description: "Han lanzado el manifiesto 'Agricoltura 4.0' con empresas tecnológicas. Buscan trazabilidad 'dal campo alla tavola' (del campo a la mesa).",
+        logo: null,
+        link: "/partners/coldiretti/proyecto",
+        status: "próximamente",
+        sector: "Agricultura",
+        keyInitiative: "Agricoltura 4.0",
+        priority: "masa_critica",
+      },
+      {
+        id: "federmeccanica",
+        name: "Federmeccanica",
+        fullName: "Federazione Sindacale dell'Industria Metalmeccanica Italiana",
+        description: "La asociación de la industria metalmecánica por excelencia. Muy enfocados en transición hacia Mecatrónica y fábrica digital.",
+        logo: null,
+        link: "/partners/federmeccanica/proyecto",
+        status: "en desarrollo",
+        sector: "Metalurgia",
+        keyInitiative: "Mecatrónica, fábrica digital",
+        priority: "masa_critica",
       },
     ],
   },
@@ -185,6 +281,54 @@ const partnersByCountry: CountryData[] = [
         keyInitiative: "PTNB",
         priority: "quick_win",
       },
+      {
+        id: "fnsea",
+        name: "FNSEA",
+        fullName: "Fédération Nationale des Syndicats d'Exploitants Agricoles",
+        description: "Lideran el proyecto Numagri para normalizar la data agrícola. Buscan estandarizar el intercambio de datos entre granjeros y proveedores.",
+        logo: null,
+        link: "/partners/fnsea/proyecto",
+        status: "en desarrollo",
+        sector: "Agricultura",
+        keyInitiative: "Numagri",
+        priority: "masa_critica",
+      },
+      {
+        id: "scmf",
+        name: "SCMF",
+        fullName: "Syndicat de la Construction Métallique de France",
+        description: "Impulsan 'Usine 4.0' (Fábrica 4.0) en el sector metalúrgico francés. Buscan competitividad mediante digitalización de la cadena de valor.",
+        logo: null,
+        link: "/partners/scmf/proyecto",
+        status: "próximamente",
+        sector: "Construcción Metálica",
+        keyInitiative: "Usine 4.0",
+        priority: "masa_critica",
+      },
+      {
+        id: "france-chimie",
+        name: "France Chimie",
+        fullName: "France Chimie",
+        description: "Programas de financiación para 'Transformation Numérique' hacia industria 4.0, incluyendo IA y mantenimiento predictivo.",
+        logo: null,
+        link: "/partners/france-chimie/proyecto",
+        status: "próximamente",
+        sector: "Química",
+        keyInitiative: "Transformation Numérique",
+        priority: "masa_critica",
+      },
+      {
+        id: "uimm",
+        name: "UIMM",
+        fullName: "Union des Industries et Métiers de la Métallurgie",
+        description: "Red territorial masiva y enfoque total en 'Industrie du Futur'. Líderes de la transformación industrial francesa.",
+        logo: null,
+        link: "/partners/uimm/proyecto",
+        status: "en desarrollo",
+        sector: "Metalurgia",
+        keyInitiative: "Industrie du Futur",
+        priority: "masa_critica",
+      },
     ],
   },
   {
@@ -213,6 +357,42 @@ const partnersByCountry: CountryData[] = [
         status: "próximamente",
         sector: "Automoción",
         keyInitiative: "Movilidad Inteligente",
+      },
+      {
+        id: "lto-nederland",
+        name: "LTO Nederland",
+        fullName: "Land- en Tuinbouworganisatie Nederland",
+        description: "LA JOYA DE LA CORONA. Socios fundadores de JoinData, autopista de datos segura para granjeros. Integración = acceso a datos reales de miles de explotaciones holandesas.",
+        logo: null,
+        link: "/partners/lto-nederland/proyecto",
+        status: "en desarrollo",
+        sector: "Agricultura",
+        keyInitiative: "JoinData",
+        priority: "inmediato",
+      },
+      {
+        id: "bouwend-nederland",
+        name: "Bouwend Nederland",
+        fullName: "Bouwend Nederland",
+        description: "Programa de digitalización pragmático enfocado en reducir 'costes de fallo' (faalkosten) mediante datos compartidos antes de construir.",
+        logo: null,
+        link: "/partners/bouwend-nederland/proyecto",
+        status: "próximamente",
+        sector: "Construcción",
+        keyInitiative: "Reducción faalkosten",
+        priority: "quick_win",
+      },
+      {
+        id: "koninklijke-metaalunie",
+        name: "Koninklijke Metaalunie",
+        fullName: "Koninklijke Metaalunie",
+        description: "Representan +15.000 PYMEs del metal ('MKB-metaal'). Programa 'Smart Industry' busca conectar fábricas digitalmente. Socio ideal para proveedores de nicho de alta tecnología.",
+        logo: null,
+        link: "/partners/koninklijke-metaalunie/proyecto",
+        status: "en desarrollo",
+        sector: "Metalurgia",
+        keyInitiative: "Smart Industry",
+        priority: "inmediato",
       },
     ],
   },
@@ -244,6 +424,18 @@ const partnersByCountry: CountryData[] = [
         keyInitiative: "Cluster Automóvil PT",
         priority: "quick_win",
       },
+      {
+        id: "aimmap",
+        name: "AIMMAP",
+        fullName: "Associação dos Industriais Metalúrgicos, Metalomecânicos e Afins de Portugal",
+        description: "Lideran la marca 'METAL PORTUGAL'. Ejecutando proyectos de descarbonización (CarbonFree_Guide4Metal) para internacionalizar el sector. Oportunidad de oro como escaparate digital.",
+        logo: null,
+        link: "/partners/aimmap/proyecto",
+        status: "en desarrollo",
+        sector: "Metalurgia",
+        keyInitiative: "CarbonFree_Guide4Metal",
+        priority: "inmediato",
+      },
     ],
   },
   {
@@ -260,6 +452,18 @@ const partnersByCountry: CountryData[] = [
         status: "próximamente",
         sector: "Construcción",
         keyInitiative: "Sostenibilidad Digital",
+      },
+      {
+        id: "essenscia",
+        name: "Essenscia",
+        fullName: "Essenscia - Belgian Federation of the Chemical Industry",
+        description: "El hub químico de Amberes es vital para Europa. Otorgan los 'Innovation Awards'. Alianza aquí = posicionamiento en el corazón de la innovación química europea.",
+        logo: null,
+        link: "/partners/essenscia/proyecto",
+        status: "en desarrollo",
+        sector: "Química",
+        keyInitiative: "Innovation Awards, Hub Amberes",
+        priority: "inmediato",
       },
     ],
   },
@@ -304,6 +508,18 @@ const getSectorIcon = (sector: string) => {
   }
   if (lowerSector.includes("compra") || lowerSector.includes("procurement") || lowerSector.includes("logística")) {
     return <ShoppingCart className="h-3 w-3" />;
+  }
+  if (lowerSector.includes("agri") || lowerSector.includes("agro")) {
+    return <Wheat className="h-3 w-3" />;
+  }
+  if (lowerSector.includes("maquin") || lowerSector.includes("tractor")) {
+    return <Tractor className="h-3 w-3" />;
+  }
+  if (lowerSector.includes("quím") || lowerSector.includes("chem")) {
+    return <FlaskConical className="h-3 w-3" />;
+  }
+  if (lowerSector.includes("metal")) {
+    return <Cog className="h-3 w-3" />;
   }
   return <Building2 className="h-3 w-3" />;
 };
