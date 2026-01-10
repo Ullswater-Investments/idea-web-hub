@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Handshake, ExternalLink, FileText, Building2, Globe, Car, Zap, Building, Database, Target, Factory, Bolt } from "lucide-react";
+import { Handshake, ExternalLink, FileText, Building2, Globe, Car, Zap, Building, Database, Target, Factory, Bolt, ShoppingCart } from "lucide-react";
 import itbidLogo from "@/assets/itbid-logo.png";
 
 interface Partner {
@@ -41,22 +41,28 @@ const partnersByCountry: CountryData[] = [
         hasDocTecnico: true,
       },
       {
-        id: "partner-es-2",
-        name: "Partner España 2",
-        description: "Colaboración estratégica en el ecosistema de datos español. Especialización en soluciones empresariales.",
+        id: "aerce",
+        name: "AERCE",
+        fullName: "Asociación Española de Profesionales de Compras, Contratación y Aprovisionamientos",
+        description: "Principal asociación de profesionales de compras en España. +2.000 miembros activos en empresas líderes. Referente en formación, certificación y mejores prácticas de procurement.",
         logo: null,
-        link: "/partners/es-2/proyecto",
-        status: "próximamente",
-        sector: "Enterprise",
+        link: "/partners/aerce/proyecto",
+        status: "en desarrollo",
+        sector: "Compras Profesionales",
+        keyInitiative: "Certificación CPO, Foro de Compras",
+        priority: "masa_critica",
       },
       {
-        id: "partner-es-3",
-        name: "Partner España 3",
-        description: "Innovación en espacios de datos para la industria española. Proyectos de transformación digital.",
+        id: "bme-espana",
+        name: "BME España",
+        fullName: "Bundesverband Materialwirtschaft, Einkauf und Logistik (Delegación España)",
+        description: "Delegación española de la mayor asociación europea de compras y logística. Conexión directa con el ecosistema de procurement alemán y estándares europeos.",
         logo: null,
-        link: "/partners/es-3/proyecto",
+        link: "/partners/bme-espana/proyecto",
         status: "próximamente",
-        sector: "Industria",
+        sector: "Compras y Logística",
+        keyInitiative: "BME Symposium, Estándares EU",
+        priority: "quick_win",
       },
     ],
   },
@@ -295,6 +301,9 @@ const getSectorIcon = (sector: string) => {
   }
   if (lowerSector.includes("data") || lowerSector.includes("hub")) {
     return <Database className="h-3 w-3" />;
+  }
+  if (lowerSector.includes("compra") || lowerSector.includes("procurement") || lowerSector.includes("logística")) {
+    return <ShoppingCart className="h-3 w-3" />;
   }
   return <Building2 className="h-3 w-3" />;
 };
