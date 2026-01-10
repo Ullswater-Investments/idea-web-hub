@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Handshake, ExternalLink, FileText, Building2, Globe, Car, Zap, Building, Database, 
   Target, Factory, Bolt, ShoppingCart, Wheat, Tractor, FlaskConical, Cog,
-  Cpu, Plane, HeartPulse, Ship, Network, Shield, Shirt, UtensilsCrossed, Boxes, Sparkles
+  Cpu, Plane, HeartPulse, Ship, Network, Shield, Shirt, UtensilsCrossed, Boxes, Sparkles,
+  BookOpen
 } from "lucide-react";
 import { partnersByCountry, Partner, CountryData } from "@/data/partnersData";
 
@@ -404,6 +405,16 @@ const Partners = () => {
                     {quickWinCount} Quick Win
                   </Badge>
                 </div>
+              </div>
+              
+              {/* Documentación del Ecosistema */}
+              <div className="pt-3 border-t border-border/50">
+                <Link to="/docs/partners">
+                  <Button variant="outline" className="gap-2">
+                    <BookOpen className="h-4 w-4" />
+                    Ver Documentación Técnica del Ecosistema
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
