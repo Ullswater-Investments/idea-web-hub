@@ -362,7 +362,7 @@ const Partners = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row items-center gap-3">
-              <Link to="/docs/partners">
+              <Link to="/premium-partners">
                 <Button 
                   size="lg" 
                   className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 text-white font-semibold shadow-lg shadow-orange-500/30 transition-all hover:shadow-xl hover:shadow-orange-500/40 hover:scale-105"
