@@ -333,6 +333,52 @@ const Partners = () => {
 
   return (
     <div className="container mx-auto p-6 space-y-8">
+      {/* Premium Partners Banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 p-[2px]">
+        <div className="relative rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-6 py-8 md:px-10 md:py-10">
+          {/* Decorative elements */}
+          <div className="absolute inset-0 overflow-hidden rounded-2xl">
+            <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-amber-500/20 blur-3xl" />
+            <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-rose-500/20 blur-3xl" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full bg-orange-500/10 blur-3xl" />
+          </div>
+          
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-500/30">
+                <Sparkles className="h-8 w-8 text-white" />
+              </div>
+              <div className="text-center md:text-left">
+                <p className="text-sm font-medium uppercase tracking-widest text-amber-400">
+                  Programa Exclusivo
+                </p>
+                <h2 className="text-2xl md:text-3xl font-bold text-white">
+                  PROCUREDATA <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">PREMIUM PARTNERS</span>
+                </h2>
+                <p className="mt-1 text-slate-300 text-sm md:text-base">
+                  Únete al ecosistema líder en espacios de datos de la UE
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <Link to="/docs/partners">
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:via-orange-600 hover:to-rose-600 text-white font-semibold shadow-lg shadow-orange-500/30 transition-all hover:shadow-xl hover:shadow-orange-500/40 hover:scale-105"
+                >
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Visita Nuestro Programa
+                </Button>
+              </Link>
+              <Badge variant="outline" className="border-amber-400/50 text-amber-400 bg-amber-400/10 px-3 py-1">
+                🏆 70+ Partners Activos
+              </Badge>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-3">
