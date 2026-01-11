@@ -82,6 +82,7 @@ import ItbidCasosExito from "./pages/partners/ItbidCasosExito";
 import ItbidWhitepaper from "./pages/partners/ItbidWhitepaper";
 import ItbidDocTecnico from "./pages/partners/ItbidDocTecnico";
 import ItbidProtectedRoute from "./components/ItbidProtectedRoute";
+import PremiumPartners from "./pages/PremiumPartners";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -155,6 +156,7 @@ const App = () => (
                   </Route>
 
                   {/* Partner Pages */}
+                  <Route path="/premium-partners" element={<PremiumPartners />} />
                   <Route path="/partners/itbid" element={<PartnerItbidLogin />} />
                   <Route path="/partners/itbid/proyecto" element={<ItbidProtectedRoute><ItbidProyecto /></ItbidProtectedRoute>} />
                   <Route path="/partners/itbid/casos-exito" element={<ItbidProtectedRoute><ItbidCasosExito /></ItbidProtectedRoute>} />
