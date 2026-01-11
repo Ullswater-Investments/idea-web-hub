@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,9 +7,10 @@ import {
   Handshake, ExternalLink, FileText, Building2, Globe, Car, Zap, Building, Database, 
   Target, Factory, Bolt, ShoppingCart, Wheat, Tractor, FlaskConical, Cog,
   Cpu, Plane, HeartPulse, Ship, Network, Shield, Shirt, UtensilsCrossed, Boxes, Sparkles,
-  BookOpen
+  BookOpen, Download, Loader2
 } from "lucide-react";
 import { partnersByCountry, Partner, CountryData } from "@/data/partnersData";
+import { generatePartnerProgramPDF } from "@/utils/generatePartnerProgramPDF";
 
 const getStatusBadge = (status: Partner["status"]) => {
   switch (status) {
@@ -331,6 +333,18 @@ const Partners = () => {
     0
   );
 
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300));
+      generatePartnerProgramPDF();
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
+
   return (
     <div className="container mx-auto p-6 space-y-8">
       {/* Premium Partners Banner */}
@@ -371,6 +385,20 @@ const Partners = () => {
                   Visita Nuestro Programa
                 </Button>
               </Link>
+              <Button
+                onClick={handleDownloadPDF}
+                disabled={isGeneratingPDF}
+                variant="outline"
+                size="lg"
+                className="border-amber-400/50 text-amber-400 bg-amber-400/10 hover:bg-amber-400/20 hover:text-amber-300"
+              >
+                {isGeneratingPDF ? (
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                ) : (
+                  <Download className="mr-2 h-5 w-5" />
+                )}
+                {isGeneratingPDF ? 'Generando...' : 'Descargar PDF'}
+              </Button>
               <Badge variant="outline" className="border-amber-400/50 text-amber-400 bg-amber-400/10 px-3 py-1">
                 🏆 70+ Partners Activos
               </Badge>
