@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { HeroSection } from '@/components/premium-partners/HeroSection';
 import { ComparisonSlider } from '@/components/premium-partners/ComparisonSlider';
 import { PartnerRoiCalculator } from '@/components/premium-partners/PartnerRoiCalculator';
@@ -7,10 +8,23 @@ import { OnboardingTimeline } from '@/components/premium-partners/OnboardingTime
 import { AdhesionForm } from '@/components/premium-partners/AdhesionForm';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft, Sparkles, Download, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
+import { generatePartnerProgramPDF } from '@/utils/generatePartnerProgramPDF';
 const PremiumPartners = () => {
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      // Small delay for UX feedback
+      await new Promise(resolve => setTimeout(resolve, 300));
+      generatePartnerProgramPDF();
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Floating Navbar */}
@@ -36,10 +50,27 @@ const PremiumPartners = () => {
             </a>
           </div>
 
-          <Badge className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border-amber-500/30">
-            <Sparkles className="w-3 h-3 mr-1" />
-            PREMIUM PARTNERS
-          </Badge>
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={handleDownloadPDF}
+              disabled={isGeneratingPDF}
+              variant="outline"
+              size="sm"
+              className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
+            >
+              {isGeneratingPDF ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4 mr-2" />
+              )}
+              {isGeneratingPDF ? 'Generando...' : 'Descargar PDF'}
+            </Button>
+            
+            <Badge className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border-amber-500/30">
+              <Sparkles className="w-3 h-3 mr-1" />
+              PREMIUM PARTNERS
+            </Badge>
+          </div>
         </div>
       </nav>
 
