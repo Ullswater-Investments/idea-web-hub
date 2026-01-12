@@ -118,7 +118,7 @@ const phases = [
   {
     phase: 2,
     title: "Escalado del Ecosistema ITBID",
-    period: "Meses 3-6",
+    period: "Mes 2",
     icon: Users,
     color: "itbid-magenta",
     objective: "Incorporar empresas del ecosistema ITBID al Nodo Web3 mediante subvenciones de 15.000€",
