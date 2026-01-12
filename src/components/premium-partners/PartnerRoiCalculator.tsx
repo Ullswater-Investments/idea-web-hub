@@ -9,8 +9,8 @@ import { Tooltip as UITooltip, TooltipContent, TooltipTrigger } from '@/componen
 
 const GRANT_INCOME = 30000;
 const COST_YEAR1 = 5000;
-const PLATFORM_FEE = 0.20;
-const PARTNER_SHARE = 0.50;
+const PARTNER_SHARE_MIN = 0.05; // 5%
+const PARTNER_SHARE_MAX = 0.10; // 10%
 
 export const PartnerRoiCalculator = () => {
   const [numAsociados, setNumAsociados] = useState(100);
@@ -23,15 +23,18 @@ export const PartnerRoiCalculator = () => {
   // Calculations
   const netCashYear1 = GRANT_INCOME - COST_YEAR1;
   const monthlyVolume = numAsociados * transaccionesMes * valorMedio;
-  const partnerCommission = monthlyVolume * PLATFORM_FEE * PARTNER_SHARE;
-  const annualRecurrentRevenue = partnerCommission * 12;
-  const totalYear1 = netCashYear1 + annualRecurrentRevenue;
+  const partnerCommissionMin = monthlyVolume * PARTNER_SHARE_MIN;
+  const partnerCommissionMax = monthlyVolume * PARTNER_SHARE_MAX;
+  const annualRecurrentRevenueMin = partnerCommissionMin * 12;
+  const annualRecurrentRevenueMax = partnerCommissionMax * 12;
+  const totalYear1Min = netCashYear1 + annualRecurrentRevenueMin;
+  const totalYear1Max = netCashYear1 + annualRecurrentRevenueMax;
 
-  // 3-year projection
+  // 3-year projection (using max values for chart)
   const projectionData = [
-    { year: 'Año 1', value: totalYear1, fill: 'url(#barGradient1)' },
-    { year: 'Año 2', value: annualRecurrentRevenue * 1.3, fill: 'url(#barGradient2)' },
-    { year: 'Año 3', value: annualRecurrentRevenue * 1.6, fill: 'url(#barGradient3)' },
+    { year: 'Año 1', value: totalYear1Max, fill: 'url(#barGradient1)' },
+    { year: 'Año 2', value: annualRecurrentRevenueMax * 1.3, fill: 'url(#barGradient2)' },
+    { year: 'Año 3', value: annualRecurrentRevenueMax * 1.6, fill: 'url(#barGradient3)' },
   ];
 
   // Animated counters
@@ -40,7 +43,7 @@ export const PartnerRoiCalculator = () => {
     const steps = 20;
     
     const netIncrement = (netCashYear1 - displayNetCash) / steps;
-    const revenueIncrement = (annualRecurrentRevenue - displayAnnualRevenue) / steps;
+    const revenueIncrement = (annualRecurrentRevenueMax - displayAnnualRevenue) / steps;
     
     let step = 0;
     const timer = setInterval(() => {
@@ -50,14 +53,14 @@ export const PartnerRoiCalculator = () => {
       if (step >= steps) {
         clearInterval(timer);
         setDisplayNetCash(netCashYear1);
-        setDisplayAnnualRevenue(annualRecurrentRevenue);
+        setDisplayAnnualRevenue(annualRecurrentRevenueMax);
       }
     }, duration / steps);
 
     return () => clearInterval(timer);
-  }, [netCashYear1, annualRecurrentRevenue]);
+  }, [netCashYear1, annualRecurrentRevenueMax]);
 
-  const isHighSaver = totalYear1 > 50000;
+  const isHighSaver = totalYear1Max > 50000;
 
   return (
     <section id="simulator" className="py-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
@@ -171,8 +174,7 @@ export const PartnerRoiCalculator = () => {
                     </TooltipTrigger>
                     <TooltipContent className="max-w-sm bg-slate-800 border-slate-700">
                       <p className="text-sm">
-                        <strong>Revenue Share:</strong> ProcureData aplica un fee del 20% sobre transacciones. 
-                        Este fee se reparte al 50% con el Business Partner (10% neto del volumen total para el Partner).
+                        <strong>Revenue Share:</strong> El Business Partner recibe entre el 5% y el 10% del volumen total de transacciones según el nivel de colaboración y volumen.
                       </p>
                     </TooltipContent>
                   </UITooltip>
@@ -249,7 +251,7 @@ export const PartnerRoiCalculator = () => {
                   </span>
                 </motion.div>
                 <p className="text-amber-400/70 mt-2 text-sm">
-                  Volumen mensual: {monthlyVolume.toLocaleString('es-ES')}€ × 10% comisión
+                  Volumen mensual: {monthlyVolume.toLocaleString('es-ES')}€ × 5%-10% comisión
                 </p>
               </CardContent>
             </Card>
@@ -307,9 +309,13 @@ export const PartnerRoiCalculator = () => {
           viewport={{ once: true }}
         >
           <p className="text-xl text-slate-300">
-            Su asociación generará{' '}
+            Su asociación generará entre{' '}
             <span className="text-emerald-400 font-bold">
-              {(totalYear1).toLocaleString('es-ES')}€
+              {(totalYear1Min).toLocaleString('es-ES')}€
+            </span>{' '}
+            y{' '}
+            <span className="text-emerald-400 font-bold">
+              {(totalYear1Max).toLocaleString('es-ES')}€
             </span>{' '}
             el primer año solo por facilitar la infraestructura.
           </p>
