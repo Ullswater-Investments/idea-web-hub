@@ -67,6 +67,43 @@ const fase1EconomicFlow = [
   { concept: "Pago diferido ITBID", amount: "25.000€", timing: "Al recibir subvención", actor: "ITBID → Agile Procurement" },
 ];
 
+// FASE 2 Data - Modelo de Escalado Ecosistema ITBID
+const fase2Benefits = [
+  { 
+    icon: BadgeCheck, 
+    title: "Membresía 3 años", 
+    description: "Acceso completo al Nodo Web3 ITBID durante 36 meses" 
+  },
+  { 
+    icon: Database, 
+    title: "Servicios del Catálogo", 
+    description: "Acceso a todos los servicios ofertados en el ecosistema ITBID" 
+  },
+  { 
+    icon: Shield, 
+    title: "Identidad Digital", 
+    description: "Wallet digital soberana para operar en el ecosistema GAIA-X" 
+  },
+  { 
+    icon: Network, 
+    title: "Interoperabilidad", 
+    description: "Conexión con otros espacios de datos europeos" 
+  }
+];
+
+const fase2EconomicFlow = [
+  { concept: "Pago anticipado empresa", amount: "2.000€", timing: "Al iniciar solicitud", actor: "Empresa → Agile Procurement" },
+  { concept: "Gestión y tramitación", amount: "15.000€ (objetivo)", timing: "Tramitación", actor: "Agile Procurement gestiona" },
+  { concept: "Subvención Red.es", amount: "15.000€", timing: "Post-justificación", actor: "Red.es → Empresa" },
+  { concept: "Pago diferido empresa", amount: "8.000€", timing: "Al recibir subvención", actor: "Empresa → Agile Procurement" },
+];
+
+const fase2Scenarios = [
+  { scenario: "Conservador", companies: 10, revenueAP: "100.000€", subsidiesTotal: "150.000€", netBenefitCompanies: "50.000€" },
+  { scenario: "Realista", companies: 25, revenueAP: "250.000€", subsidiesTotal: "375.000€", netBenefitCompanies: "125.000€", highlight: true },
+  { scenario: "Éxito", companies: 50, revenueAP: "500.000€", subsidiesTotal: "750.000€", netBenefitCompanies: "250.000€" }
+];
+
 const phases = [
   {
     phase: 1,
@@ -76,40 +113,31 @@ const phases = [
     color: "itbid-cyan",
     objective: "Establecer a ITBID como nodo certificado dentro del ecosistema GAIA-X",
     description: "Agile Procurement subroga sus capacidades de Gobernanza del ecosistema PROCUREDATA para que ITBID obtenga su propio Nodo dentro de la Web3 de Espacios de Datos Federados Europeos GAIA-X.",
-    isCustomPhase1: true // Flag to render custom content
+    isCustomPhase1: true
   },
   {
     phase: 2,
-    title: "Despliegue de Infraestructura",
-    period: "Mes 2",
-    icon: Settings,
+    title: "Escalado del Ecosistema ITBID",
+    period: "Meses 3-6",
+    icon: Users,
     color: "itbid-magenta",
-    objective: "Construir los cimientos con el dinero captado.",
-    description: "Utilizamos los fondos de la Fase 1 para pagar a PROCUREDATA la implementación del 'Core' en ITBID.",
-    integrations: [
-      { name: "Conectores EDC", desc: "Eclipse Dataspace Components en la nube de ITBID" },
-      { name: "Nodo ITBID-X", desc: "Creación del punto de conexión al espacio de datos" },
-      { name: "Wallets Digitales", desc: "Implementación de identidad digital para clientes subvencionados" }
-    ],
-    quickWin: {
-      title: "Caso de Uso 1 - 'Quick Win'",
-      content: "Validación Documental Automática: Configuramos el sistema para que ITBID pueda validar certificados (Hacienda/SS o ISO) automáticamente contra el nodo de PROCUREDATA.",
-      value: "Los clientes ya están conectados y validados. Cumplen el requisito de la subvención."
-    }
+    objective: "Incorporar empresas del ecosistema ITBID al Nodo Web3 mediante subvenciones de 15.000€",
+    description: "Una vez ITBID tiene su Nodo GAIA-X operativo, promovemos la adhesión de empresas de su ecosistema, ayudándolas a solicitar ayudas de 15.000€ para cubrir los costes de membresía de 3 años al Nodo Web3 de ITBID.",
+    isCustomPhase2: true
   },
   {
     phase: 3,
-    title: "Capas de Valor y Expansión",
-    period: "Mes 3-4-5",
+    title: "Servicios Premium y Expansión",
+    period: "Mes 6+",
     icon: TrendingUp,
     color: "itbid-lime",
-    objective: "Re-inversión de excedentes y escalado de servicios.",
-    description: "Con la infraestructura pagada y operativa, utilizamos el remanente del presupuesto para desarrollar servicios premium.",
+    objective: "Desarrollar servicios de alto valor para las empresas miembro del ecosistema.",
+    description: "Con el ecosistema consolidado, desarrollamos servicios premium que las empresas miembro pueden consumir para maximizar el valor de su membresía.",
     services: [
       {
         icon: Brain,
         name: "Servicio A: Inteligencia Artificial Federada (AVI-A 2.0)",
-        desc: "Entrenamiento de modelos distribuidos usando los datos de los 20 clientes iniciales (sin mover sus datos)."
+        desc: "Entrenamiento de modelos distribuidos usando los datos de las empresas miembro (sin mover sus datos)."
       },
       {
         icon: Link2,
@@ -119,10 +147,10 @@ const phases = [
       {
         icon: Banknote,
         name: "Servicio C: Módulo Financiero",
-        desc: "Conectar con un banco partner para ofrecer factoring a los proveedores de estos clientes."
+        desc: "Conectar con un banco partner para ofrecer factoring a los proveedores de estas empresas."
       }
     ],
-    expansion: "Abrir ITBID-X a proveedores externos y otros ecosistemas (Catena-X)."
+    expansion: "Abrir el Nodo ITBID-X a proveedores externos y otros ecosistemas (Catena-X)."
   }
 ];
 
@@ -514,28 +542,197 @@ export const DocHojaDeRuta = () => {
                     </div>
                   )}
 
-                  {/* Phase 2 specific content */}
-                  {phase.integrations && (
-                    <div className="mb-4">
-                      <p className="font-semibold mb-3">Integración Tecnológica (El "Enchufe"):</p>
-                      <div className="grid md:grid-cols-3 gap-3">
-                        {phase.integrations.map((int) => (
-                          <div key={int.name} className="p-3 rounded-lg border bg-card text-center">
-                            <p className="font-medium text-[hsl(var(--itbid-magenta))]">{int.name}</p>
-                            <p className="text-xs text-muted-foreground mt-1">{int.desc}</p>
-                          </div>
-                        ))}
+                  {/* FASE 2 - Custom Content: Modelo de Escalado Ecosistema ITBID */}
+                  {'isCustomPhase2' in phase && phase.isCustomPhase2 && (
+                    <div className="space-y-6">
+                      {/* Logo y Propuesta de Valor */}
+                      <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-xl bg-gradient-to-r from-[hsl(var(--itbid-magenta)/0.1)] to-[hsl(var(--itbid-cyan)/0.05)] border border-[hsl(var(--itbid-magenta)/0.3)]">
+                        <img 
+                          src={agileProcurementLogo} 
+                          alt="Agile Procurement" 
+                          className="h-20 w-auto object-contain"
+                        />
+                        <div className="text-center md:text-left">
+                          <h4 className="text-lg font-bold mb-2">Membresía al Nodo Web3 ITBID</h4>
+                          <p className="text-muted-foreground">
+                            Agile Procurement ayuda a las empresas del ecosistema ITBID a solicitar la subvención de 15.000€ 
+                            para cubrir los costes de membresía al Nodo Web3, otorgando <strong>3 años de acceso completo</strong> al ecosistema de datos federados.
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  )}
 
-                  {phase.quickWin && (
-                    <div className="p-4 rounded-lg bg-[hsl(var(--itbid-magenta)/0.1)] border border-[hsl(var(--itbid-magenta)/0.3)]">
-                      <p className="font-semibold text-[hsl(var(--itbid-magenta))]">{phase.quickWin.title}</p>
-                      <p className="text-muted-foreground text-sm mt-1">{phase.quickWin.content}</p>
-                      <p className="text-sm mt-2">
-                        <strong>Valor para el Cliente:</strong> {phase.quickWin.value}
-                      </p>
+                      {/* 4 Beneficios para las Empresas */}
+                      <div>
+                        <p className="font-semibold mb-4 flex items-center gap-2 text-lg">
+                          <CheckCircle2 className="h-5 w-5 text-[hsl(var(--itbid-magenta))]" />
+                          Beneficios de la Membresía (3 años)
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                          {fase2Benefits.map((item) => (
+                            <div 
+                              key={item.title} 
+                              className="p-4 rounded-xl border bg-card hover:bg-[hsl(var(--itbid-magenta)/0.05)] transition-colors"
+                            >
+                              <div className="w-12 h-12 rounded-xl bg-[hsl(var(--itbid-magenta)/0.1)] flex items-center justify-center mb-3">
+                                <item.icon className="h-6 w-6 text-[hsl(var(--itbid-magenta))]" />
+                              </div>
+                              <p className="font-semibold mb-1">{item.title}</p>
+                              <p className="text-sm text-muted-foreground">{item.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Flujo Financiero Visual */}
+                      <div className="p-6 rounded-xl bg-muted/30 border">
+                        <p className="font-semibold mb-4 flex items-center gap-2 text-lg">
+                          <Euro className="h-5 w-5 text-[hsl(var(--itbid-magenta))]" />
+                          Modelo Financiero por Empresa
+                        </p>
+                        
+                        {/* Diagrama Visual del Flujo */}
+                        <div className="grid md:grid-cols-3 gap-4 mb-6">
+                          {/* Empresa */}
+                          <div className="p-4 rounded-xl border-2 border-[hsl(var(--itbid-cyan)/0.5)] bg-[hsl(var(--itbid-cyan)/0.05)] text-center">
+                            <p className="font-bold text-lg text-[hsl(var(--itbid-cyan))]">Empresa Ecosistema</p>
+                            <p className="text-sm text-muted-foreground">Solicita subvención</p>
+                            <div className="mt-3 space-y-1">
+                              <Badge className="bg-[hsl(var(--itbid-cyan)/0.2)] text-[hsl(var(--itbid-cyan))]">
+                                Paga 2.000€ anticipado
+                              </Badge>
+                              <p className="text-xs text-muted-foreground">+8.000€ al recibir subvención</p>
+                            </div>
+                          </div>
+
+                          {/* Arrow */}
+                          <div className="flex items-center justify-center">
+                            <div className="flex flex-col items-center gap-2">
+                              <ArrowRight className="h-8 w-8 text-muted-foreground hidden md:block" />
+                              <div className="text-center">
+                                <Badge variant="outline" className="bg-background">
+                                  <FileCheck className="h-3 w-3 mr-1" />
+                                  Membresía 3 años
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Agile Procurement */}
+                          <div className="p-4 rounded-xl border-2 border-[hsl(var(--itbid-magenta)/0.5)] bg-[hsl(var(--itbid-magenta)/0.05)] text-center">
+                            <p className="font-bold text-lg text-[hsl(var(--itbid-magenta))]">Agile Procurement</p>
+                            <p className="text-sm text-muted-foreground">Gestiona solicitud + activa membresía</p>
+                            <div className="mt-3 space-y-1">
+                              <Badge className="bg-[hsl(var(--itbid-magenta)/0.2)] text-[hsl(var(--itbid-magenta))]">
+                                Ingreso: 10.000€
+                              </Badge>
+                              <p className="text-xs text-muted-foreground">Por empresa adherida</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Tabla de Flujo Económico */}
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Concepto</TableHead>
+                              <TableHead>Importe</TableHead>
+                              <TableHead>Momento</TableHead>
+                              <TableHead className="hidden md:table-cell">Flujo</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {fase2EconomicFlow.map((row, i) => (
+                              <TableRow key={i}>
+                                <TableCell className="font-medium">{row.concept}</TableCell>
+                                <TableCell className="font-semibold text-[hsl(var(--itbid-magenta))]">{row.amount}</TableCell>
+                                <TableCell className="text-muted-foreground">{row.timing}</TableCell>
+                                <TableCell className="hidden md:table-cell text-sm text-muted-foreground">{row.actor}</TableCell>
+                              </TableRow>
+                            ))}
+                            <TableRow className="bg-[hsl(var(--itbid-lime)/0.1)]">
+                              <TableCell className="font-bold">Total a Agile Procurement</TableCell>
+                              <TableCell className="font-bold text-xl text-[hsl(var(--itbid-magenta))]">10.000€</TableCell>
+                              <TableCell className="text-muted-foreground">—</TableCell>
+                              <TableCell className="hidden md:table-cell font-semibold">Por empresa</TableCell>
+                            </TableRow>
+                            <TableRow className="bg-[hsl(var(--itbid-cyan)/0.1)]">
+                              <TableCell className="font-bold">Beneficio neto empresa</TableCell>
+                              <TableCell className="font-bold text-xl text-[hsl(var(--itbid-lime))]">+5.000€</TableCell>
+                              <TableCell className="text-muted-foreground">—</TableCell>
+                              <TableCell className="hidden md:table-cell font-semibold">+ Membresía 3 años</TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </div>
+
+                      {/* Card de Asunción de Riesgo */}
+                      <div className="p-6 rounded-xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-2 border-amber-500/30">
+                        <div className="flex items-start gap-4">
+                          <div className="w-14 h-14 rounded-xl bg-amber-500/20 flex items-center justify-center shrink-0">
+                            <Shield className="h-7 w-7 text-amber-500" />
+                          </div>
+                          <div>
+                            <p className="text-xl font-bold mb-2 text-amber-600 dark:text-amber-400">
+                              Modelo de Mitigación de Riesgo
+                            </p>
+                            <p className="text-muted-foreground mb-4">
+                              Agile Procurement asume el riesgo de gestión anticipada para las empresas del ecosistema ITBID:
+                            </p>
+                            <ul className="space-y-2 mb-4">
+                              <li className="flex items-start gap-2">
+                                <CheckCircle2 className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                                <span>Gestiona la <strong>solicitud completa</strong> antes de recibir el 80% del pago</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                                <span>Asume el <strong>riesgo de no-concesión</strong> de la subvención</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <Shield className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                                <span>La empresa solo arriesga <strong>2.000€ iniciales</strong></span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Tabla de Escenarios de Escalado */}
+                      <div className="p-6 rounded-xl bg-[hsl(var(--itbid-magenta)/0.05)] border border-[hsl(var(--itbid-magenta)/0.2)]">
+                        <p className="font-semibold mb-4 flex items-center gap-2 text-lg">
+                          <TrendingUp className="h-5 w-5 text-[hsl(var(--itbid-magenta))]" />
+                          Potencial de Escalado del Ecosistema
+                        </p>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Escenario</TableHead>
+                              <TableHead className="text-center">Empresas</TableHead>
+                              <TableHead className="text-right">Ingresos AP</TableHead>
+                              <TableHead className="text-right">Subvenciones Totales</TableHead>
+                              <TableHead className="text-right">Beneficio Empresas</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {fase2Scenarios.map((row) => (
+                              <TableRow 
+                                key={row.scenario} 
+                                className={row.highlight ? "bg-[hsl(var(--itbid-magenta)/0.1)]" : ""}
+                              >
+                                <TableCell className="font-medium">
+                                  {row.highlight && (
+                                    <Badge className="mr-2 bg-[hsl(var(--itbid-magenta))]">Objetivo</Badge>
+                                  )}
+                                  {row.scenario}
+                                </TableCell>
+                                <TableCell className="text-center font-mono">{row.companies}</TableCell>
+                                <TableCell className="text-right font-mono text-[hsl(var(--itbid-magenta))]">{row.revenueAP}</TableCell>
+                                <TableCell className="text-right font-mono text-[hsl(var(--itbid-cyan))]">{row.subsidiesTotal}</TableCell>
+                                <TableCell className="text-right font-mono font-bold text-[hsl(var(--itbid-lime))]">{row.netBenefitCompanies}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
                     </div>
                   )}
 
