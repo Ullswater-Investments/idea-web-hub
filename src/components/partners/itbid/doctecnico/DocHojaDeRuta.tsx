@@ -20,7 +20,10 @@ import {
   Globe,
   BadgeCheck,
   Sparkles,
-  Network
+  Network,
+  FileCheck,
+  AlertTriangle,
+  GraduationCap
 } from "lucide-react";
 import {
   Table,
@@ -31,31 +34,49 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import kitLogo from "@/assets/kit-espacios-datos-logo.png";
+import agileProcurementLogo from "@/assets/agile-procurement-logo.png";
+
+// FASE 1 Data - Modelo de Negocio Agile Procurement + ITBID
+const fase1Deliverables = [
+  { 
+    icon: Globe, 
+    title: "Nodo GAIA-X Propio", 
+    description: "ITBID obtiene su propio punto de conexión certificado al ecosistema europeo de datos federados" 
+  },
+  { 
+    icon: Network, 
+    title: "Conectores EDC", 
+    description: "Eclipse Dataspace Components certificados para interoperabilidad con otros espacios de datos" 
+  },
+  { 
+    icon: Wallet, 
+    title: "Wallets Digitales", 
+    description: "Identidad digital soberana para ITBID y sus usuarios dentro del ecosistema" 
+  },
+  { 
+    icon: GraduationCap, 
+    title: "Formación", 
+    description: "Capacitación técnica y operativa completa del equipo ITBID" 
+  }
+];
+
+const fase1EconomicFlow = [
+  { concept: "Pago anticipado ITBID", amount: "5.000€", timing: "Inicio del proyecto", actor: "ITBID → Agile Procurement" },
+  { concept: "Ejecución completa del proyecto", amount: "30.000€ (valor)", timing: "Meses 1-2", actor: "Agile Procurement" },
+  { concept: "Subvención Red.es", amount: "30.000€", timing: "Post-justificación", actor: "Red.es → ITBID" },
+  { concept: "Pago diferido ITBID", amount: "25.000€", timing: "Al recibir subvención", actor: "ITBID → Agile Procurement" },
+];
 
 const phases = [
   {
     phase: 1,
-    title: "La Campaña de Adhesión",
+    title: "Adhesión al Nodo GAIA-X",
     period: "Meses 1-2",
     icon: Rocket,
     color: "itbid-cyan",
-    objective: "Captar fondos ('Funding') y asegurar la masa crítica inicial.",
-    description: "No desarrollamos nada complejo todavía; nos centramos en asegurar las subvenciones.",
-    actions: [
-      {
-        title: "Acción Comercial",
-        content: "ITBID y PROCUREDATA lanzan una campaña conjunta a la base instalada de clientes de ITBID."
-      },
-      {
-        title: "La Oferta Irresistible",
-        content: "\"Te regalamos la conexión al futuro. Solicita tu bono de 15.000€ (o 30.000€) y nosotros gestionamos todo para conectarte al Espacio de Datos Europeo.\""
-      }
-    ],
-    segmentation: [
-      { group: "Grupo A (Core)", count: "10-15 Clientes Corporativos", bonus: "15.000€", type: "Conexión Estándar" },
-      { group: "Grupo B (Innovadores)", count: "2-3 Clientes estratégicos", bonus: "30.000€", type: "Casos de Uso Avanzados" }
-    ],
-    result: "Si captamos 20 empresas x 15k = 300.000 € de Presupuesto Inicial para financiar la integración técnica."
+    objective: "Establecer a ITBID como nodo certificado dentro del ecosistema GAIA-X",
+    description: "Agile Procurement subroga sus capacidades de Gobernanza del ecosistema PROCUREDATA para que ITBID obtenga su propio Nodo dentro de la Web3 de Espacios de Datos Federados Europeos GAIA-X.",
+    isCustomPhase1: true // Flag to render custom content
   },
   {
     phase: 2,
@@ -315,48 +336,181 @@ export const DocHojaDeRuta = () => {
                 <CardContent>
                   <p className="text-muted-foreground mb-4">{phase.description}</p>
 
-                  {/* Phase 1 specific content */}
-                  {phase.actions && (
-                    <div className="space-y-4 mb-4">
-                      {phase.actions.map((action, i) => (
-                        <div key={i} className="p-4 rounded-lg bg-muted/50">
-                          <p className="font-semibold text-[hsl(var(--itbid-cyan))]">{action.title}</p>
-                          <p className="text-muted-foreground">{action.content}</p>
+                  {/* FASE 1 - Custom Content: Modelo Agile Procurement + ITBID */}
+                  {'isCustomPhase1' in phase && phase.isCustomPhase1 && (
+                    <div className="space-y-6">
+                      {/* Logo y Propuesta de Valor */}
+                      <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-xl bg-gradient-to-r from-[hsl(var(--itbid-cyan)/0.1)] to-[hsl(var(--itbid-magenta)/0.05)] border border-[hsl(var(--itbid-cyan)/0.3)]">
+                        <img 
+                          src={agileProcurementLogo} 
+                          alt="Agile Procurement" 
+                          className="h-20 w-auto object-contain"
+                        />
+                        <div className="text-center md:text-left">
+                          <h4 className="text-lg font-bold mb-2">Agile Procurement = PROCUREDATA</h4>
+                          <p className="text-muted-foreground">
+                            Agile Procurement subroga sus capacidades de Gobernanza del ecosistema PROCUREDATA 
+                            para que ITBID obtenga su propio Nodo dentro de la Web3 de Espacios de Datos Federados Europeos GAIA-X.
+                          </p>
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      </div>
 
-                  {phase.segmentation && (
-                    <div className="mb-4">
-                      <p className="font-semibold mb-3 flex items-center gap-2">
-                        <Users className="h-4 w-4" />
-                        Segmentación:
-                      </p>
-                      <div className="grid md:grid-cols-2 gap-3">
-                        {phase.segmentation.map((seg) => (
-                          <div key={seg.group} className="p-3 rounded-lg border bg-card">
-                            <p className="font-medium">{seg.group}</p>
-                            <p className="text-sm text-muted-foreground">{seg.count}</p>
-                            <div className="flex items-center gap-2 mt-2">
-                              <Badge className="bg-[hsl(var(--itbid-lime)/0.2)] text-[hsl(var(--itbid-lime))]">
-                                {seg.bonus}
+                      {/* 4 Entregables del Proyecto */}
+                      <div>
+                        <p className="font-semibold mb-4 flex items-center gap-2 text-lg">
+                          <CheckCircle2 className="h-5 w-5 text-[hsl(var(--itbid-lime))]" />
+                          Entregables del Proyecto (30.000€)
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                          {fase1Deliverables.map((item) => (
+                            <div 
+                              key={item.title} 
+                              className="p-4 rounded-xl border bg-card hover:bg-[hsl(var(--itbid-cyan)/0.05)] transition-colors"
+                            >
+                              <div className="w-12 h-12 rounded-xl bg-[hsl(var(--itbid-cyan)/0.1)] flex items-center justify-center mb-3">
+                                <item.icon className="h-6 w-6 text-[hsl(var(--itbid-cyan))]" />
+                              </div>
+                              <p className="font-semibold mb-1">{item.title}</p>
+                              <p className="text-sm text-muted-foreground">{item.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Flujo Financiero Visual */}
+                      <div className="p-6 rounded-xl bg-muted/30 border">
+                        <p className="font-semibold mb-4 flex items-center gap-2 text-lg">
+                          <Euro className="h-5 w-5 text-[hsl(var(--itbid-lime))]" />
+                          Modelo Financiero
+                        </p>
+                        
+                        {/* Diagrama Visual del Flujo */}
+                        <div className="grid md:grid-cols-3 gap-4 mb-6">
+                          {/* ITBID */}
+                          <div className="p-4 rounded-xl border-2 border-[hsl(var(--itbid-cyan)/0.5)] bg-[hsl(var(--itbid-cyan)/0.05)] text-center">
+                            <p className="font-bold text-lg text-[hsl(var(--itbid-cyan))]">ITBID</p>
+                            <p className="text-sm text-muted-foreground">Solicita subvención</p>
+                            <div className="mt-3 space-y-1">
+                              <Badge className="bg-[hsl(var(--itbid-cyan)/0.2)] text-[hsl(var(--itbid-cyan))]">
+                                Paga 5.000€ anticipado
                               </Badge>
-                              <span className="text-xs text-muted-foreground">{seg.type}</span>
+                              <p className="text-xs text-muted-foreground">+25.000€ al recibir subvención</p>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
 
-                  {phase.result && (
-                    <div className="p-4 rounded-lg bg-[hsl(var(--itbid-lime)/0.1)] border border-[hsl(var(--itbid-lime)/0.3)]">
-                      <p className="font-semibold flex items-center gap-2">
-                        <Wallet className="h-4 w-4 text-[hsl(var(--itbid-lime))]" />
-                        Resultado Financiero Esperado:
-                      </p>
-                      <p className="text-muted-foreground">{phase.result}</p>
+                          {/* Arrow */}
+                          <div className="flex items-center justify-center">
+                            <div className="flex flex-col items-center gap-2">
+                              <ArrowRight className="h-8 w-8 text-muted-foreground hidden md:block" />
+                              <div className="text-center">
+                                <Badge variant="outline" className="bg-background">
+                                  <FileCheck className="h-3 w-3 mr-1" />
+                                  Proyecto ejecutado
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Agile Procurement */}
+                          <div className="p-4 rounded-xl border-2 border-[hsl(var(--itbid-magenta)/0.5)] bg-[hsl(var(--itbid-magenta)/0.05)] text-center">
+                            <p className="font-bold text-lg text-[hsl(var(--itbid-magenta))]">Agile Procurement</p>
+                            <p className="text-sm text-muted-foreground">Ejecuta proyecto completo</p>
+                            <div className="mt-3 space-y-1">
+                              <Badge className="bg-[hsl(var(--itbid-magenta)/0.2)] text-[hsl(var(--itbid-magenta))]">
+                                Valor: 30.000€
+                              </Badge>
+                              <p className="text-xs text-muted-foreground">Usando capacidades PROCUREDATA</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Tabla de Flujo Económico */}
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Concepto</TableHead>
+                              <TableHead>Importe</TableHead>
+                              <TableHead>Momento</TableHead>
+                              <TableHead className="hidden md:table-cell">Flujo</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {fase1EconomicFlow.map((row, i) => (
+                              <TableRow key={i}>
+                                <TableCell className="font-medium">{row.concept}</TableCell>
+                                <TableCell className="font-semibold text-[hsl(var(--itbid-lime))]">{row.amount}</TableCell>
+                                <TableCell className="text-muted-foreground">{row.timing}</TableCell>
+                                <TableCell className="hidden md:table-cell text-sm text-muted-foreground">{row.actor}</TableCell>
+                              </TableRow>
+                            ))}
+                            <TableRow className="bg-[hsl(var(--itbid-lime)/0.1)]">
+                              <TableCell className="font-bold">Coste neto ITBID</TableCell>
+                              <TableCell className="font-bold text-2xl text-[hsl(var(--itbid-lime))]">0€</TableCell>
+                              <TableCell className="text-muted-foreground">—</TableCell>
+                              <TableCell className="hidden md:table-cell font-semibold">Proyecto 100% financiado</TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </div>
+
+                      {/* Subvención Red.es */}
+                      <div className="p-4 rounded-xl bg-[hsl(var(--itbid-lime)/0.1)] border border-[hsl(var(--itbid-lime)/0.3)]">
+                        <div className="flex items-start gap-4">
+                          <img 
+                            src={kitLogo} 
+                            alt="Kit Espacio de Datos" 
+                            className="h-12 w-auto object-contain hidden md:block"
+                          />
+                          <div>
+                            <p className="font-semibold flex items-center gap-2 mb-1">
+                              <Euro className="h-4 w-4 text-[hsl(var(--itbid-lime))]" />
+                              Subvención Kit Espacio de Datos — Red.es
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              La subvención Kit Espacio de Datos de Red.es requiere presentar la <strong>justificación de ejecución 
+                              y finalización del proyecto</strong> en el momento de solicitar la ayuda. Por esto, Agile Procurement 
+                              debe ejecutar completamente el proyecto antes de que ITBID reciba los fondos.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Card de Asunción de Riesgo */}
+                      <div className="p-6 rounded-xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-2 border-amber-500/30">
+                        <div className="flex items-start gap-4">
+                          <div className="w-14 h-14 rounded-xl bg-amber-500/20 flex items-center justify-center shrink-0">
+                            <Shield className="h-7 w-7 text-amber-500" />
+                          </div>
+                          <div>
+                            <p className="text-xl font-bold mb-2 text-amber-600 dark:text-amber-400">
+                              Compromiso de Agile Procurement
+                            </p>
+                            <p className="text-muted-foreground mb-4">
+                              Para demostrar nuestra confianza en el proyecto y en ITBID como cliente estratégico, 
+                              Agile Procurement asume el riesgo de ejecución anticipada:
+                            </p>
+                            <ul className="space-y-2 mb-4">
+                              <li className="flex items-start gap-2">
+                                <CheckCircle2 className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                                <span>Ejecutamos el <strong>100% del proyecto</strong> antes de recibir el 83% del pago</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                                <span>Asumimos el <strong>riesgo de que la subvención no sea concedida</strong></span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <Shield className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                                <span>ITBID <strong>no tiene riesgo financiero significativo</strong></span>
+                              </li>
+                            </ul>
+                            <div className="p-3 rounded-lg bg-amber-500/20 border border-amber-500/30">
+                              <p className="text-sm font-semibold text-amber-600 dark:text-amber-400">
+                                Este modelo requiere la <strong>aprobación formal de ITBID</strong> para proceder.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   )}
 
