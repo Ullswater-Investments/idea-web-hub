@@ -108,7 +108,7 @@ const phases = [
   {
     phase: 1,
     title: "Adhesión al Nodo GAIA-X",
-    period: "Meses 1-2",
+    period: "Mes 1",
     icon: Rocket,
     color: "itbid-cyan",
     objective: "Establecer a ITBID como nodo certificado dentro del ecosistema GAIA-X",
