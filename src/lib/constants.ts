@@ -65,4 +65,5 @@ export const TRANSPARENCY_LINKS = [
   { label: "Memoria Técnica", href: "/docs/tecnico" },
   { label: "Modelo de Gobernanza", href: "/architecture" },
   { label: "Especificaciones Técnicas", href: "/whitepaper" },
+  { label: "Doc VALERDAT", href: "/partners/valerdat/doc" },
 ] as const;
