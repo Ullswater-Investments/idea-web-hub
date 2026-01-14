@@ -395,6 +395,7 @@ export default function Landing() {
                 <li><Link to="/architecture" className="hover:text-white transition-colors">Modelo de Gobernanza</Link></li>
                 <li><Link to="/user-guide" className="hover:text-white transition-colors">Guía de Usuario</Link></li>
                 <li><Link to="/models" className="hover:text-white transition-colors">Plan de Negocio</Link></li>
+                <li><Link to="/partners/valerdat/doc" className="hover:text-white transition-colors">Doc VALERDAT</Link></li>
               </ul>
             </div>
 
