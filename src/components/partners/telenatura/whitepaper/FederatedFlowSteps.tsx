@@ -1,0 +1,2 @@
+import { Card, CardContent } from "@/components/ui/card";
+export const FederatedFlowSteps = () => (<section className="py-16"><div className="container mx-auto px-4"><h2 className="text-3xl font-bold mb-6">Flujo Federado</h2><Card><CardContent className="pt-6"><p className="text-muted-foreground">1. Consumidor solicita acceso → 2. TeleNatura notifica al agricultor → 3. Agricultor aprueba con políticas ODRL → 4. Smart contract registra el acuerdo → 5. Acceso habilitado en tiempo real.</p></CardContent></Card></div></section>);

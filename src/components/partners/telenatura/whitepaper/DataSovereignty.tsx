@@ -1,0 +1,2 @@
+import { Card, CardContent } from "@/components/ui/card";
+export const DataSovereignty = () => (<section className="py-16"><div className="container mx-auto px-4"><h2 className="text-3xl font-bold mb-6">Soberanía del Dato</h2><Card><CardContent className="pt-6"><p className="text-muted-foreground">El dato agrícola nunca sale de la explotación. Los consumidores acceden mediante consultas autorizadas, pero no descargan ni almacenan la información.</p></CardContent></Card></div></section>);

@@ -1,0 +1,2 @@
+import { Card, CardContent } from "@/components/ui/card";
+export const UseCasesWhitepaper = () => (<section className="py-16 bg-muted/30"><div className="container mx-auto px-4"><h2 className="text-3xl font-bold mb-6">Casos de Uso</h2><Card><CardContent className="pt-6"><p className="text-muted-foreground">Optimización de riego, trazabilidad de cosecha, predicción de plagas, certificación ecológica, benchmarking sectorial y logística optimizada.</p></CardContent></Card></div></section>);

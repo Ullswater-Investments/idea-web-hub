@@ -1,0 +1,2 @@
+import { Card, CardContent } from "@/components/ui/card";
+export const TripartiteModel = () => (<section className="py-16 bg-muted/30"><div className="container mx-auto px-4"><h2 className="text-3xl font-bold mb-6">Modelo Tripartito</h2><Card><CardContent className="pt-6"><p className="text-muted-foreground">Tres roles fundamentales: Sujeto (agricultor propietario del dato), Tenedor (TeleNatura que facilita el acceso), y Consumidor (técnicos, cooperativas, certificadoras que usan los datos).</p></CardContent></Card></div></section>);
