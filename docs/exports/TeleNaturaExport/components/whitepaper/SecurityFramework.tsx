@@ -1,0 +1,2 @@
+import { Card, CardContent } from "@/components/ui/card";
+export const SecurityFramework = () => (<section className="py-16 bg-muted/30"><div className="container mx-auto px-4"><h2 className="text-3xl font-bold mb-6">Seguridad y Trust</h2><Card><CardContent className="pt-6"><p className="text-muted-foreground">Identidad auto-soberana (SSI), cifrado end-to-end, firmas digitales eIDAS, y cumplimiento GDPR para proteger los datos agrícolas sensibles.</p></CardContent></Card></div></section>);
