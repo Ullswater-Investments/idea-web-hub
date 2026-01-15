@@ -1,0 +1,2 @@
+import { Card, CardContent } from "@/components/ui/card";
+export const ArchitectureDiagram = () => (<section className="py-16"><div className="container mx-auto px-4"><h2 className="text-3xl font-bold mb-6">Arquitectura telenatura-x</h2><Card><CardContent className="pt-6"><p className="text-muted-foreground">Arquitectura de cuatro capas: Campo (sensores IoT), Infraestructura TeleNatura (dashboard y APIs), Kit Espacio de Datos (EDC, Wallet, ODRL), y PROCUREDATA Core (registro, catálogo, trust).</p></CardContent></Card></div></section>);

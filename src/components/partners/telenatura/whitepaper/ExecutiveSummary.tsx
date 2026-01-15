@@ -1,0 +1,2 @@
+import { Card, CardContent } from "@/components/ui/card";
+export const ExecutiveSummary = () => (<section className="py-16"><div className="container mx-auto px-4"><h2 className="text-3xl font-bold mb-6">Resumen Ejecutivo</h2><Card><CardContent className="pt-6"><p className="text-muted-foreground">TeleNatura-X representa una nueva era para la agricultura de precisión: un espacio de datos soberano donde agricultores, cooperativas y certificadoras comparten información sin perder el control.</p></CardContent></Card></div></section>);
