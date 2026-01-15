@@ -1,0 +1,2 @@
+import { Card, CardContent } from "@/components/ui/card";
+export const Glossary = () => (<section className="py-16"><div className="container mx-auto px-4"><h2 className="text-3xl font-bold mb-6">Glosario</h2><Card><CardContent className="pt-6"><p className="text-muted-foreground">EDC: Eclipse Dataspace Connector. ODRL: Open Digital Rights Language. SSI: Self-Sovereign Identity. Gaia-X: Iniciativa europea de infraestructura de datos.</p></CardContent></Card></div></section>);

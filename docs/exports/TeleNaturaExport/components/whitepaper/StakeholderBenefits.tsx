@@ -1,0 +1,2 @@
+import { Card, CardContent } from "@/components/ui/card";
+export const StakeholderBenefits = () => (<section className="py-16"><div className="container mx-auto px-4"><h2 className="text-3xl font-bold mb-6">Beneficios por Stakeholder</h2><Card><CardContent className="pt-6"><p className="text-muted-foreground">Agricultores: control y monetización. Cooperativas: datos agregados. Técnicos: asesoramiento preciso. Certificadoras: auditoría automática.</p></CardContent></Card></div></section>);
