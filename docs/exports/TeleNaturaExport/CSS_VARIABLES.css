@@ -1,0 +1,157 @@
+/**
+ * TeleNatura EBT - CSS Variables
+ * 
+ * Añade estas variables a tu archivo src/index.css
+ * dentro del selector :root
+ */
+
+/* ============================================
+   VARIABLES CSS TELENATURA
+   ============================================ */
+
+:root {
+  /* Colores de marca TeleNatura EBT - AgriTech palette */
+  --telenatura-green: 142 71% 45%;    /* Verde principal - Agricultura */
+  --telenatura-earth: 28 55% 45%;     /* Marrón tierra - Fundación */
+  --telenatura-sky: 199 89% 48%;      /* Azul cielo - Tecnología/IoT */
+  --telenatura-leaf: 84 68% 50%;      /* Verde hoja - Crecimiento */
+  --telenatura-water: 195 85% 41%;    /* Azul agua - Riego/Eficiencia */
+  --telenatura-soil: 24 38% 35%;      /* Suelo oscuro - Contraste */
+}
+
+/* ============================================
+   CLASES DE UTILIDAD TELENATURA
+   ============================================ */
+
+/* Gradiente de texto principal (verde a hoja) */
+.telenatura-gradient {
+  background: linear-gradient(
+    to right,
+    hsl(var(--telenatura-green)),
+    hsl(var(--telenatura-leaf))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Gradiente de texto secundario (tierra a verde) */
+.telenatura-gradient-earth {
+  background: linear-gradient(
+    to right,
+    hsl(var(--telenatura-earth)),
+    hsl(var(--telenatura-green))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Fuente TeleNatura */
+.telenatura-font {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ============================================
+   EJEMPLOS DE USO EN COMPONENTES
+   ============================================ */
+
+/* Badge TeleNatura */
+.telenatura-badge {
+  background-color: hsl(var(--telenatura-green) / 0.1);
+  color: hsl(var(--telenatura-green));
+  border-color: hsl(var(--telenatura-green) / 0.3);
+}
+
+/* Botón primario TeleNatura */
+.telenatura-button {
+  background-color: hsl(var(--telenatura-green));
+}
+.telenatura-button:hover {
+  background-color: hsl(var(--telenatura-green) / 0.9);
+}
+
+/* Icono container */
+.telenatura-icon-container {
+  background-color: hsl(var(--telenatura-green) / 0.1);
+}
+.telenatura-icon-container svg {
+  color: hsl(var(--telenatura-green));
+}
+
+/* Card con borde de color */
+.telenatura-card-water {
+  border-left: 4px solid hsl(var(--telenatura-water));
+}
+.telenatura-card-green {
+  border-left: 4px solid hsl(var(--telenatura-green));
+}
+.telenatura-card-earth {
+  border-left: 4px solid hsl(var(--telenatura-earth));
+}
+
+/* Sección con fondo sutil */
+.telenatura-section-green {
+  background: linear-gradient(
+    to bottom right,
+    hsl(var(--telenatura-green) / 0.05),
+    transparent
+  );
+}
+.telenatura-section-sky {
+  background: linear-gradient(
+    to bottom right,
+    hsl(var(--telenatura-green) / 0.05),
+    hsl(var(--telenatura-sky) / 0.05)
+  );
+}
+
+/* Indicador de scroll */
+.telenatura-scroll-indicator {
+  border-color: hsl(var(--telenatura-green) / 0.5);
+}
+.telenatura-scroll-indicator-dot {
+  background-color: hsl(var(--telenatura-green));
+}
+
+/* ============================================
+   COLORES PARA DIAGRAMAS MERMAID
+   ============================================ */
+
+/*
+  Para diagramas Mermaid, usa estos colores HEX:
+  
+  Campo/Agricultura: #f0fdf4 (verde muy claro)
+  Borde campo: #22c55e (verde)
+  
+  Infraestructura: #ecfeff (cian muy claro)
+  Borde infra: #0891b2 (cian)
+  
+  Conectores: #fef3c7 (amarillo muy claro)
+  Borde conectores: #f59e0b (naranja)
+  
+  Core: #ede9fe (violeta muy claro)
+  Borde core: #8b5cf6 (violeta)
+
+  Ejemplo Mermaid:
+  style FIELD fill:#f0fdf4,stroke:#22c55e
+  style INFRA fill:#ecfeff,stroke:#0891b2
+  style CONNECTOR fill:#fef3c7,stroke:#f59e0b
+  style CORE fill:#ede9fe,stroke:#8b5cf6
+*/
+
+/* ============================================
+   DARK MODE (opcional)
+   ============================================ */
+
+.dark {
+  /* Ajustar luminosidad para dark mode si es necesario */
+  --telenatura-green: 142 71% 55%;
+  --telenatura-earth: 28 55% 55%;
+  --telenatura-sky: 199 89% 58%;
+  --telenatura-leaf: 84 68% 60%;
+  --telenatura-water: 195 85% 51%;
+  --telenatura-soil: 24 38% 45%;
+}
