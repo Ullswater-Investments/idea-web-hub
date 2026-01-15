@@ -1,0 +1,133 @@
+/* ================================================
+   ITBID Brand CSS Variables
+   Add these to your src/index.css inside :root
+   ================================================ */
+
+:root {
+  /* ITBID Primary Brand Colors */
+  --itbid-cyan: 187 100% 42%;      /* Primary - CTAs, links, active states */
+  --itbid-lime: 66 68% 54%;         /* Success - Positive indicators, completed states */
+  --itbid-magenta: 340 82% 52%;     /* Secondary - Highlights, badges, accents */
+  --itbid-purple: 262 52% 47%;      /* Tertiary - Additional accent color */
+  --itbid-navy: 210 50% 24%;        /* Dark - Background variations */
+}
+
+/* ================================================
+   Usage Examples
+   ================================================ */
+
+/*
+  Background with opacity:
+  background-color: hsl(var(--itbid-cyan)/0.1);
+  
+  Text color:
+  color: hsl(var(--itbid-cyan));
+  
+  Border with opacity:
+  border-color: hsl(var(--itbid-cyan)/0.3);
+  
+  Gradient:
+  background: linear-gradient(
+    to bottom right,
+    hsl(var(--itbid-cyan)/0.1),
+    transparent,
+    hsl(var(--itbid-magenta)/0.1)
+  );
+*/
+
+/* ================================================
+   Tailwind Class Examples
+   ================================================ */
+
+/*
+  In Tailwind CSS (within className):
+  
+  - bg-[hsl(var(--itbid-cyan))]
+  - bg-[hsl(var(--itbid-cyan)/0.1)]
+  - text-[hsl(var(--itbid-cyan))]
+  - border-[hsl(var(--itbid-cyan)/0.3)]
+  - from-[hsl(var(--itbid-cyan)/0.1)]
+  - to-[hsl(var(--itbid-magenta)/0.1)]
+*/
+
+/* ================================================
+   Component-Specific Patterns
+   ================================================ */
+
+/* Badge - Primary */
+.badge-itbid-primary {
+  background-color: hsl(var(--itbid-cyan) / 0.1);
+  color: hsl(var(--itbid-cyan));
+  border-color: hsl(var(--itbid-cyan) / 0.3);
+}
+
+/* Badge - Secondary */
+.badge-itbid-secondary {
+  background-color: hsl(var(--itbid-magenta) / 0.1);
+  color: hsl(var(--itbid-magenta));
+  border-color: hsl(var(--itbid-magenta) / 0.3);
+}
+
+/* Badge - Success */
+.badge-itbid-success {
+  background-color: hsl(var(--itbid-lime) / 0.1);
+  color: hsl(var(--itbid-lime));
+  border-color: hsl(var(--itbid-lime) / 0.3);
+}
+
+/* Icon Container */
+.icon-container-itbid {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  background-color: hsl(var(--itbid-cyan) / 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card with colored top border */
+.card-itbid-cyan {
+  border-top-width: 4px;
+  border-top-color: hsl(var(--itbid-cyan));
+}
+
+.card-itbid-magenta {
+  border-top-width: 4px;
+  border-top-color: hsl(var(--itbid-magenta));
+}
+
+.card-itbid-lime {
+  border-top-width: 4px;
+  border-top-color: hsl(var(--itbid-lime));
+}
+
+/* Section background gradient */
+.section-bg-itbid {
+  background: linear-gradient(
+    to bottom right,
+    hsl(var(--itbid-cyan) / 0.1),
+    transparent,
+    hsl(var(--itbid-magenta) / 0.1)
+  );
+}
+
+/* Button - Primary ITBID style */
+.btn-itbid-primary {
+  background-color: hsl(var(--itbid-cyan));
+  color: white;
+}
+
+.btn-itbid-primary:hover {
+  background-color: hsl(var(--itbid-cyan) / 0.9);
+}
+
+/* Scroll to top button */
+.scroll-top-itbid {
+  background-color: hsl(var(--itbid-cyan));
+  color: white;
+}
+
+.scroll-top-itbid:hover {
+  background-color: hsl(var(--itbid-cyan) / 0.9);
+}

@@ -1,0 +1,334 @@
+{
+  "meta": {
+    "title": "ITBID-X Technical Document",
+    "subtitle": "Documento Técnico v1.0",
+    "version": "1.0",
+    "date": "Enero 2025",
+    "authors": ["PROCUREDATA", "ITBID"],
+    "confidentiality": "Confidencial"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "label": "Introducción",
+      "title": "Creando el Estándar de Compras Federadas",
+      "subtitle": "ITBID como Espacio de Datos Asociado dentro del ecosistema PROCUREDATA: gobernanza propia, soberanía garantizada, interoperabilidad europea.",
+      "description": "Documento de respuesta técnica y estratégica para la Dirección de ITBID"
+    },
+    {
+      "id": "resumen",
+      "label": "1. Resumen Ejecutivo",
+      "title": "Resumen Ejecutivo",
+      "description": "PROCUREDATA es un proyecto de infraestructura digital enfocado a la soberanía del dato en procesos de compras y certificación, alineado con la estrategia SEDIA y los estándares Gaia-X."
+    },
+    {
+      "id": "propiedad",
+      "label": "2. Propiedad de Datos",
+      "title": "Propiedad y Control de los Datos",
+      "description": "En un espacio federado, la soberanía del dato es el principio fundamental. El propietario mantiene el control absoluto en todo momento."
+    },
+    {
+      "id": "gobernanza",
+      "label": "3. Gobernanza ODRL",
+      "title": "Modelo de Gobernanza (ODRL 2.0)",
+      "description": "La gobernanza no es un acuerdo de caballeros. Es código que permite o deniega el acceso automáticamente según las reglas definidas mediante Smart Contracts y políticas ODRL."
+    },
+    {
+      "id": "actualizacion",
+      "label": "4. Actualización",
+      "title": "Proceso de Actualización",
+      "description": "Al no haber duplicación de datos (no se suben Excels), no hay procesos de actualización \"batch\". El dato siempre está actualizado porque se lee en la fuente."
+    },
+    {
+      "id": "participantes",
+      "label": "5. Participantes",
+      "title": "Participantes del Ecosistema",
+      "description": "El ecosistema ITBID-X es multipolar: múltiples actores aportan diferentes tipos de datos, creando una red de confianza distribuida donde nadie tiene el monopolio de la información."
+    },
+    {
+      "id": "legal",
+      "label": "6. Responsabilidad Legal",
+      "title": "Responsabilidad Legal y Permisos",
+      "description": "La transferencia de datos se rige por contratos digitales asociados a cada dato. El proveedor firma digitalmente (vía Wallet) qué se puede hacer con su información."
+    },
+    {
+      "id": "negocio",
+      "label": "7. Modelo de Negocio",
+      "title": "Modelo de Negocio del Espacio de Datos",
+      "description": "El modelo federado crea valor para todos los participantes. itbid como orquestador captura valor en cada transacción mientras habilita nuevos modelos de negocio."
+    },
+    {
+      "id": "tecnico",
+      "label": "8. Requisitos Técnicos",
+      "title": "Requisitos Técnicos",
+      "description": "PROCUREDATA facilita el Kit Espacio de Datos que incluye los componentes técnicos necesarios para que ITBID se conecte a la red federada con mínimo esfuerzo de desarrollo."
+    },
+    {
+      "id": "hojaderuta",
+      "label": "9. Hoja de Ruta",
+      "title": "Hoja de Ruta: Despliegue Financiado de ITBID-X",
+      "description": "Estrategia de Co-Inversión basada en Volumen de Adhesión"
+    },
+    {
+      "id": "informacion",
+      "label": "10. Tipos de Información",
+      "title": "Tipos de Información del Proveedor",
+      "description": "El espacio de datos es agnóstico al tipo de información, pero priorizamos las categorías más relevantes para procesos de compras y homologación de proveedores."
+    },
+    {
+      "id": "diferenciacion",
+      "label": "11. Diferenciación",
+      "title": "Diferenciación Competitiva",
+      "description": "¿Cómo compite itbid-x con Achilles, Informa u otros? La respuesta es que no competimos de la misma manera. Cambiamos las reglas del juego."
+    },
+    {
+      "id": "cta",
+      "label": "Próximos Pasos",
+      "title": "¿Preparados para construir itbid-x?",
+      "description": "Este documento responde a las preguntas iniciales. El siguiente paso es una sesión de trabajo conjunto para definir el roadmap de implementación."
+    }
+  ],
+  "keyPoints": [
+    {
+      "title": "Federación, No Centralización",
+      "description": "PROCUREDATA no es una base de datos ni un portal. Es una infraestructura de espacios de datos federados donde la información fluye sin ser secuestrada.",
+      "icon": "Network"
+    },
+    {
+      "title": "itbid como Espacio Asociado",
+      "description": "No proponemos que itbid sea un 'participante'. Proponemos que itbid se constituya como un Espacio de Datos Asociado (itbid-x) con gobernanza propia.",
+      "icon": "Handshake"
+    },
+    {
+      "title": "Soberanía Garantizada",
+      "description": "Los proveedores mantienen el control absoluto de sus datos. itbid gobierna las reglas de su espacio, pero nunca se apropia de la soberanía de los datos.",
+      "icon": "ShieldCheck"
+    }
+  ],
+  "sovereigntyPrinciples": [
+    {
+      "title": "Soberanía Absoluta",
+      "description": "El dato NUNCA sale de casa del propietario para ser almacenado en un servidor central de ITBID o PROCUREDATA.",
+      "highlight": "El dato permanece en origen"
+    },
+    {
+      "title": "Acceso vs. Posesión",
+      "description": "El propietario otorga 'permiso de acceso' (visitar el dato), NO 'entrega el dato'. Es una diferencia fundamental.",
+      "highlight": "Visitar ≠ Poseer"
+    },
+    {
+      "title": "Control Criptográfico",
+      "description": "El proveedor mantiene las llaves criptográficas. Nadie más puede acceder sin su autorización explícita firmada.",
+      "highlight": "Las llaves en manos del dueño"
+    },
+    {
+      "title": "Revocación Instantánea",
+      "description": "Si el proveedor decide revocar el acceso, ITBID deja de ver el dato instantáneamente. Nadie 'se queda' con la información.",
+      "highlight": "Control total en todo momento"
+    }
+  ],
+  "governanceLayers": [
+    {
+      "level": "Trust Framework",
+      "owner": "PROCUREDATA",
+      "description": "Establece las reglas técnicas base: identidad, seguridad, protocolos de comunicación"
+    },
+    {
+      "level": "Gobernanza itbid-x",
+      "owner": "itbid",
+      "description": "Define reglas de negocio propias: quién puede ver qué, qué coste tiene, condiciones de uso"
+    },
+    {
+      "level": "Políticas por Dato",
+      "owner": "Proveedor",
+      "description": "Cada proveedor define restricciones específicas sobre sus propios datos"
+    }
+  ],
+  "odrlComponents": [
+    {
+      "name": "Permissions",
+      "description": "Acciones permitidas sobre el dato"
+    },
+    {
+      "name": "Prohibitions",
+      "description": "Acciones explícitamente prohibidas"
+    },
+    {
+      "name": "Duties",
+      "description": "Obligaciones (ej. pago, atribución)"
+    },
+    {
+      "name": "Constraints",
+      "description": "Condiciones (tiempo, propósito, geografía)"
+    }
+  ],
+  "participants": [
+    {
+      "role": "Proveedores",
+      "description": "Empresas que aportan datos sobre sus productos, stock, capacidad, certificaciones y métricas ESG.",
+      "dataTypes": ["Datos de producto", "Stock y capacidad", "Certificaciones ISO", "Huella de carbono"]
+    },
+    {
+      "role": "Clientes (Compradores)",
+      "description": "Empresas que buscan proveedores verificados. Aportan datos de reputación, historial de pagos y pedidos.",
+      "dataTypes": ["Historial de compras", "Reputación como pagador", "Valoraciones", "Pedidos recurrentes"]
+    },
+    {
+      "role": "Certificadoras",
+      "description": "Entidades como SGS, AENOR, Bureau Veritas que validan certificaciones y estándares de calidad.",
+      "dataTypes": ["Certificados ISO", "Auditorías", "Sellos de calidad", "Validaciones ESG"]
+    },
+    {
+      "role": "Entidades Financieras",
+      "description": "Bancos y agencias de rating que aportan scoring crediticio e información de riesgo financiero.",
+      "dataTypes": ["Scoring crediticio", "Límites de crédito", "Historial financiero", "Rating de solvencia"]
+    },
+    {
+      "role": "Administración Pública",
+      "description": "Organismos que validan datos fiscales, registros mercantiles y certificados oficiales.",
+      "dataTypes": ["Datos fiscales (CIF)", "Registro mercantil", "Estar al corriente", "Licencias oficiales"]
+    }
+  ],
+  "comparisonTraditionalVsFederated": [
+    {
+      "aspect": "Actualización",
+      "traditional": "Proceso batch semanal/mensual",
+      "federated": "Tiempo real (milisegundos)"
+    },
+    {
+      "aspect": "Formato",
+      "traditional": "Subir Excel/CSV manualmente",
+      "federated": "Conexión directa a la fuente"
+    },
+    {
+      "aspect": "Duplicación",
+      "traditional": "Múltiples copias desincronizadas",
+      "federated": "Fuente única de verdad"
+    },
+    {
+      "aspect": "Validez",
+      "traditional": "Dato puede estar obsoleto",
+      "federated": "Siempre actualizado"
+    },
+    {
+      "aspect": "Esfuerzo",
+      "traditional": "Manual, propenso a errores",
+      "federated": "Automatizado, trazable"
+    },
+    {
+      "aspect": "Auditoría",
+      "traditional": "Difícil reconstruir historial",
+      "federated": "Blockchain inmutable"
+    }
+  ],
+  "technicalComponents": [
+    {
+      "name": "Conector EDC",
+      "description": "Eclipse Dataspace Components - El componente software que habilita la interoperabilidad con otros espacios de datos Gaia-X.",
+      "specs": ["Java/Kotlin runtime", "REST API + JSON-LD", "Extensible via plugins"],
+      "effort": "Facilitado por Kit Espacio de Datos"
+    },
+    {
+      "name": "Wallet Digital",
+      "description": "Cartera de identidad digital para firmar transacciones y gestionar credenciales verificables.",
+      "specs": ["eIDAS compatible", "DID:web support", "Verifiable Credentials"],
+      "effort": "Integración estándar"
+    },
+    {
+      "name": "Motor de Políticas",
+      "description": "Interpreta y ejecuta políticas ODRL 2.0 para controlar el acceso a los datos.",
+      "specs": ["ODRL 2.0", "Evaluación en tiempo real", "Logging inmutable"],
+      "effort": "Incluido en EDC"
+    },
+    {
+      "name": "Catálogo Federado",
+      "description": "Registro distribuido de los activos de datos disponibles en el espacio ITBID-X.",
+      "specs": ["DCAT-AP compliant", "Search federado", "Metadata enriquecida"],
+      "effort": "Sincronización automática"
+    }
+  ],
+  "dataCategories": [
+    {
+      "category": "Datos Identificativos",
+      "description": "Información básica de identificación y contacto del proveedor",
+      "examples": ["Razón Social", "CIF/NIF", "Dirección Fiscal", "Contacto Principal", "Representante Legal"]
+    },
+    {
+      "category": "Datos Financieros",
+      "description": "Información económica y de solvencia del proveedor",
+      "examples": ["Scoring Crediticio", "Estados Financieros", "Historial de Pagos", "Límite de Crédito"]
+    },
+    {
+      "category": "Datos ESG",
+      "description": "Métricas ambientales, sociales y de gobernanza",
+      "examples": ["Emisiones Scope 1", "Emisiones Scope 2", "Energía Renovable", "Certificación ISO 14001"]
+    },
+    {
+      "category": "Datos de Homologación",
+      "description": "Certificaciones y validaciones oficiales",
+      "examples": ["ISO 9001", "ISO 45001", "FSSC 22000", "Seguros RC"]
+    },
+    {
+      "category": "Datos de Evaluación",
+      "description": "Reputación y rendimiento en transacciones",
+      "examples": ["Rating Medio", "Tiempo de Respuesta", "Cumplimiento de Plazos", "Incidencias"]
+    },
+    {
+      "category": "Datos Transaccionales",
+      "description": "Información operativa de pedidos y entregas",
+      "examples": ["Pedidos Activos", "Albaranes Pendientes", "Facturas Emitidas", "Stock Disponible"]
+    }
+  ],
+  "strategicAdvantages": [
+    {
+      "title": "Preferencia del Proveedor",
+      "description": "Un proveedor prefiere itbid-x porque mantiene su soberanía. No entrega sus datos, los comparte bajo sus condiciones."
+    },
+    {
+      "title": "Coopetencia Posible",
+      "description": "Achilles o Informa podrían acabar siendo proveedores de datos dentro del espacio itbid-x, conectándose como nodos más."
+    },
+    {
+      "title": "De Herramienta a Infraestructura",
+      "description": "itbid pasa de ser una herramienta de compras a ser LA INFRAESTRUCTURA del mercado de proveedores verificados."
+    }
+  ],
+  "pricingOptions": {
+    "optionA": {
+      "amount": "15.000€",
+      "title": "Adhesión Espacio de datos PROCUREDATA",
+      "features": [
+        "Conector IDS/Gaia-X certificado",
+        "Wallet de Identidad Soberana",
+        "Asociación y Formación especializada"
+      ],
+      "initialCost": "2.000€"
+    },
+    "optionB": {
+      "amount": "30.000€",
+      "title": "Adhesión + Caso de uso",
+      "features": [
+        "Todo incluido de la Opción A",
+        "Consultoría personalizada de Caso de Uso",
+        "Desarrollo a Medida (API/IoT)",
+        "Visibilidad como Pionero del ecosistema"
+      ],
+      "initialCost": "5.000€",
+      "recommended": true
+    }
+  },
+  "contactInfo": {
+    "partnerManager": "Eduardo Ranz",
+    "email": "eduardo@agileprocurement.es",
+    "phone": "+34 680820492"
+  },
+  "mermaidDiagrams": {
+    "federationDiagram": "graph LR\n    subgraph EU[\"Estrategia Digital UE\"]\n        direction TB\n        SEDIA[\"SEDIA\"]\n        GAIAX[\"Gaia-X\"]\n    end\n    \n    subgraph PROCUREDATA[\"PROCUREDATA - Ecosistema Madre\"]\n        direction TB\n        CORE[\"Trust Framework\"]\n        ODRL[\"Politicas ODRL\"]\n        EDC[\"Conectores EDC\"]\n    end\n    \n    subgraph ITBIDX[\"itbid-x - Espacio Asociado\"]\n        direction TB\n        GOV[\"Gobernanza Propia\"]\n        RULES[\"Reglas de Negocio\"]\n        CLIENTS[\"Clientes itbid\"]\n    end\n    \n    subgraph PROVIDERS[\"Proveedores Federados\"]\n        direction TB\n        P1[\"Proveedor A\"]\n        P2[\"Proveedor B\"]\n        P3[\"Proveedor C\"]\n    end\n    \n    EU --> PROCUREDATA\n    PROCUREDATA --> ITBIDX\n    ITBIDX <--> PROVIDERS\n    \n    style EU fill:#1e40af,stroke:#3b82f6,color:#fff\n    style PROCUREDATA fill:#059669,stroke:#10b981,color:#fff\n    style ITBIDX fill:#0891b2,stroke:#06b6d4,color:#fff\n    style PROVIDERS fill:#7c3aed,stroke:#8b5cf6,color:#fff",
+    "governanceFlowDiagram": "sequenceDiagram\n    participant C as Consumer (Cliente itbid)\n    participant I as itbid-x Gateway\n    participant S as Subject (Proveedor)\n    participant SC as Smart Contract\n    \n    C->>I: 1. Solicita datos del Proveedor X\n    I->>SC: 2. Verifica política ODRL\n    SC-->>I: 3. Política: Permitido con restricciones\n    I->>S: 4. Solicita consentimiento\n    S-->>I: 5. Firma digital autorización\n    I->>C: 6. Entrega datos según política\n    Note over SC: Todo queda registrado en blockchain",
+    "networkDiagram": "graph TB\n    subgraph ITBIDX[\"ITBID-X Espacio de Datos\"]\n        GW[\"Gateway ITBID-X\"]\n    end\n    \n    subgraph PROVIDERS[\"Proveedores\"]\n        P1[\"Fabricante A\"]\n        P2[\"Proveedor B\"]\n        P3[\"Distribuidor C\"]\n    end\n    \n    subgraph CONSUMERS[\"Clientes Compradores\"]\n        C1[\"Empresa 1\"]\n        C2[\"Empresa 2\"]\n        C3[\"Empresa 3\"]\n    end\n    \n    subgraph TRUSTED[\"Terceros de Confianza\"]\n        T1[\"SGS / AENOR\"]\n        T2[\"Bancos\"]\n        T3[\"Rating Agencies\"]\n        T4[\"Admin. Pública\"]\n    end\n    \n    PROVIDERS <--> GW\n    GW <--> CONSUMERS\n    TRUSTED --> GW\n    \n    style ITBIDX fill:#0891b2,stroke:#06b6d4,color:#fff\n    style PROVIDERS fill:#d946ef,stroke:#e879f9,color:#fff\n    style CONSUMERS fill:#84cc16,stroke:#a3e635,color:#000\n    style TRUSTED fill:#f59e0b,stroke:#fbbf24,color:#000",
+    "legalFlowDiagram": "sequenceDiagram\n    participant P as Proveedor\n    participant W as Wallet Digital\n    participant SC as Smart Contract\n    participant I as itbid-x\n    participant C as Cliente\n    \n    P->>W: 1. Firma digital del consentimiento\n    W->>SC: 2. Registro en blockchain\n    Note over SC: Inmutable y auditable\n    SC->>I: 3. Política ODRL activa\n    I->>C: 4. Acceso según política\n    Note over P,C: Trazabilidad legal completa",
+    "architectureDiagram": "graph TB\n    subgraph ITBID[\"Infraestructura ITBID\"]\n        FRONTEND[\"Frontend Web\"]\n        BACKEND[\"Backend API\"]\n        DB[\"Base de Datos\"]\n    end\n    \n    subgraph CONNECTOR[\"Kit Espacio de Datos\"]\n        EDC[\"Eclipse Dataspace<br/>Connector (EDC)\"]\n        WALLET[\"Wallet Digital<br/>(Identity)\"]\n        POLICY[\"Motor de<br/>Políticas ODRL\"]\n    end\n    \n    subgraph PROCURE[\"PROCUREDATA Core\"]\n        REGISTRY[\"Registry de<br/>Participantes\"]\n        CATALOG[\"Catálogo<br/>Federado\"]\n        TRUST[\"Trust<br/>Framework\"]\n    end\n    \n    FRONTEND --> BACKEND\n    BACKEND --> DB\n    BACKEND <--> EDC\n    EDC <--> WALLET\n    EDC <--> POLICY\n    EDC <--> REGISTRY\n    EDC <--> CATALOG\n    WALLET <--> TRUST\n    \n    style ITBID fill:#0891b2,stroke:#06b6d4,color:#fff\n    style CONNECTOR fill:#d946ef,stroke:#e879f9,color:#fff\n    style PROCURE fill:#84cc16,stroke:#a3e635,color:#000"
+  },
+  "odrlExample": "{\n  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",\n  \"@type\": \"Agreement\",\n  \"uid\": \"policy:itbid-x:proveedor-abc:2024\",\n  \"profile\": \"https://procuredata.es/odrl/profile\",\n  \n  \"permission\": [{\n    \"target\": \"asset:certificado-iso-9001\",\n    \"action\": \"read\",\n    \"constraint\": [{\n      \"leftOperand\": \"purpose\",\n      \"operator\": \"eq\", \n      \"rightOperand\": \"homologacion\"\n    }, {\n      \"leftOperand\": \"dateTime\",\n      \"operator\": \"lt\",\n      \"rightOperand\": \"2025-12-31T23:59:59Z\"\n    }],\n    \"duty\": [{\n      \"action\": \"compensate\",\n      \"target\": \"party:proveedor-abc\"\n    }]\n  }],\n  \n  \"prohibition\": [{\n    \"target\": \"asset:certificado-iso-9001\",\n    \"action\": \"distribute\"\n  }]\n}",
+  "closingQuote": "ITBID tiene la oportunidad de liderar la transformación hacia espacios de datos federados en el mercado de compras español y europeo."
+}
