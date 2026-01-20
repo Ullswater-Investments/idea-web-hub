@@ -1,0 +1,151 @@
+/*
+ * VALERDAT Export - CSS Variables
+ * ================================
+ * Variables opcionales para personalizar el módulo VALERDAT
+ * Se pueden añadir al index.css del proyecto
+ */
+
+:root {
+  /* ===== Colores Principales VALERDAT ===== */
+  --valerdat-primary: 217.2 91.2% 59.8%;        /* blue-600 #2563eb */
+  --valerdat-primary-light: 213.8 93.9% 67.8%;  /* blue-400 */
+  --valerdat-primary-dark: 221.2 83.2% 53.3%;   /* blue-700 */
+  
+  /* ===== Colores de Fase ===== */
+  --valerdat-phase-1: 217.2 91.2% 59.8%;        /* Azul - Onboarding */
+  --valerdat-phase-2: 37.7 92.1% 50.2%;         /* Ámbar - Preparación */
+  --valerdat-phase-3: 262.1 83.3% 57.8%;        /* Púrpura - Integración */
+  --valerdat-phase-4: 142.1 76.2% 36.3%;        /* Verde - Validación */
+  
+  /* ===== Backgrounds de Cards ===== */
+  --valerdat-card-blue: 213.8 93.9% 94.4%;      /* blue-50 */
+  --valerdat-card-amber: 48 96.5% 88.8%;        /* amber-50 */
+  --valerdat-card-purple: 269.2 100% 95.1%;     /* purple-50 */
+  --valerdat-card-green: 138.5 76.5% 96.7%;     /* green-50 */
+  
+  /* ===== Estados ===== */
+  --valerdat-success: 142.1 76.2% 36.3%;        /* green-600 */
+  --valerdat-warning: 37.7 92.1% 50.2%;         /* amber-500 */
+  --valerdat-info: 217.2 91.2% 59.8%;           /* blue-600 */
+  
+  /* ===== Blockchain / Web3 ===== */
+  --valerdat-blockchain: 262.1 83.3% 57.8%;     /* purple-600 */
+  --valerdat-wallet: 37.7 92.1% 50.2%;          /* amber-500 */
+  --valerdat-identity: 262.1 83.3% 57.8%;       /* purple-600 */
+  
+  /* ===== Espaciado del Documento ===== */
+  --valerdat-section-py: 4rem;                  /* py-16 */
+  --valerdat-container-max: 64rem;              /* max-w-5xl */
+  --valerdat-sidebar-width: 16rem;              /* w-64 */
+}
+
+/* ===== Dark Mode ===== */
+.dark {
+  --valerdat-card-blue: 221.2 83.2% 53.3% / 0.2;
+  --valerdat-card-amber: 37.7 92.1% 50.2% / 0.2;
+  --valerdat-card-purple: 262.1 83.3% 57.8% / 0.2;
+  --valerdat-card-green: 142.1 76.2% 36.3% / 0.2;
+}
+
+/* ===== Clases Utilitarias ===== */
+
+/* Card backgrounds por fase */
+.valerdat-card-phase-1 {
+  background-color: hsl(var(--valerdat-card-blue));
+}
+
+.valerdat-card-phase-2 {
+  background-color: hsl(var(--valerdat-card-amber));
+}
+
+.valerdat-card-phase-3 {
+  background-color: hsl(var(--valerdat-card-purple));
+}
+
+.valerdat-card-phase-4 {
+  background-color: hsl(var(--valerdat-card-green));
+}
+
+/* Badge de fase */
+.valerdat-badge-phase-1 {
+  background-color: hsl(var(--valerdat-phase-1));
+  color: white;
+}
+
+.valerdat-badge-phase-2 {
+  background-color: hsl(var(--valerdat-phase-2));
+  color: white;
+}
+
+.valerdat-badge-phase-3 {
+  background-color: hsl(var(--valerdat-phase-3));
+  color: white;
+}
+
+.valerdat-badge-phase-4 {
+  background-color: hsl(var(--valerdat-phase-4));
+  color: white;
+}
+
+/* Blockchain/Web3 styles */
+.valerdat-blockchain-record {
+  background-color: hsl(var(--valerdat-card-purple));
+  border: 1px solid hsl(var(--valerdat-blockchain) / 0.3);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.valerdat-wallet-widget {
+  background: linear-gradient(
+    135deg,
+    hsl(48 96.5% 88.8%) 0%,
+    hsl(33 100% 90%) 100%
+  );
+  border: 1px solid hsl(37.7 92.1% 50.2% / 0.3);
+  border-radius: 0.75rem;
+}
+
+/* Progress bar personalizado */
+.valerdat-progress {
+  height: 0.75rem;
+  border-radius: 9999px;
+  background-color: hsl(var(--valerdat-primary) / 0.2);
+}
+
+.valerdat-progress-bar {
+  background-color: hsl(var(--valerdat-primary));
+  transition: width 0.5s ease;
+}
+
+/* Timeline vertical line */
+.valerdat-timeline-line {
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--valerdat-phase-1)) 0%,
+    hsl(var(--valerdat-phase-2)) 33%,
+    hsl(var(--valerdat-phase-3)) 66%,
+    hsl(var(--valerdat-phase-4)) 100%
+  );
+}
+
+/* Sticky sidebar */
+.valerdat-sidebar {
+  position: sticky;
+  top: 5rem;
+  max-height: calc(100vh - 5rem);
+  overflow-y: auto;
+}
+
+.valerdat-sidebar-item {
+  transition: all 0.2s ease;
+}
+
+.valerdat-sidebar-item:hover {
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+.valerdat-sidebar-item.active {
+  background-color: hsl(var(--valerdat-card-blue));
+  color: hsl(var(--valerdat-primary));
+  border-left: 2px solid hsl(var(--valerdat-primary));
+}
