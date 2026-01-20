@@ -41,7 +41,9 @@ import {
   Satellite,
   Leaf,
   Flower,
-  Box
+  Box,
+  Car,
+  LeafyGreen
 } from "lucide-react";
 import { SuccessStoryNavigator } from "@/components/success-stories/SuccessStoryNavigator";
 import { SuccessStoriesFilter } from "@/components/success-stories/SuccessStoriesFilter";
@@ -757,6 +759,82 @@ const successCases = [
     bgColor: "bg-teal-50 dark:bg-teal-950/30",
     textColor: "text-teal-600 dark:text-teal-400",
     blockchainProof: "0xurb4...hydro"
+  },
+  // ===== 5 NEW GREEN PROCUREMENT CASES =====
+  {
+    id: "greenfleet-municipal",
+    title: "Flota Municipal Zero Emisiones",
+    company: "GreenFleet Municipal",
+    sector: "Green Procurement",
+    sectorCategory: "greenprocurement",
+    sectorIcon: Car,
+    metric: "-92%",
+    metricLabel: "CO₂ Evitado",
+    description: "Telemetría OBD-II en 340 vehículos municipales para acceder a €2.5M en fondos europeos de movilidad sostenible.",
+    color: "from-cyan-500 to-teal-600",
+    bgColor: "bg-cyan-50 dark:bg-cyan-950/30",
+    textColor: "text-cyan-600 dark:text-cyan-400",
+    blockchainProof: "0xgrnf...muni"
+  },
+  {
+    id: "circular-canteen",
+    title: "Comedores Públicos Km 0 Sostenibles",
+    company: "CircularCanteen Pro",
+    sector: "Green Procurement",
+    sectorCategory: "greenprocurement",
+    sectorIcon: Apple,
+    metric: "85%",
+    metricLabel: "Local Km0",
+    description: "Trazabilidad GPS de 2.500 comidas diarias para cumplir criterios de licitación verde de la Generalitat.",
+    color: "from-lime-500 to-green-600",
+    bgColor: "bg-lime-50 dark:bg-lime-950/30",
+    textColor: "text-lime-600 dark:text-lime-400",
+    blockchainProof: "0xcrcn...km0"
+  },
+  {
+    id: "ecobuilding-tender",
+    title: "Licitación de Construcción Verde LEED",
+    company: "EcoBuilding Tender",
+    sector: "Green Procurement",
+    sectorCategory: "greenprocurement",
+    sectorIcon: Building2,
+    metric: "LEED Gold",
+    metricLabel: "Certificación",
+    description: "Verificador automático de EPD para certificar 40% de materiales circulares en edificio de 12.000m².",
+    color: "from-emerald-500 to-slate-600",
+    bgColor: "bg-emerald-50 dark:bg-emerald-950/30",
+    textColor: "text-emerald-600 dark:text-emerald-400",
+    blockchainProof: "0xecob...leed"
+  },
+  {
+    id: "cleantech-buyer",
+    title: "Compras TIC Sostenibles EPEAT Gold",
+    company: "CleanTech Buyer Alliance",
+    sector: "Green Procurement",
+    sectorCategory: "greenprocurement",
+    sectorIcon: Cpu,
+    metric: "-65%",
+    metricLabel: "e-Waste",
+    description: "Verificación EPEAT/Energy Star para €4M en equipos TIC de 8 universidades públicas.",
+    color: "from-indigo-500 to-purple-600",
+    bgColor: "bg-indigo-50 dark:bg-indigo-950/30",
+    textColor: "text-indigo-600 dark:text-indigo-400",
+    blockchainProof: "0xclnt...epeat"
+  },
+  {
+    id: "sustainable-uniforms",
+    title: "Uniformes Públicos de Economía Circular",
+    company: "Sustainable Uniforms Hub",
+    sector: "Green Procurement",
+    sectorCategory: "greenprocurement",
+    sectorIcon: Shirt,
+    metric: "100%",
+    metricLabel: "Fibra Reciclada",
+    description: "Certificación textil circular SA8000 para 1.200 uniformes de bomberos con trazabilidad de huella hídrica.",
+    color: "from-rose-500 to-teal-600",
+    bgColor: "bg-rose-50 dark:bg-rose-950/30",
+    textColor: "text-rose-600 dark:text-rose-400",
+    blockchainProof: "0xsust...circ"
   }
 ];
 
@@ -789,7 +867,7 @@ const SuccessStories = () => {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
               <Award className="w-4 h-4" />
-              47 Casos de Éxito Verificados
+              52 Casos de Éxito Verificados
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
               Transformación Digital en{" "}

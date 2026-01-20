@@ -20,6 +20,7 @@ const sectors = [
   { id: 'tecnologia', label: 'Tech', icon: Cpu, color: 'text-purple-500', bg: 'bg-purple-500/10', activeBg: 'bg-purple-500' },
   { id: 'circular', label: 'Circular', icon: Recycle, color: 'text-emerald-600', bg: 'bg-emerald-600/10', activeBg: 'bg-emerald-600' },
   { id: 'agritech', label: 'Agri-Tech', icon: Sprout, color: 'text-lime-600', bg: 'bg-lime-600/10', activeBg: 'bg-lime-600' },
+  { id: 'greenprocurement', label: 'Green Procurement', icon: Recycle, color: 'text-teal-600', bg: 'bg-teal-600/10', activeBg: 'bg-teal-600' },
 ];
 
 interface SuccessStoriesFilterProps {
