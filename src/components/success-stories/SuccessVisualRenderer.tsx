@@ -50,7 +50,12 @@ import {
   GovNetSimulator,
   UniSynthSimulator,
   KYCSovereignSimulator,
-  GlobalBridgeSimulator
+  GlobalBridgeSimulator,
+  GreenFleetSimulator,
+  CircularCanteenSimulator,
+  EcoBuildingSimulator,
+  CleanTechBuyerSimulator,
+  SustainableUniformsSimulator
 } from './simulators';
 
 interface Props {
@@ -136,6 +141,18 @@ const simulatorMap: Record<string, React.ComponentType> = {
   
   // Aerospace & Defense
   'sky-aero-systems': GigaFactorySimulator,
+  
+  // Oleada 7: Green Procurement
+  'greenfleet-municipal': GreenFleetSimulator,
+  'green-fleet': GreenFleetSimulator,
+  'circular-canteen': CircularCanteenSimulator,
+  'canteen-km0': CircularCanteenSimulator,
+  'ecobuilding-tender': EcoBuildingSimulator,
+  'eco-building': EcoBuildingSimulator,
+  'cleantech-buyer': CleanTechBuyerSimulator,
+  'clean-tech': CleanTechBuyerSimulator,
+  'sustainable-uniforms': SustainableUniformsSimulator,
+  'uniforms-circular': SustainableUniformsSimulator,
 };
 
 export function SuccessVisualRenderer({ caseId }: Props) {

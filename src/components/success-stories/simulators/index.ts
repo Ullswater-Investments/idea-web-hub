@@ -51,3 +51,9 @@ export { GovNetSimulator } from './GovNetSimulator';
 export { UniSynthSimulator } from './UniSynthSimulator';
 export { KYCSovereignSimulator } from './KYCSovereignSimulator';
 export { GlobalBridgeSimulator } from './GlobalBridgeSimulator';
+// Oleada 7: Green Procurement (Blueprint 2.0)
+export { GreenFleetSimulator } from './GreenFleetSimulator';
+export { CircularCanteenSimulator } from './CircularCanteenSimulator';
+export { EcoBuildingSimulator } from './EcoBuildingSimulator';
+export { CleanTechBuyerSimulator } from './CleanTechBuyerSimulator';
+export { SustainableUniformsSimulator } from './SustainableUniformsSimulator';
