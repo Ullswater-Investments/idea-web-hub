@@ -85,7 +85,7 @@ const casesData: Record<string, {
   solution: string;
   services: string[];
   ariaQuote: string;
-  simulator: "industrial" | "agro" | "social" | "mobility" | "health" | "retail" | "energy" | "aero" | "wine" | "pharma" | "customs" | "gov" | "mining" | "fashion" | "finance" | "grid" | "ai" | "solar" | "wind" | "hydrogen" | "community" | "smartgrid" | "storage" | "biomass" | "scope3" | "hydro" | "evcharge" | "fiber" | "ewaste" | "aluminum" | "rap" | "scrap" | "rawmarket" | "batterylife" | "urbanmining" | "zerowaste" | "govgreen" | "avocado" | "olive" | "zerochem" | "citrus" | "berry" | "rice" | "biocotton" | "greenhouse" | "tropical" | "urbanhydro";
+  simulator: "industrial" | "agro" | "social" | "mobility" | "health" | "retail" | "energy" | "aero" | "wine" | "pharma" | "customs" | "gov" | "mining" | "fashion" | "finance" | "grid" | "ai" | "solar" | "wind" | "hydrogen" | "community" | "smartgrid" | "storage" | "biomass" | "scope3" | "hydro" | "evcharge" | "fiber" | "ewaste" | "aluminum" | "rap" | "scrap" | "rawmarket" | "batterylife" | "urbanmining" | "zerowaste" | "govgreen" | "avocado" | "olive" | "zerochem" | "citrus" | "berry" | "rice" | "biocotton" | "greenhouse" | "tropical" | "urbanhydro" | "greenfleet" | "circularcanteen" | "ecobuilding" | "cleantech" | "sustainableuniforms";
 }> = {
   "gigafactory-north": {
     id: "gigafactory-north",
@@ -1001,6 +1001,102 @@ const casesData: Record<string, {
     services: ["ESG Data Verification", "Green Bond Eligibility", "Trade Finance Scoring", "Blockchain Proof"],
     ariaQuote: "La transparencia ESG verificada en blockchain es el nuevo colateral. Cuanto más frescos tus datos, menor tu coste de financiación.",
     simulator: "finance"
+  },
+  // ===== 5 NEW GREEN PROCUREMENT CASES =====
+  "greenfleet-municipal": {
+    id: "greenfleet-municipal",
+    title: "Flota Municipal Zero Emisiones",
+    company: "GreenFleet Municipal",
+    sector: "Green Procurement",
+    sectorIcon: Car,
+    metric: "-92%",
+    metricLabel: "CO₂ Evitado",
+    color: "from-cyan-500 to-teal-600",
+    bgColor: "bg-cyan-50 dark:bg-cyan-950/30",
+    textColor: "text-cyan-600 dark:text-cyan-400",
+    blockchainProof: "0xg1r2e3e4n5f6l7e8e9t0m1u2n3i4c5i6p7a8l9c0a1r2b3o4n5t6r7a8c9k0e1r2",
+    blockNumber: "#19,789,123",
+    challenge: "Un ayuntamiento de 500.000 habitantes necesitaba demostrar que su flota de 340 vehículos municipales cumplía con los objetivos del PNIEC para acceder a €2.5M en fondos europeos de movilidad sostenible. Los informes manuales tardaban 3 meses y no eran auditables por las autoridades europeas.",
+    solution: "Implementación del Carbon Tracker con telemetría OBD-II en tiempo real. Cada vehículo genera automáticamente su certificado de emisiones Scope 1, verificado en Pontus-X. Dashboard de flota con comparativa eléctrico vs. combustión y proyecciones de electrificación.",
+    services: ["Carbon Tracker ISO 14064", "Telemetría IoT OBD-II", "Certificación Verde Automática", "Dashboard de Flota", "Informe PNIEC Automático"],
+    ariaQuote: "Tu flota ha reducido 1.247 toneladas de CO₂ este año. Si electrificas el 30% adicional de vehículos ligeros, cumplirás el objetivo PNIEC 2030 con 2 años de antelación. El ahorro en combustible cubrirá el 65% de la inversión.",
+    simulator: "greenfleet"
+  },
+  "circular-canteen": {
+    id: "circular-canteen",
+    title: "Comedores Públicos Km 0 Sostenibles",
+    company: "CircularCanteen Pro",
+    sector: "Green Procurement",
+    sectorIcon: Apple,
+    metric: "85%",
+    metricLabel: "Local Km0",
+    color: "from-lime-500 to-green-600",
+    bgColor: "bg-lime-50 dark:bg-lime-950/30",
+    textColor: "text-lime-600 dark:text-lime-400",
+    blockchainProof: "0xc1i2r3c4u5l6a7r8c9a0n1t2e3e4n5k6m7z8e9r0o1l2o3c4a5l6f7o8o9d0t1r2a3c4e5",
+    blockNumber: "#19,801,456",
+    challenge: "Un hospital público con 2.500 comidas diarias necesitaba verificar que el 70% de sus alimentos provenían de productores locales (<150km) para cumplir con los nuevos criterios de licitación verde de la Generalitat. Sin trazabilidad, era imposible demostrarlo ante auditorías.",
+    solution: "Pasaporte Digital de Producto con trazabilidad GPS desde la finca hasta el plato. Calculadora automática de huella de carbono alimentaria y mapa interactivo de proveedores km0. Integración con el sistema de gestión de compras del hospital.",
+    services: ["Pasaporte Digital de Producto", "Trazabilidad GPS Alimentaria", "Calculadora Huella Carbono", "Mapa Proveedores Km0", "Verificador Licitación Verde"],
+    ariaQuote: "Tu comedor ha reinvertido €847.000 en economía local este trimestre. El 23% de proveedores están a menos de 50km, superando el objetivo de proximidad. Recomiendo sustituir 3 proveedores de lácteos para alcanzar el 90% km0.",
+    simulator: "circularcanteen"
+  },
+  "ecobuilding-tender": {
+    id: "ecobuilding-tender",
+    title: "Licitación de Construcción Verde LEED",
+    company: "EcoBuilding Tender",
+    sector: "Green Procurement",
+    sectorIcon: Building2,
+    metric: "LEED Gold",
+    metricLabel: "Certificación",
+    color: "from-emerald-500 to-slate-600",
+    bgColor: "bg-emerald-50 dark:bg-emerald-950/30",
+    textColor: "text-emerald-600 dark:text-emerald-400",
+    blockchainProof: "0xe1c2o3b4u5i6l7d8i9n0g1t2e3n4d5e6r7l8e9e0d1g2o3l4d5c6e7r8t9i0f1i2c3a4t5e6",
+    blockNumber: "#19,823,789",
+    challenge: "Una promotora pública necesitaba verificar que el 40% de los materiales de un edificio de 12.000m² cumplían criterios de economía circular (reciclados, EPD verificado) para obtener certificación LEED Gold y acceder a bonificaciones fiscales.",
+    solution: "Verificador automático de EPD (Declaraciones Ambientales de Producto) con trazabilidad blockchain. Pasaporte Digital de Materiales que certifica origen, % reciclado y huella de carbono embebida. Dashboard de puntuación LEED en tiempo real.",
+    services: ["Verificador EPD Automático", "Pasaporte Digital de Materiales", "Trazabilidad de Origen Circular", "Calculadora LEED", "Informe Bonificación Fiscal"],
+    ariaQuote: "Tu edificio acumula 47 puntos LEED con los materiales actuales. Sustituyendo el acero convencional por acero reciclado en estructura, ganarías 8 puntos adicionales y alcanzarías LEED Platinum. El sobrecoste es del 3.2%.",
+    simulator: "ecobuilding"
+  },
+  "cleantech-buyer": {
+    id: "cleantech-buyer",
+    title: "Compras TIC Sostenibles EPEAT Gold",
+    company: "CleanTech Buyer Alliance",
+    sector: "Green Procurement",
+    sectorIcon: Cpu,
+    metric: "-65%",
+    metricLabel: "e-Waste",
+    color: "from-indigo-500 to-purple-600",
+    bgColor: "bg-indigo-50 dark:bg-indigo-950/30",
+    textColor: "text-indigo-600 dark:text-indigo-400",
+    blockchainProof: "0xc1l2e3a4n5t6e7c8h9b0u1y2e3r4e5p6e7a8t9g0o1l2d3e4w5a6s7t8e9r0e1d2u3c4e5",
+    blockNumber: "#19,845,012",
+    challenge: "Un consorcio de 8 universidades públicas necesitaba garantizar que su compra anual de €4M en equipos TIC cumplía con criterios de e-waste responsable (EPEAT Gold) y eficiencia energética (Energy Star) para renovar su certificación ISO 14001.",
+    solution: "Verificador automático de certificaciones TIC con trazabilidad de componentes. Garantía de reciclaje verificable al final de vida mediante smart contracts con gestores de residuos homologados. Dashboard de sostenibilidad TIC centralizado.",
+    services: ["Verificador EPEAT/Energy Star", "Trazabilidad de Componentes", "Smart Contract e-Waste", "Dashboard Sostenibilidad TIC", "Informe ISO 14001"],
+    ariaQuote: "Tu flota TIC tiene un 72% de equipos EPEAT Gold. Redirigiendo el 15% del presupuesto a portátiles Dell Latitude 7440, alcanzarías el 90% y reducirías el consumo eléctrico en 45.000 kWh/año.",
+    simulator: "cleantech"
+  },
+  "sustainable-uniforms": {
+    id: "sustainable-uniforms",
+    title: "Uniformes Públicos de Economía Circular",
+    company: "Sustainable Uniforms Hub",
+    sector: "Green Procurement",
+    sectorIcon: Shirt,
+    metric: "100%",
+    metricLabel: "Fibra Reciclada",
+    color: "from-rose-500 to-teal-600",
+    bgColor: "bg-rose-50 dark:bg-rose-950/30",
+    textColor: "text-rose-600 dark:text-rose-400",
+    blockchainProof: "0xs1u2s3t4a5i6n7a8b9l0e1u2n3i4f5o6r7m8s9c0i1r2c3u4l5a6r7t8e9x0t1i2l3e4v5e6r7",
+    blockNumber: "#19,867,345",
+    challenge: "Un cuerpo de bomberos regional con 1.200 efectivos necesitaba demostrar que sus uniformes cumplían con criterios de economía circular (fibra reciclada) y condiciones laborales éticas (SA8000) para renovar el contrato público.",
+    solution: "Certificación textil circular con verificación blockchain del % de fibra reciclada. Auditoría social SA8000 integrada con Pasaporte Digital de Proveedor. Trazabilidad de huella hídrica del textil desde la fibra hasta la prenda.",
+    services: ["Certificación Textil Circular", "Auditoría SA8000", "Pasaporte Digital de Proveedor", "Calculadora Huella Hídrica", "Verificador Licitación Ética"],
+    ariaQuote: "Tus uniformes han ahorrado 2.3 millones de litros de agua frente a textil virgen. El proveedor actual tiene puntuación SA8000 de 94/100. Recomiendo añadir cláusula de reciclaje post-uso para cerrar el ciclo.",
+    simulator: "sustainableuniforms"
   }
 };
 
